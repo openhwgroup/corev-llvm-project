@@ -1,3 +1,21 @@
+# CORE-V Clang/LLVM Development
+
+NOTE: This is not the standard LLVM Foundation distribution. For that
+repository go to https://github.com/llvm/llvm-project.
+
+This is the repository for CORE-V Clang/LLVM development prior to submitting for
+inclusion upstream. It has at most only two branches
+
+1. development - this is where the active development continues. This branch
+tracks upstream LLVM and incorporates changes for CORE-V. It should always
+compile and pass tests.
+
+2. stable - if it exists, this branch is an occasional snapshot of the
+development branch, at points of significant CORE-V feature enhancement.  This
+branch has always been thoroughly tested.
+
+The remainder of this file is the standard LLVM project `README.md` file.
+
 # The LLVM Compiler Infrastructure
 
 This directory and its sub-directories contain source code for LLVM,
