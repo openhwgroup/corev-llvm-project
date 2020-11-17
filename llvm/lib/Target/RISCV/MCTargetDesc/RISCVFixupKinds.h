@@ -103,6 +103,12 @@ enum Fixups {
   // 6-bit fixup corresponding to R_RISCV_SUB6 for local label assignment in
   // DWARF CFA.
   fixup_riscv_sub_6b,
+  // fixup_riscv_cvpcrel_ui12 - 12-bit fixup for the CORE-V hardware loop
+  // extension.
+  fixup_riscv_cvpcrel_ui12,
+  // fixup_riscv_cvpcrel_urs1 - 5-bit fixup for the CORE-V hardware loop
+  // extension.
+  fixup_riscv_cvpcrel_urs1,
 
   // Used as a sentinel, must be the last
   fixup_riscv_invalid,

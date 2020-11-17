@@ -102,6 +102,10 @@ unsigned RISCVELFObjectWriter::getRelocType(MCContext &Ctx,
       return ELF::R_RISCV_ADD64;
     case RISCV::fixup_riscv_sub_64:
       return ELF::R_RISCV_SUB64;
+    case RISCV::fixup_riscv_cvpcrel_ui12:
+      return ELF::R_RISCV_CVPCREL_UI12;
+    case RISCV::fixup_riscv_cvpcrel_urs1:
+      return ELF::R_RISCV_CVPCREL_URS1;
     }
   }
 
