@@ -48,6 +48,7 @@ def InstFormatCA     : InstFormat<14>;
 def InstFormatCB     : InstFormat<15>;
 def InstFormatCJ     : InstFormat<16>;
 def InstFormatOther  : InstFormat<17>;
+def InstFormatCVHWLP : InstFormat<18>;
 
 class RISCVVConstraint<bits<3> val> {
   bits<3> Value = val;
@@ -145,6 +146,10 @@ def OPC_BRANCH    : RISCVOpcode<"BRANCH",    0b1100011>;
 def OPC_JALR      : RISCVOpcode<"JALR",      0b1100111>;
 def OPC_JAL       : RISCVOpcode<"JAL",       0b1101111>;
 def OPC_SYSTEM    : RISCVOpcode<"SYSTEM",    0b1110011>;
+def OPC_CUSTOM0   : RISCVOpcode<"CUSTOM0",   0b0001011>;
+def OPC_CUSTOM1   : RISCVOpcode<"CUSTOM1",   0b0101011>;
+def OPC_CUSTOM2   : RISCVOpcode<"CUSTOM2",   0b1011011>;
+def OPC_CUSTOM3   : RISCVOpcode<"CUSTOM3",   0b1111011>;
 
 class RVInst<dag outs, dag ins, string opcodestr, string argstr,
              list<dag> pattern, InstFormat format>
