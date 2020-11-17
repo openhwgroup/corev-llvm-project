@@ -570,6 +570,7 @@ public:
   bool isUImm3() { return IsUImm<3>(); }
   bool isUImm5() { return IsUImm<5>(); }
   bool isUImm7() { return IsUImm<7>(); }
+  bool isUImm12() const { return IsUImm<12>();}
 
   bool isRnumArg() const {
     int64_t Imm;
@@ -579,6 +580,43 @@ public:
     bool IsConstantImm = evaluateConstantImm(getImm(), Imm, VK);
     return IsConstantImm && Imm >= INT64_C(0) && Imm <= INT64_C(10) &&
            VK == RISCVMCExpr::VK_RISCV_None;
+  }
+
+  bool isCVUImm1() const {
+    int64_t Imm;
+    RISCVMCExpr::VariantKind VK = RISCVMCExpr::VK_RISCV_None;
+    if (!isImm())
+      return false;
+    bool IsConstantImm = evaluateConstantImm(getImm(), Imm, VK);
+    return IsConstantImm && isUInt<1>(Imm) && VK == RISCVMCExpr::VK_RISCV_None;
+  }
+
+  bool isCVUImm5() const {
+    int64_t Imm;
+    RISCVMCExpr::VariantKind VK = RISCVMCExpr::VK_RISCV_None;
+    if (!isImm())
+      return false;
+    bool IsConstantImm = evaluateConstantImm(getImm(), Imm, VK);
+    bool IsValid;
+    if (!IsConstantImm)
+      IsValid = RISCVAsmParser::classifySymbolRef(getImm(), VK);
+    else
+      IsValid = isUInt<5>(Imm) && (Imm & 1) == 0;
+    return IsValid && VK == RISCVMCExpr::VK_RISCV_None;
+  }
+
+  bool isCVUImm12() const {
+    int64_t Imm;
+    RISCVMCExpr::VariantKind VK = RISCVMCExpr::VK_RISCV_None;
+    if (!isImm())
+      return false;
+    bool IsConstantImm = evaluateConstantImm(getImm(), Imm, VK);
+    bool IsValid;
+    if (!IsConstantImm)
+      IsValid = RISCVAsmParser::classifySymbolRef(getImm(), VK);
+    else
+      IsValid = isUInt<12>(Imm) && (Imm & 1) == 0;
+    return IsValid && VK == RISCVMCExpr::VK_RISCV_None;
   }
 
   bool isSImm5() const {
@@ -1162,6 +1200,8 @@ bool RISCVAsmParser::MatchAndEmitInstruction(SMLoc IDLoc, unsigned &Opcode,
   case Match_InvalidSImm5:
     return generateImmOutOfRangeError(Operands, ErrorInfo, -(1 << 4),
                                       (1 << 4) - 1);
+  case Match_InvalidUImm12:
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 12) - 1);
   case Match_InvalidSImm6:
     return generateImmOutOfRangeError(Operands, ErrorInfo, -(1 << 5),
                                       (1 << 5) - 1);
@@ -1283,6 +1323,17 @@ bool RISCVAsmParser::MatchAndEmitInstruction(SMLoc IDLoc, unsigned &Opcode,
   }
   case Match_InvalidRnumArg: {
     return generateImmOutOfRangeError(Operands, ErrorInfo, 0, 10);
+  }
+  case Match_InvalidCVUImm1: {
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, 1);
+  }
+  case Match_InvalidCVUImm5: {
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 5) - 2,
+                                      "immediate must be an even integer in the range");
+  }
+  case Match_InvalidCVUImm12: {
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 12) - 2,
+                                      "immediate must be an even integer in the range");
   }
   }
 
