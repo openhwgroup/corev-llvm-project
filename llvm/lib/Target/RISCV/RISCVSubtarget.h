@@ -89,7 +89,13 @@ private:
   bool HasStdExtZmmul = false;
   bool HasStdExtZawrs = false;
   bool HasStdExtZtso = false;
+  bool HasStdExtZbt = false;
+  bool HasStdExtZbproposedc = false;
   bool HasRV32 = false;
+  bool HasStdExtZvlsseg = false;
+  bool HasStdExtZvamo = false;
+  bool HasExtXCoreV = false;
+  bool HasExtXCoreVHwlp = false;
   bool HasRV64 = false;
   bool IsRV32E = false;
   bool EnableLinkerRelax = false;
@@ -187,6 +193,12 @@ public:
   bool hasStdExtZawrs() const { return HasStdExtZawrs; }
   bool hasStdExtZmmul() const { return HasStdExtZmmul; }
   bool hasStdExtZtso() const { return HasStdExtZtso; }
+  bool hasStdExtZbt() const { return HasStdExtZbt; }
+  bool hasStdExtZbproposedc() const { return HasStdExtZbproposedc; }
+  bool hasStdExtZvlsseg() const { return HasStdExtZvlsseg; }
+  bool hasStdExtZvamo() const { return HasStdExtZvamo; }
+  bool hasExtXCoreV() const { return HasExtXCoreV; }
+  bool hasExtXCoreVHwlp() const { return HasExtXCoreVHwlp; }
   bool is64Bit() const { return HasRV64; }
   bool isRV32E() const { return IsRV32E; }
   bool enableLinkerRelax() const { return EnableLinkerRelax; }
