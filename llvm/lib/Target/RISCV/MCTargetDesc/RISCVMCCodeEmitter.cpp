@@ -467,6 +467,14 @@ unsigned RISCVMCCodeEmitter::getImmOpValue(const MCInst &MI, unsigned OpNo,
       FixupKind = RISCV::fixup_riscv_rvc_jump;
     } else if (MIFrm == RISCVII::InstFormatCB) {
       FixupKind = RISCV::fixup_riscv_rvc_branch;
+    } else if (MIFrm == RISCVII::InstFormatCVHWLP) {
+      if (OpNo == 1 && MI.getNumOperands() == 3) {
+        // This is the cv.setupi instruction and therefore requires the 5 bit
+        // relocation.
+        FixupKind = RISCV::fixup_riscv_cvpcrel_urs1;
+      } else {
+        FixupKind = RISCV::fixup_riscv_cvpcrel_ui12;
+      }
     }
   }
 
