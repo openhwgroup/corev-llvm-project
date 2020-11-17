@@ -170,6 +170,27 @@ def HasStdExtZvamo : Predicate<"Subtarget->hasStdExtZvamo()">,
                               AssemblerPredicate<(all_of FeatureExtZvamo),
                               "'Zvamo'(Vector AMO Operations)">;
 
+// CORE-V extensions
+// These extensions can either be enabled individually with their extension
+// name or all together with `+xcorev`
+//
+// CORE-V Hardware Loop Extension
+def FeatureExtXCoreVHwlp
+    : SubtargetFeature<"xcorevhwlp", "HasExtXCoreVHwlp", "true",
+                       "'XCoreVHwlp' (Hardware Loop)">;
+def HasExtXCoreVHwlp
+    : Predicate<"Subtarget->hasExtXCoreVHwlp()">,
+               AssemblerPredicate<(any_of FeatureExtXCoreVHwlp),
+               "'XCoreVHwlp' (Hardware Loop)">;
+// All CORE-V extensions
+def FeatureExtXCoreV
+    : SubtargetFeature<"xcorev", "HasExtXCoreV", "true",
+                       "'XCoreV' (CORE-V extensions)",
+                       [FeatureExtXCoreVHwlp]>;
+def HasExtXCoreV : Predicate<"Subtarget->hasExtXCoreV()">,
+                              AssemblerPredicate<(all_of FeatureExtXCoreV),
+                              "'XCoreV' (CORE-V extensions)">;
+
 def Feature64Bit
     : SubtargetFeature<"64bit", "HasRV64", "true", "Implements RV64">;
 def IsRV64 : Predicate<"Subtarget->is64Bit()">,
