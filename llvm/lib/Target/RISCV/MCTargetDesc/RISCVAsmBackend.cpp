@@ -93,10 +93,12 @@ RISCVAsmBackend::getFixupKindInfo(MCFixupKind Kind) const {
 
       {"fixup_riscv_set_6b", 2, 6, 0},
       {"fixup_riscv_sub_6b", 2, 6, 0},
-  };
-  static_assert((std::size(Infos)) == RISCV::NumTargetFixupKinds,
-                "Not all fixup kinds added to Infos array");
 
+      {"fixup_riscv_cvpcrel_ui12", 20, 12, MCFixupKindInfo::FKF_IsPCRel},
+      {"fixup_riscv_cvpcrel_urs1", 15, 5, MCFixupKindInfo::FKF_IsPCRel}};
+  static_assert((std::size(Infos)) == RISCV::NumTargetFixupKinds,
+                 "Not all fixup kinds added to Infos array");
+		  
   // Fixup kinds from .reloc directive are like R_RISCV_NONE. They
   // do not require any extra processing.
   if (Kind >= FirstLiteralRelocationKind)
@@ -489,7 +491,10 @@ static uint64_t adjustFixupValue(const MCFixup &Fixup, uint64_t Value,
             (Bit5 << 2);
     return Value;
   }
-
+  case RISCV::fixup_riscv_cvpcrel_ui12:
+    return (Value >> 1) & 0xfff;
+  case RISCV::fixup_riscv_cvpcrel_urs1:
+    return (Value >> 1) & 0x1f;
   }
 }
 
