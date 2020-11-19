@@ -81,6 +81,12 @@ enum Fixups {
   // which indicates the linker should fixup the alignment after linker
   // relaxation.
   fixup_riscv_align,
+  // fixup_riscv_cvpcrel_ui12 - 12-bit fixup for the CORE-V hardware loop
+  // extension.
+  fixup_riscv_cvpcrel_ui12,
+  // fixup_riscv_cvpcrel_urs1 - 5-bit fixup for the CORE-V hardware loop
+  // extension.
+  fixup_riscv_cvpcrel_urs1,
 
   // fixup_riscv_invalid - used as a sentinel and a marker, must be last fixup
   fixup_riscv_invalid,

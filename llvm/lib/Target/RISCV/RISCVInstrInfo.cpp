@@ -570,6 +570,9 @@ bool RISCVInstrInfo::verifyInstruction(const MachineInstr &MI,
         switch (OpType) {
         default:
           llvm_unreachable("Unexpected operand type");
+        case RISCVOp::OPERAND_UIMM1:
+          Ok = isUInt<1>(Imm);
+          break;
         case RISCVOp::OPERAND_UIMM4:
           Ok = isUInt<4>(Imm);
           break;
