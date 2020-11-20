@@ -84,6 +84,6 @@ let Predicates = [HasExtXCoreVHwlp], hasSideEffects = 0, mayLoad = 0, mayStore =
                                  "cv.setup", "$imm1, $rs1, $imm12">,
                    Sched<[]>;
   def CV_SETUPI  : RVInstHwlp_ii<0b101, (ins cv_uimm1:$imm1, cv_uimm5:$imm5, uimm12:$imm12),
-                              "cv.setupi", "$imm1, $imm5, $imm12">,
+                              "cv.setupi", "$imm1, $imm12, $imm5">,
                 Sched<[]>;
 } // Predicates = [HasExtXCoreVHwlp], hasSideEffects = 0, mayLoad = 0, mayStore = 0
