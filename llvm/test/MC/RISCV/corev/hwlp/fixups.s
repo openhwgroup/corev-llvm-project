@@ -15,6 +15,6 @@ cv.endi 0, foo
 cv.setup 0, zero, foo
 # CHECK-FIXUP: fixup A - offset: 0, value: foo, kind: fixup_riscv_cvpcrel_ui12
 # CHECK-RELOC: R_RISCV_CVPCREL_UI12 foo 0x0
-cv.setupi 0, foo, 0
+cv.setupi 0, 0, foo
 # CHECK-FIXUP: fixup A - offset: 0, value: foo, kind: fixup_riscv_cvpcrel_urs1
 # CHECK-RELOC: R_RISCV_CVPCREL_URS1 foo 0x0
