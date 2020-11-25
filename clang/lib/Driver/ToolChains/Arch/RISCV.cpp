@@ -67,12 +67,18 @@ isExperimentalExtension(StringRef Ext) {
   return None;
 }
 
+static bool isSupportedNonStandardUserLevelExtension(StringRef Ext) {
+    return Ext == "xcorev" || Ext == "xcorevhwlp" || Ext == "xcorevmac";
+}
+
 static bool isSupportedExtension(StringRef Ext) {
   // LLVM supports "z" extensions which are marked as experimental.
   if (isExperimentalExtension(Ext))
     return true;
+  if (isSupportedNonStandardUserLevelExtension(Ext))
+    return true;
 
-  // LLVM does not support "sx", "s" nor "x" extensions.
+  // LLVM does not support other "sx", "s", or "x" extensions.
   return false;
 }
 

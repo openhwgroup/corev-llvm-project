@@ -31,6 +31,9 @@ protected:
   bool HasD;
   bool HasC;
   bool HasB;
+  bool HasXCoreV;
+  bool HasXCoreVHwlp;
+  bool HasXCoreVMac;
 
 public:
   RISCVTargetInfo(const llvm::Triple &Triple, const TargetOptions &)

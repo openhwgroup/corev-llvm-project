@@ -383,3 +383,19 @@
 // RUN: %clang -target riscv32-unknown-elf -march=rv32iv0p9 -menable-experimental-extensions -### %s -c 2>&1 | \
 // RUN:   FileCheck -check-prefix=RV32-EXPERIMENTAL-V-GOODVERS %s
 // RV32-EXPERIMENTAL-V-GOODVERS: "-target-feature" "+experimental-v"
+
+// RUN: %clang -target riscv32-unknown-elf -march=rv32ixcorevunsupported -### %s -c 2>&1 | \
+// RUN:   FileCheck -check-prefix=RV32-XCOREV-UNKNOWN %s
+// RV32-XCOREV-UNKNOWN: unsupported non-standard user-level extension 'xcorevunsupported'
+
+// RUN: %clang -target riscv32-unknown-elf -march=rv32ixcorev -### %s -c 2>&1 | \
+// RUN:   FileCheck -check-prefix=RV32-XCOREV %s
+// RV32-XCOREV: "-target-feature" "+xcorev"
+
+// RUN: %clang -target riscv32-unknown-elf -march=rv32ixcorevhwlp -### %s -c 2>&1 | \
+// RUN:   FileCheck -check-prefix=RV32-XCOREVHWLP %s
+// RV32-XCOREVHWLP: "-target-feature" "+xcorevhwlp"
+
+// RUN: %clang -target riscv32-unknown-elf -march=rv32ixcorevmac -### %s -c 2>&1 | \
+// RUN:   FileCheck -check-prefix=RV32-XCOREVMAC %s
+// RV32-XCOREVMAC: "-target-feature" "+xcorevmac"
