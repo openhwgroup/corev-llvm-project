@@ -129,6 +129,12 @@ void RISCVTargetInfo::getTargetDefines(const LangOptions &Opts,
 
   if (HasB)
     Builder.defineMacro("__riscv_bitmanip");
+
+  if (HasXCoreV)
+    Builder.defineMacro("__riscv_xcorev");
+    Builder.defineMacro("__riscv_xcorevhwlp");
+  if (HasXCoreVHwlp)
+    Builder.defineMacro("__riscv_xcorevhwlp");
 }
 
 /// Return true if has this feature, need to sync with handleTargetFeatures.
@@ -144,6 +150,8 @@ bool RISCVTargetInfo::hasFeature(StringRef Feature) const {
       .Case("d", HasD)
       .Case("c", HasC)
       .Case("experimental-b", HasB)
+      .Case("xcorev", HasXCoreV)
+      .Case("xcorevhwlp", HasXCoreVHwlp)
       .Default(false);
 }
 
@@ -163,6 +171,10 @@ bool RISCVTargetInfo::handleTargetFeatures(std::vector<std::string> &Features,
       HasC = true;
     else if (Feature == "+experimental-b")
       HasB = true;
+    else if (Feature == "+xcorev")
+      HasXCoreV = true;
+    else if (Feature == "+xcorevhwlp")
+      HasXCoreVHwlp = true;
   }
 
   return true;
