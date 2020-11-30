@@ -1300,6 +1300,86 @@ static MachineBasicBlock *emitSplitF64Pseudo(MachineInstr &MI,
   return BB;
 }
 
+static MachineBasicBlock *emitHardwareLoopMemcpy(MachineInstr &MI,
+                                                 MachineBasicBlock *BB) {
+  assert(MI.getOpcode() == RISCV::CV_HWLP_MEMCPY && "Unexpected instruction");
+
+  MachineFunction &MF = *BB->getParent();
+  DebugLoc DL = MI.getDebugLoc();
+  const TargetInstrInfo &TII = *MF.getSubtarget().getInstrInfo();
+
+  const BasicBlock *LLVM_BB = BB->getBasicBlock();
+  MachineFunction::iterator It = ++BB->getIterator();
+
+  MachineBasicBlock *HwlpBB = MF.CreateMachineBasicBlock(LLVM_BB);
+  MF.insert(It, HwlpBB);
+  MachineBasicBlock *SuccBB = MF.CreateMachineBasicBlock(LLVM_BB);
+  MF.insert(It, SuccBB);
+  MachineBasicBlock *TailBB = MF.CreateMachineBasicBlock(LLVM_BB);
+  MF.insert(It, TailBB);
+
+  // Transfer the remainder of BB and its successor edges to HwlpBB.
+  TailBB->splice(TailBB->begin(), BB,
+                 std::next(MachineBasicBlock::iterator(MI)), BB->end());
+  TailBB->transferSuccessorsAndUpdatePHIs(BB);
+
+  // This is for preventing the blocks from being optimized out
+  BB->addSuccessor(HwlpBB, BranchProbability::getRaw(3));
+  BB->addSuccessor(SuccBB, BranchProbability::getRaw(2));
+  BB->addSuccessor(TailBB, BranchProbability::getRaw(1));
+
+  // Keep references to those blocks to prevent instruction compression inside
+  // those blocks
+  auto *RVFI = MF.getInfo<RISCVMachineFunctionInfo>();
+  RVFI->pushHwlpBasicBlock(HwlpBB);
+  RVFI->pushHwlpBasicBlock(SuccBB);
+
+  Register DestReg = MI.getOperand(0).getReg();
+  Register SrcReg = MI.getOperand(1).getReg();
+  Register Size = MI.getOperand(2).getImm();
+
+  MachineRegisterInfo &RegInfo = MF.getRegInfo();
+  Register TempReg = RegInfo.createVirtualRegister(&RISCV::GPRRegClass);
+  Register NewDestReg = RegInfo.createVirtualRegister(&RISCV::GPRRegClass);
+  Register NewSrcReg = RegInfo.createVirtualRegister(&RISCV::GPRRegClass);
+  Register PhiSrcReg = RegInfo.createVirtualRegister(&RISCV::GPRRegClass);
+  Register PhiDestReg = RegInfo.createVirtualRegister(&RISCV::GPRRegClass);
+
+  auto HwlpIt = HwlpBB->begin();
+  BuildMI(*HwlpBB, HwlpIt, DL, TII.get(RISCV::PHI), PhiSrcReg)
+      .addReg(SrcReg)
+      .addMBB(BB)
+      .addReg(NewSrcReg)
+      .addMBB(HwlpBB);
+  BuildMI(*HwlpBB, HwlpIt, DL, TII.get(RISCV::PHI), PhiDestReg)
+      .addReg(DestReg)
+      .addMBB(BB)
+      .addReg(NewDestReg)
+      .addMBB(HwlpBB);
+  BuildMI(*HwlpBB, HwlpIt, DL, TII.get(RISCV::CV_SETUPI))
+      .addImm(0)
+      .addImm(Size)
+      .addMBB(SuccBB);
+  BuildMI(*HwlpBB, HwlpIt, DL, TII.get(RISCV::LB), TempReg)
+      .addReg(PhiSrcReg)
+      .addImm(0);
+  BuildMI(*HwlpBB, HwlpIt, DL, TII.get(RISCV::SB))
+      .addReg(TempReg)
+      .addReg(PhiDestReg)
+      .addImm(0);
+  BuildMI(*HwlpBB, HwlpIt, DL, TII.get(RISCV::ADDI), NewSrcReg)
+      .addReg(PhiSrcReg)
+      .addImm(1);
+  BuildMI(*HwlpBB, HwlpIt, DL, TII.get(RISCV::ADDI), NewDestReg)
+      .addReg(PhiDestReg)
+      .addImm(1);
+  BuildMI(*SuccBB, SuccBB->begin(), DL, TII.get(RISCV::ADDI), RISCV::X0)
+      .addReg(RISCV::X0)
+      .addImm(0);
+  MI.eraseFromParent(); // The pseudo instruction is gone now.
+  return TailBB;
+}
+
 static MachineBasicBlock *emitBuildPairF64Pseudo(MachineInstr &MI,
                                                  MachineBasicBlock *BB) {
   assert(MI.getOpcode() == RISCV::BuildPairF64Pseudo &&
@@ -1485,6 +1565,8 @@ RISCVTargetLowering::EmitInstrWithCustomInserter(MachineInstr &MI,
     return emitBuildPairF64Pseudo(MI, BB);
   case RISCV::SplitF64Pseudo:
     return emitSplitF64Pseudo(MI, BB);
+  case RISCV::CV_HWLP_MEMCPY:
+    return emitHardwareLoopMemcpy(MI, BB);
   }
 }
 
