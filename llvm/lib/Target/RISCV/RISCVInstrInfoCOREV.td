@@ -12,6 +12,18 @@
 
 include "RISCVInstrFormatsCOREV.td"
 
+//===----------------------------------------------------------------------===//
+// CORE-V specific DAG nodes.
+//===----------------------------------------------------------------------===//
+
+def corev_hwlp_memcpy_t : SDTypeProfile<0, 3, [SDTCisPtrTy<0>, SDTCisPtrTy<1>, SDTCisInt<2>]>;
+def corev_hwlp_memcpy   : SDNode<"RISCVISD::CV_HWLP_MEMCPY", corev_hwlp_memcpy_t,
+                                 [SDNPMayLoad, SDNPMayStore, SDNPHasChain]>;
+
+//===----------------------------------------------------------------------===//
+// CORE-V specific operands
+//===----------------------------------------------------------------------===//
+
 def CVUImm1AsmOperand : AsmOperandClass {
   let Name = "CVUImm1";
   let RenderMethod = "addImmOperands";
@@ -92,6 +104,12 @@ let Predicates = [HasExtXCoreVHwlp], hasSideEffects = 1, mayLoad = 0, mayStore =
                               "cv.setupi", "$imm1, $imm12, $imm5">,
                 Sched<[]>;
 } // Predicates = [HasExtXCoreVHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0
+
+let Predicates = [HasExtXCoreVHwlp], usesCustomInserter = 1, hasSideEffects = 0, mayLoad = 1, mayStore = 1 in {
+  def CV_HWLP_MEMCPY : Pseudo<(outs), (ins GPR:$dest, GPR:$src, uimm12:$count),
+                              [(corev_hwlp_memcpy GPR:$dest, GPR:$src, uimm12:$count)]>;
+
+} // Predicates = [HasExtXCoreVHwlp], usesCustomInserter = 1, hasSideEffects = 0, mayLoad = 1, mayStore = 1
 
 let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb" in {
   // 32x32 bit macs

@@ -31,6 +31,7 @@ add_llvm_target(RISCVCodeGen
   RISCVMergeBaseOffset.cpp
   RISCVRegisterBankInfo.cpp
   RISCVRegisterInfo.cpp
+  RISCVSelectionDAGInfo.cpp
   RISCVSubtarget.cpp
   RISCVTargetMachine.cpp
   RISCVTargetObjectFile.cpp

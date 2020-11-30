@@ -2650,6 +2650,8 @@ const char *RISCVTargetLowering::getTargetNodeName(unsigned Opcode) const {
     return "RISCVISD::FMV_X_ANYEXTW_RV64";
   case RISCVISD::READ_CYCLE_WIDE:
     return "RISCVISD::READ_CYCLE_WIDE";
+  case RISCVISD::CV_HWLP_MEMCPY:
+    return "RISCVISD::CV_HWLP_MEMCPY";
   }
   return nullptr;
 }
