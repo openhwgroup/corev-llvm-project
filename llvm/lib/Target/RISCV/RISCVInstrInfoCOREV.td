@@ -67,7 +67,11 @@ def cv_uimm12 : Operand<XLenVT>,
   let OperandNamespace = "RISCVOp";
 }
 
-let Predicates = [HasExtXCoreVHwlp], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
+//===----------------------------------------------------------------------===//
+// CORE-V specific instructions
+//===----------------------------------------------------------------------===//
+
+let Predicates = [HasExtXCoreVHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0 in {
   def CV_STARTI  : RVInstHwlp_i<0b000, (ins cv_uimm1:$imm1, cv_uimm12:$imm12),
                                 "cv.starti", "$imm1, $imm12">,
                    Sched<[]>;
@@ -83,7 +87,7 @@ let Predicates = [HasExtXCoreVHwlp], hasSideEffects = 0, mayLoad = 0, mayStore =
   def CV_SETUP   : RVInstHwlp_ri<0b100, (ins cv_uimm1:$imm1, GPR:$rs1, cv_uimm12:$imm12),
                                  "cv.setup", "$imm1, $rs1, $imm12">,
                    Sched<[]>;
-  def CV_SETUPI  : RVInstHwlp_ii<0b101, (ins cv_uimm1:$imm1, cv_uimm5:$imm5, uimm12:$imm12),
+  def CV_SETUPI  : RVInstHwlp_ii<0b101, (ins cv_uimm1:$imm1, uimm12:$imm12, cv_uimm5:$imm5),
                               "cv.setupi", "$imm1, $imm12, $imm5">,
                 Sched<[]>;
-} // Predicates = [HasExtXCoreVHwlp], hasSideEffects = 0, mayLoad = 0, mayStore = 0
+} // Predicates = [HasExtXCoreVHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0
