@@ -1,0 +1,45 @@
+//=== BuiltinsSystemRISCV.def - RISCV Builtin function database -*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+//
+// This file defines the RISCV-specific builtin function database. Users of
+// this file must define the BUILTIN macro to make use of this information.
+//
+//===----------------------------------------------------------------------===//
+
+// The format of this database matches clang/Basic/Builtins.def.
+
+#if defined(BUILTIN) && !defined(TARGET_BUILTIN)
+#   define TARGET_BUILTIN(ID, TYPE, ATTRS, FEATURE) BUILTIN(ID, TYPE, ATTRS)
+#endif
+
+TARGET_BUILTIN(__builtin_corev_mac, "iiii", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_msu, "iiii", "", "xcorevmac")
+
+TARGET_BUILTIN(__builtin_corev_muls, "iss", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulhhs, "iii", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulsn, "issIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulhhsn, "iiiIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulsrn, "issIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulhhsrn, "iiiIs", "", "xcorevmac")
+
+TARGET_BUILTIN(__builtin_corev_mulu, "iss", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulhhu, "iii", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulun, "issIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulhhun, "iiiIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulurn, "issIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_mulhhurn, "iiiIs", "", "xcorevmac")
+
+TARGET_BUILTIN(__builtin_corev_macsn, "iissIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_machhsn, "iiiiIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_macsrn, "iissIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_machhsrn, "iiiiIs", "", "xcorevmac")
+
+TARGET_BUILTIN(__builtin_corev_macun, "iissIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_machhun, "iiiiIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_macurn, "iissIs", "", "xcorevmac")
+TARGET_BUILTIN(__builtin_corev_machhurn, "iiiiIs", "", "xcorevmac")

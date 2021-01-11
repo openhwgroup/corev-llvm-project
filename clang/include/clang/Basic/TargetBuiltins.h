@@ -310,6 +310,16 @@ namespace clang {
     };
   }
 
+  /// RISCV builtins
+  namespace RISCV {
+    enum {
+      LastTIBuiltin = clang::Builtin::FirstTSBuiltin-1,
+#define BUILTIN(ID, TYPE, ATTRS) BI##ID,
+#include "clang/Basic/BuiltinsRISCV.def"
+      LastTSBuiltin
+    };
+  }
+
   /// WebAssembly builtins
   namespace WebAssembly {
     enum {
@@ -326,7 +336,7 @@ namespace clang {
        NVPTX::LastTSBuiltin, AMDGPU::LastTSBuiltin, X86::LastTSBuiltin,
        Hexagon::LastTSBuiltin, Mips::LastTSBuiltin, XCore::LastTSBuiltin,
        Le64::LastTSBuiltin, SystemZ::LastTSBuiltin,
-       WebAssembly::LastTSBuiltin});
+       WebAssembly::LastTSBuiltin, RISCV::LastTSBuiltin});
 
 } // end namespace clang.
 

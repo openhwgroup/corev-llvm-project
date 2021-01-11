@@ -66,3 +66,84 @@ let TargetPrefix = "riscv" in {
   defm int_riscv_masked_cmpxchg : MaskedAtomicRMWFiveArgIntrinsics;
 
 } // TargetPrefix = "riscv"
+
+// CORE-V instrinsics
+let TargetPrefix = "riscv" in {
+  class CoreVBuiltin<string name,
+                     LLVMType ret_type,
+                     list<LLVMType> param_types,
+                     list<IntrinsicProperty> intr_properties>
+    : GCCBuiltin<"__builtin_corev_" # name>,
+      Intrinsic<[ret_type], param_types, intr_properties>;
+
+  def int_riscv_cv_mac :      CoreVBuiltin<"mac", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>]>;
+  def int_riscv_cv_msu :      CoreVBuiltin<"msu", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>]>;
+
+  def int_riscv_cv_muls :     CoreVBuiltin<"muls", llvm_i32_ty,
+                                           [llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem]>;
+  def int_riscv_cv_mulhhs :   CoreVBuiltin<"mulhhs", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty],
+                                           [IntrNoMem]>;
+  def int_riscv_cv_mulsn :    CoreVBuiltin<"mulsn", llvm_i32_ty,
+                                           [llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+  def int_riscv_cv_mulhhsn :  CoreVBuiltin<"mulhhsn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+  def int_riscv_cv_mulsrn :   CoreVBuiltin<"mulsrn", llvm_i32_ty,
+                                           [llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+  def int_riscv_cv_mulhhsrn : CoreVBuiltin<"mulhhsrn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+
+  def int_riscv_cv_mulu :     CoreVBuiltin<"mulu", llvm_i32_ty,
+                                           [llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem]>;
+  def int_riscv_cv_mulhhu :   CoreVBuiltin<"mulhhu", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty],
+                                           [IntrNoMem]>;
+  def int_riscv_cv_mulun :    CoreVBuiltin<"mulun", llvm_i32_ty,
+                                           [llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+  def int_riscv_cv_mulhhun :  CoreVBuiltin<"mulhhun", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+  def int_riscv_cv_mulurn :   CoreVBuiltin<"mulurn", llvm_i32_ty,
+                                           [llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+  def int_riscv_cv_mulhhurn : CoreVBuiltin<"mulhhurn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, ImmArg<ArgIndex<2>>]>;
+
+  def int_riscv_cv_macsn :    CoreVBuiltin<"macsn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+  def int_riscv_cv_machhsn :  CoreVBuiltin<"machhsn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+  def int_riscv_cv_macsrn :   CoreVBuiltin<"macsrn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+  def int_riscv_cv_machhsrn : CoreVBuiltin<"machhsrn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+
+  def int_riscv_cv_macun :    CoreVBuiltin<"macun", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+  def int_riscv_cv_machhun :  CoreVBuiltin<"machhun", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+  def int_riscv_cv_macurn :   CoreVBuiltin<"macurn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i16_ty, llvm_i16_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+  def int_riscv_cv_machhurn : CoreVBuiltin<"machhurn", llvm_i32_ty,
+                                           [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i16_ty],
+                                           [IntrNoMem, Returned<ArgIndex<0>>, ImmArg<ArgIndex<3>>]>;
+}

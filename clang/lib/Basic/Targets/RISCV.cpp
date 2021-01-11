@@ -12,11 +12,20 @@
 
 #include "RISCV.h"
 #include "clang/Basic/MacroBuilder.h"
+#include "clang/Basic/TargetBuiltins.h"
 #include "llvm/ADT/StringSwitch.h"
 #include "llvm/Support/TargetParser.h"
 
 using namespace clang;
 using namespace clang::targets;
+
+const Builtin::Info RISCVTargetInfo::BuiltinInfo[] = {
+#define BUILTIN(ID, TYPE, ATTRS)                                               \
+  {#ID, TYPE, ATTRS, nullptr, ALL_LANGUAGES, nullptr},
+#define TARGET_BUILTIN(ID, TYPE, ATTRS, FEATURE)                               \
+  {#ID, TYPE, ATTRS, nullptr, ALL_LANGUAGES, FEATURE},
+#include "clang/Basic/BuiltinsRISCV.def"
+};
 
 ArrayRef<const char *> RISCVTargetInfo::getGCCRegNames() const {
   static const char *const GCCRegNames[] = {
@@ -136,6 +145,11 @@ void RISCVTargetInfo::getTargetDefines(const LangOptions &Opts,
     Builder.defineMacro("__riscv_xcorevhwlp");
   if (HasXCoreVMac)
     Builder.defineMacro("__riscv_xcorevmac");
+}
+
+ArrayRef<Builtin::Info> RISCVTargetInfo::getTargetBuiltins() const {
+  return llvm::makeArrayRef(BuiltinInfo, clang::RISCV::LastTSBuiltin -
+                                             Builtin::FirstTSBuiltin);
 }
 
 /// Return true if has this feature, need to sync with handleTargetFeatures.
