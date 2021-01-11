@@ -14,6 +14,7 @@
 #include "MCTargetDesc/RISCVMCTargetDesc.h"
 #include "Utils/RISCVMatInt.h"
 #include "llvm/CodeGen/MachineFrameInfo.h"
+#include "llvm/IR/IntrinsicsRISCV.h"
 #include "llvm/Support/Alignment.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/MathExtras.h"
@@ -200,6 +201,79 @@ void RISCVDAGToDAGISel::Select(SDNode *Node) {
                                              Chain.getSimpleValueType(),
                                              Base, Offset, Chain));
     return;
+  }
+  case ISD::INTRINSIC_WO_CHAIN: {
+    auto select_mac_intrinsic = [&](unsigned Opcode) {
+      SmallVector<SDValue, 5> Ops;
+      for (unsigned i = 1; i < Node->getNumOperands(); ++i) {
+        Ops.push_back(Node->getOperand(i));
+      }
+      ReplaceNode(Node, CurDAG->getMachineNode(Opcode, DL, Node->getValueType(0), ArrayRef<SDValue>(Ops)));
+    };
+    unsigned IntNo = cast<ConstantSDNode>(Node->getOperand(0))->getZExtValue();
+    switch (IntNo) {
+      default:
+        break;
+      case Intrinsic::riscv_cv_mac:
+      case Intrinsic::riscv_cv_msu:
+      case Intrinsic::riscv_cv_mulhhs:
+      case Intrinsic::riscv_cv_mulhhu:
+        break; // Lowered with patterns
+      case Intrinsic::riscv_cv_muls:
+        select_mac_intrinsic(RISCV::CV_MULS);
+        return;
+      case Intrinsic::riscv_cv_mulu:
+        select_mac_intrinsic(RISCV::CV_MULU);
+        return;
+      case Intrinsic::riscv_cv_mulsn:
+        select_mac_intrinsic(RISCV::CV_MULSN);
+        return;
+      case Intrinsic::riscv_cv_mulhhsn:
+        select_mac_intrinsic(RISCV::CV_MULHHSN);
+        return;
+      case Intrinsic::riscv_cv_mulsrn:
+        select_mac_intrinsic(RISCV::CV_MULSRN);
+        return;
+      case Intrinsic::riscv_cv_mulhhsrn:
+        select_mac_intrinsic(RISCV::CV_MULHHSRN);
+        return;
+      case Intrinsic::riscv_cv_mulun:
+        select_mac_intrinsic(RISCV::CV_MULUN);
+        return;
+      case Intrinsic::riscv_cv_mulhhun:
+        select_mac_intrinsic(RISCV::CV_MULHHUN);
+        return;
+      case Intrinsic::riscv_cv_mulurn:
+        select_mac_intrinsic(RISCV::CV_MULURN);
+        return;
+      case Intrinsic::riscv_cv_mulhhurn:
+        select_mac_intrinsic(RISCV::CV_MULHHURN);
+        return;
+      case Intrinsic::riscv_cv_macsn:
+        select_mac_intrinsic(RISCV::CV_MACSN);
+        return;
+      case Intrinsic::riscv_cv_machhsn:
+        select_mac_intrinsic(RISCV::CV_MACHHSN);
+        return;
+      case Intrinsic::riscv_cv_macsrn:
+        select_mac_intrinsic(RISCV::CV_MACSRN);
+        return;
+      case Intrinsic::riscv_cv_machhsrn:
+        select_mac_intrinsic(RISCV::CV_MACHHSRN);
+        return;
+      case Intrinsic::riscv_cv_macun:
+        select_mac_intrinsic(RISCV::CV_MACUN);
+        return;
+      case Intrinsic::riscv_cv_machhun:
+        select_mac_intrinsic(RISCV::CV_MACHHUN);
+        return;
+      case Intrinsic::riscv_cv_macurn:
+        select_mac_intrinsic(RISCV::CV_MACURN);
+        return;
+      case Intrinsic::riscv_cv_machhurn:
+        select_mac_intrinsic(RISCV::CV_MACHHURN);
+        return;
+    }
   }
   }
 

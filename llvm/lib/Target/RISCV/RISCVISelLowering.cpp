@@ -233,6 +233,7 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
   setOperationAction(ISD::TRAP, MVT::Other, Legal);
   setOperationAction(ISD::DEBUGTRAP, MVT::Other, Legal);
   setOperationAction(ISD::INTRINSIC_WO_CHAIN, MVT::Other, Custom);
+  setOperationAction(ISD::INTRINSIC_WO_CHAIN, MVT::i16, Custom);
 
   if (Subtarget.hasExtXCoreVAlu()) {
     setOperationAction(ISD::ABS, XLenVT, Legal);
@@ -885,6 +886,19 @@ SDValue RISCVTargetLowering::lowerShiftRightParts(SDValue Op, SelectionDAG &DAG,
 
 SDValue RISCVTargetLowering::LowerINTRINSIC_WO_CHAIN(SDValue Op,
                                                      SelectionDAG &DAG) const {
+  auto promote_i16 = [&](unsigned Extend) {
+    SDLoc DL(Op);
+    unsigned NumOps = Op.getNumOperands();
+    SmallVector<SDValue, 5> Operands;
+    for (unsigned i = 0; i < NumOps; ++i) {
+      EVT OpType = Op->getOperand(i).getValueType();
+      Operands.push_back(OpType == EVT(MVT::i16)
+                         ? DAG.getNode(Extend, DL, MVT::i32, Op->getOperand(i))
+                         : Op->getOperand(i));
+    }
+    EVT ResTy = Op->getValueType(0);
+    return DAG.getNode(Op->getOpcode(), DL, ResTy, ArrayRef<SDValue>(Operands));
+  };
   unsigned IntNo = cast<ConstantSDNode>(Op.getOperand(0))->getZExtValue();
   SDLoc DL(Op);
   switch (IntNo) {
@@ -893,6 +907,33 @@ SDValue RISCVTargetLowering::LowerINTRINSIC_WO_CHAIN(SDValue Op,
   case Intrinsic::thread_pointer: {
     EVT PtrVT = getPointerTy(DAG.getDataLayout());
     return DAG.getRegister(RISCV::X4, PtrVT);
+  }
+
+  case Intrinsic::riscv_cv_mac:
+  case Intrinsic::riscv_cv_msu:
+  case Intrinsic::riscv_cv_muls:
+  case Intrinsic::riscv_cv_mulhhs:
+  case Intrinsic::riscv_cv_mulsn:
+  case Intrinsic::riscv_cv_mulhhsn:
+  case Intrinsic::riscv_cv_mulsrn:
+  case Intrinsic::riscv_cv_mulhhsrn:
+  case Intrinsic::riscv_cv_macsn:
+  case Intrinsic::riscv_cv_machhsn:
+  case Intrinsic::riscv_cv_macsrn:
+  case Intrinsic::riscv_cv_machhsrn: {
+    return promote_i16(ISD::SIGN_EXTEND);
+  }
+  case Intrinsic::riscv_cv_mulu:
+  case Intrinsic::riscv_cv_mulhhu:
+  case Intrinsic::riscv_cv_mulun:
+  case Intrinsic::riscv_cv_mulhhun:
+  case Intrinsic::riscv_cv_mulurn:
+  case Intrinsic::riscv_cv_mulhhurn:
+  case Intrinsic::riscv_cv_macun:
+  case Intrinsic::riscv_cv_machhun:
+  case Intrinsic::riscv_cv_macurn:
+  case Intrinsic::riscv_cv_machhurn: {
+    return promote_i16(ISD::ZERO_EXTEND);
   }
   }
 }
