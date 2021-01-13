@@ -13,7 +13,7 @@
 //===----------------------------------------------------------------------===//
 
 class RVInstHwlp_i<bits<3> funct3, dag ins, string opcodestr, string argstr>
-    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHWLP> {
+    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<12> imm12;
   bits<1> imm1;
 
@@ -26,7 +26,7 @@ class RVInstHwlp_i<bits<3> funct3, dag ins, string opcodestr, string argstr>
 }
 
 class RVInstHwlp_r<bits<3> funct3, dag ins, string opcodestr, string argstr>
-    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHWLP> {
+    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<5> rs1;
   bits<1> imm1;
 
@@ -39,7 +39,7 @@ class RVInstHwlp_r<bits<3> funct3, dag ins, string opcodestr, string argstr>
 }
 
 class RVInstHwlp_ri<bits<3> funct3, dag ins, string opcodestr, string argstr>
-    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHWLP> {
+    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<12> imm12;
   bits<5> rs1;
   bits<1> imm1;
@@ -53,7 +53,7 @@ class RVInstHwlp_ri<bits<3> funct3, dag ins, string opcodestr, string argstr>
 }
 
 class RVInstHwlp_ii<bits<3> funct3, dag ins, string opcodestr, string argstr>
-    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHWLP> {
+    : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<12> imm12;
   bits<5> imm5;
   bits<1> imm1;
