@@ -48,7 +48,7 @@ def InstFormatCA     : InstFormat<14>;
 def InstFormatCB     : InstFormat<15>;
 def InstFormatCJ     : InstFormat<16>;
 def InstFormatOther  : InstFormat<17>;
-def InstFormatCVHWLP : InstFormat<18>;
+def InstFormatCVHwlp : InstFormat<18>;
 
 class RISCVVConstraint<bits<4> val> {
   bits<4> Value = val;
