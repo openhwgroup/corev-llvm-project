@@ -418,11 +418,11 @@ def Feature32Bit
 // CORE-V Hardware Loop Extension
 def FeatureExtXCoreVHwlp
     : SubtargetFeature<"xcorevhwlp", "HasExtXCoreVHwlp", "true",
-                       "'XCoreVHwlp' (Hardware Loop)">;
+                       "'Xcorevhwlp' (Hardware Loop)">;
 def HasExtXCoreVHwlp
     : Predicate<"Subtarget->hasExtXCoreVHwlp()">,
                AssemblerPredicate<(any_of FeatureExtXCoreVHwlp),
-               "'XCoreVHwlp' (Hardware Loop)">;
+               "'Xcorevhwlp' (Hardware Loop)">;
 // CORE-V Multiply-Accumulate Extension
 def FeatureExtXCoreVMac
     : SubtargetFeature<"xcorevmac", "HasExtXCoreVMac", "true",
@@ -434,11 +434,11 @@ def HasExtXCoreVMac
 // All CORE-V extensions
 def FeatureExtXCoreV
     : SubtargetFeature<"xcorev", "HasExtXCoreV", "true",
-                       "'XCoreV' (CORE-V extensions)",
+                       "'Xcorev' (CORE-V extensions)",
                        [FeatureExtXCoreVHwlp, FeatureExtXCoreVMac]>;
 def HasExtXCoreV : Predicate<"Subtarget->hasExtXCoreV()">,
                               AssemblerPredicate<(all_of FeatureExtXCoreV),
-                              "'XCoreV' (CORE-V extensions)">;
+                              "'Xcorev' (CORE-V extensions)">;
 
 def Feature64Bit
     : SubtargetFeature<"64bit", "HasRV64", "true", "Implements RV64">;
