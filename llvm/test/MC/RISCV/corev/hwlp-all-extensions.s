@@ -1,5 +1,7 @@
-# RUN: llvm-mc -triple=riscv32 --mattr=xcorev -show-encoding %s 2>&1 \
+# RUN: llvm-mc -triple=riscv32 --mattr=+xcorev -show-encoding %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-INSTR,CHECK-ENCODING
+
+# Hardware loop instructions
 
 cv.starti 0, 0
 # CHECK-INSTR: cv.starti 0, 0

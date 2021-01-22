@@ -182,11 +182,19 @@ def HasExtXCoreVHwlp
     : Predicate<"Subtarget->hasExtXCoreVHwlp()">,
                AssemblerPredicate<(any_of FeatureExtXCoreVHwlp),
                "'XCoreVHwlp' (Hardware Loop)">;
+// CORE-V Multiply-Accumulate Extension
+def FeatureExtXCoreVMac
+    : SubtargetFeature<"xcorevmac", "HasExtXCoreVMac", "true",
+                       "'Xcorevmac' (Multiply-Accumulate)">;
+def HasExtXCoreVMac
+    : Predicate<"Subtarget->hasExtXCoreVMac()">,
+               AssemblerPredicate<(any_of FeatureExtXCoreVMac),
+               "'Xcorevmac' (Multiply-Accumulate)">;
 // All CORE-V extensions
 def FeatureExtXCoreV
     : SubtargetFeature<"xcorev", "HasExtXCoreV", "true",
                        "'XCoreV' (CORE-V extensions)",
-                       [FeatureExtXCoreVHwlp]>;
+                       [FeatureExtXCoreVHwlp, FeatureExtXCoreVMac]>;
 def HasExtXCoreV : Predicate<"Subtarget->hasExtXCoreV()">,
                               AssemblerPredicate<(all_of FeatureExtXCoreV),
                               "'XCoreV' (CORE-V extensions)">;
