@@ -96,6 +96,7 @@ private:
   bool HasStdExtZvamo = false;
   bool HasExtXCoreV = false;
   bool HasExtXCoreVHwlp = false;
+  bool HasExtXCoreVMac = false;
   bool HasRV64 = false;
   bool IsRV32E = false;
   bool EnableLinkerRelax = false;
@@ -199,6 +200,7 @@ public:
   bool hasStdExtZvamo() const { return HasStdExtZvamo; }
   bool hasExtXCoreV() const { return HasExtXCoreV; }
   bool hasExtXCoreVHwlp() const { return HasExtXCoreVHwlp; }
+  bool hasExtXCoreVMac() const { return HasExtXCoreVMac; }
   bool is64Bit() const { return HasRV64; }
   bool isRV32E() const { return IsRV32E; }
   bool enableLinkerRelax() const { return EnableLinkerRelax; }
