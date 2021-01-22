@@ -65,3 +65,51 @@ class RVInstHwlp_ii<bits<3> funct3, dag ins, string opcodestr, string argstr>
   let Inst{7} = imm1;
   let Opcode = OPC_CUSTOM3.Value;
 }
+
+class RVInstMac<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
+                string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> rs2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-25} = funct7;
+  let Inst{24-20} = rs2;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_OP.Value;
+}
+
+class RVInstMac16<bits<2> funct2, bits<3> funct3, dag outs, dag ins,
+                  string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> rs2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-30} = funct2;
+  let Inst{29-25} = 0b00000;
+  let Inst{24-20} = rs2;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_CUSTOM2.Value;
+}
+
+class RVInstMac16I<bits<2> funct2, bits<3> funct3, dag outs, dag ins,
+                   string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> imm5;
+  bits<5> rs2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-30} = funct2;
+  let Inst{29-25} = imm5;
+  let Inst{24-20} = rs2;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_CUSTOM2.Value;
+}
