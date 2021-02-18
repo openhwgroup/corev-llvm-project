@@ -18,11 +18,11 @@ define i32 @mac(i32 %a, i32 %b, i32 %c) {
 define i32 @msu(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: msu:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    mul a0, a0, a1
-; CHECK-NEXT:    sub a0, a0, a2
+; CHECK-NEXT:    cv.msu a2, a0, a1
+; CHECK-NEXT:    mv a0, a2
 ; CHECK-NEXT:    ret
   %1 = mul i32 %a, %b
-  %2 = sub i32 %1, %c
+  %2 = sub i32 %c, %1
   ret i32 %2
 }
 

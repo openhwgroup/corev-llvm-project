@@ -176,8 +176,9 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
                     Sched<[]>;
 } // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0
 
-
-// Helper fragments
+//===----------------------------------------------------------------------===//
+// CORE-V specific helper fragments
+//===----------------------------------------------------------------------===//
 
 def powerOf2 : ImmLeaf<XLenVT, [{ return isPowerOf2_32(Imm); }]>;
 
@@ -197,14 +198,16 @@ def ushiftRound : PatFrag<(ops node:$value, node:$shiftAmount),
   return false;
 }]>;
 
-// Patterns for mac operations
+//===----------------------------------------------------------------------===//
+// Patterns for MAC operations
+//===----------------------------------------------------------------------===//
 
 def muls   : PatFrag<(ops node:$rs1, node:$rs2),
                      (mul (sext_inreg node:$rs1, i16), (sext_inreg node:$rs2, i16))>;
 def mulhhs : PatFrag<(ops node:$rs1, node:$rs2),
                      (mul (sra node:$rs1, (i32 16)), (sra node:$rs2, (i32 16)))>;
 def mulu   : PatFrag<(ops node:$rs1, node:$rs2),
-                     (mul (and node:$rs1, 65535), (and node:$rs2, 65535))>;
+                     (mul (and node:$rs1, 0xffff), (and node:$rs2, 0xffff))>;
 def mulhhu : PatFrag<(ops node:$rs1, node:$rs2),
                      (mul (srl node:$rs1, (i32 16)), (srl node:$rs2, (i32 16)))>;
 
