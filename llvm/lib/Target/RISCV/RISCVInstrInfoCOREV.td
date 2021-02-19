@@ -175,3 +175,102 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
                                  "cv.mulhhurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
 } // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0
+
+//===----------------------------------------------------------------------===//
+// CORE-V specific helper fragments
+//===----------------------------------------------------------------------===//
+
+def powerOf2 : ImmLeaf<XLenVT, [{ return isPowerOf2_32(Imm); }]>;
+
+def shiftRound : PatFrag<(ops node:$value, node:$shiftAmount),
+                         (sra (add node:$value, powerOf2), node:$shiftAmount), [{
+
+  if (auto powerOf2 = dyn_cast<ConstantSDNode>(N->getOperand(0)->getOperand(1)))
+    return (powerOf2->getZExtValue() << 1) == (1U << N->getConstantOperandVal(1));
+  return false;
+}]>;
+
+def ushiftRound : PatFrag<(ops node:$value, node:$shiftAmount),
+                          (srl (add node:$value, powerOf2), node:$shiftAmount), [{
+
+  if (auto powerOf2 = dyn_cast<ConstantSDNode>(N->getOperand(0)->getOperand(1)))
+    return (powerOf2->getZExtValue() << 1) == (1U << N->getConstantOperandVal(1));
+  return false;
+}]>;
+
+//===----------------------------------------------------------------------===//
+// Patterns for MAC operations
+//===----------------------------------------------------------------------===//
+
+def muls   : PatFrag<(ops node:$rs1, node:$rs2),
+                     (mul (sext_inreg node:$rs1, i16), (sext_inreg node:$rs2, i16))>;
+def mulhhs : PatFrag<(ops node:$rs1, node:$rs2),
+                     (mul (sra node:$rs1, (i32 16)), (sra node:$rs2, (i32 16)))>;
+def mulu   : PatFrag<(ops node:$rs1, node:$rs2),
+                     (mul (and node:$rs1, 0xffff), (and node:$rs2, 0xffff))>;
+def mulhhu : PatFrag<(ops node:$rs1, node:$rs2),
+                     (mul (srl node:$rs1, (i32 16)), (srl node:$rs2, (i32 16)))>;
+
+def macs   : PatFrag<(ops node:$rd, node:$rs1, node:$rs2),
+                     (add node:$rd, (muls node:$rs1, node:$rs2))>;
+def machhs : PatFrag<(ops node:$rd, node:$rs1, node:$rs2),
+                     (add node:$rd, (mulhhs node:$rs1, node:$rs2))>;
+def macu   : PatFrag<(ops node:$rd, node:$rs1, node:$rs2),
+                     (add node:$rd, (mulu node:$rs1, node:$rs2))>;
+def machhu : PatFrag<(ops node:$rd, node:$rs1, node:$rs2),
+                     (add node:$rd, (mulhhu node:$rs1, node:$rs2))>;
+
+
+let Predicates = [HasExtXCoreVMac] in {
+
+def : Pat<(add GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
+          (CV_MAC GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+def : Pat<(sub GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
+          (CV_MSU GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+
+def : Pat<(muls GPR:$rs1, GPR:$rs2),
+          (CV_MULS GPR:$rs1, GPR:$rs2)>;
+def : Pat<(mulhhs GPR:$rs1, GPR:$rs2),
+          (CV_MULHHS GPR:$rs1, GPR:$rs2)>;
+def : Pat<(sra (muls GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULSN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULHHSN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(shiftRound (muls GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULSRN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(shiftRound (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULHHSRN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+
+def : Pat<(mulu GPR:$rs1, GPR:$rs2),
+          (CV_MULU GPR:$rs1, GPR:$rs2)>;
+def : Pat<(mulhhu GPR:$rs1, GPR:$rs2),
+          (CV_MULHHU GPR:$rs1, GPR:$rs2)>;
+def : Pat<(srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULUN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULHHUN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(ushiftRound (mulu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULURN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(ushiftRound (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MULHHURN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+
+def : Pat<(sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACHHSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(shiftRound (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACHHSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+
+def : Pat<(srl (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(srl (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACHHUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
+          (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+
+
+}
