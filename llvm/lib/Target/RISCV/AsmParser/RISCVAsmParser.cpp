@@ -1753,6 +1753,13 @@ RISCVAsmParser::parseMemOpBaseReg(OperandVector &Operands) {
     return MatchOperand_ParseFail;
   }
 
+  if (getSTI().getFeatureBits()[RISCV::FeatureExtXCoreVMem]) {
+    if (getLexer().is(AsmToken::Exclaim)){
+      getParser().Lex(); // Eat '!' (core-v only)
+      Operands.push_back(RISCVOperand::createToken("!", getLoc(), isRV64()));
+    }
+  }
+
   if (getLexer().isNot(AsmToken::RParen)) {
     Error(getLoc(), "expected ')'");
     return MatchOperand_ParseFail;
@@ -1845,8 +1852,15 @@ bool RISCVAsmParser::parseOperand(OperandVector &Operands, StringRef Mnemonic) {
     return true;
 
   // Attempt to parse token as a register.
-  if (parseRegister(Operands, true) == MatchOperand_Success)
+  if (parseRegister(Operands, true) == MatchOperand_Success) {
+    // Parse memory base register if present (core-v only)
+    if (getSTI().getFeatureBits()[RISCV::FeatureExtXCoreVMem]) {
+      if (getLexer().is(AsmToken::LParen))
+        return parseMemOpBaseReg(Operands) != MatchOperand_Success;
+    }
     return false;
+  }
+
 
   // Attempt to parse token as an immediate
   if (parseImmediate(Operands) == MatchOperand_Success) {
