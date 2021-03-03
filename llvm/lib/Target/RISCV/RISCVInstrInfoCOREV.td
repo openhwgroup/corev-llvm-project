@@ -392,6 +392,8 @@ let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 
 //===----------------------------------------------------------------------===//
 
 def powerOf2 : ImmLeaf<XLenVT, [{ return isPowerOf2_32(Imm); }]>;
+def powerOf2Minus1 : ImmLeaf<XLenVT, [{ return isPowerOf2_32(Imm+1); }]>;
+def negativePowerOf2 : ImmLeaf<XLenVT, [{ return isPowerOf2_32(-Imm); }]>;
 
 def shiftRound : PatFrag<(ops node:$value, node:$shiftAmount),
                          (sra (add node:$value, powerOf2), node:$shiftAmount), [{
@@ -408,10 +410,6 @@ def ushiftRound : PatFrag<(ops node:$value, node:$shiftAmount),
     return (powerOf2->getZExtValue() << 1) == (1U << N->getConstantOperandVal(1));
   return false;
 }]>;
-
-//===----------------------------------------------------------------------===//
-// Patterns for MAC operations
-//===----------------------------------------------------------------------===//
 
 def muls   : PatFrag<(ops node:$rs1, node:$rs2),
                      (mul (sext_inreg node:$rs1, i16), (sext_inreg node:$rs2, i16))>;
@@ -431,58 +429,166 @@ def macu   : PatFrag<(ops node:$rd, node:$rs1, node:$rs2),
 def machhu : PatFrag<(ops node:$rd, node:$rs1, node:$rs2),
                      (add node:$rd, (mulhhu node:$rs1, node:$rs2))>;
 
+def between : PatFrags<(ops node:$lowerBound, node:$upperBound, node:$value),
+                       [(smin (smax node:$value, node:$lowerBound), node:$upperBound),
+                        (smax (smin node:$value, node:$upperBound), node:$lowerBound)]>;
+
+def betweenu : PatFrags<(ops node:$upperBound, node:$value),
+                        [(umin (umax node:$value, 0), node:$upperBound),
+                         (umax (umin node:$value, node:$upperBound), 0)]>;
+
+
+def clip : PatFrag<(ops node:$upperBound, node:$value),
+                   (between negativePowerOf2, node:$upperBound, node:$value), [{
+  // Checking lower & upper bound for the clip instruction
+  if (auto bound1 = dyn_cast<ConstantSDNode>(N->getOperand(0)->getOperand(1))) {
+    if (auto bound2 = dyn_cast<ConstantSDNode>(N->getOperand(1))) {
+      return (bound1->getSExtValue() == ~bound2->getSExtValue());
+    }
+  }
+  return false;
+}]>;
+
+def roundBit : PatFrag<(ops node:$shiftAmount),
+                       (srl (shl 1, node:$shiftAmount), (i32 1))>;
+
+def trailing1sPlus1 : SDNodeXForm<imm, [{
+  return CurDAG->getTargetConstant(
+                          countTrailingOnes<uint32_t>(N->getSExtValue()) + 1,
+                          SDLoc(N), N->getValueType(0));
+}]>;
+
+//===----------------------------------------------------------------------===//
+// Patterns for MAC operations
+//===----------------------------------------------------------------------===//
+
 
 let Predicates = [HasExtXCoreVMac] in {
 
-def : Pat<(add GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
-          (CV_MAC GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-def : Pat<(sub GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
-          (CV_MSU GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(add GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
+            (CV_MAC GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(sub GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
+            (CV_MSU GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
-def : Pat<(muls GPR:$rs1, GPR:$rs2),
-          (CV_MULS GPR:$rs1, GPR:$rs2)>;
-def : Pat<(mulhhs GPR:$rs1, GPR:$rs2),
-          (CV_MULHHS GPR:$rs1, GPR:$rs2)>;
-def : Pat<(sra (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULHHSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(shiftRound (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(shiftRound (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULHHSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(muls GPR:$rs1, GPR:$rs2),
+            (CV_MULS GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(mulhhs GPR:$rs1, GPR:$rs2),
+            (CV_MULHHS GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(sra (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULHHSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(shiftRound (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(shiftRound (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULHHSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-def : Pat<(mulu GPR:$rs1, GPR:$rs2),
-          (CV_MULU GPR:$rs1, GPR:$rs2)>;
-def : Pat<(mulhhu GPR:$rs1, GPR:$rs2),
-          (CV_MULHHU GPR:$rs1, GPR:$rs2)>;
-def : Pat<(srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULHHUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(ushiftRound (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(ushiftRound (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MULHHURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(mulu GPR:$rs1, GPR:$rs2),
+            (CV_MULU GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(mulhhu GPR:$rs1, GPR:$rs2),
+            (CV_MULHHU GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULHHUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(ushiftRound (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(ushiftRound (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MULHHURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-def : Pat<(sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACHHSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(shiftRound (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACHHSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACHHSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(shiftRound (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACHHSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-def : Pat<(srl (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(srl (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACHHUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
-          (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(srl (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(srl (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACHHUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
+}
+
+//===----------------------------------------------------------------------===//
+// Patterns for general ALU operations
+//===----------------------------------------------------------------------===//
+
+let Predicates = [HasExtXCoreVAlu] in {
+
+  def : Pat<(abs GPR:$rs1), (CV_ABS GPR:$rs1)>;
+  def : PatGprGpr<setle, CV_SLET>;
+  def : PatGprGpr<setule, CV_SLETU>;
+  def : PatGprGpr<smin, CV_MIN>;
+  def : PatGprGpr<umin, CV_MINU>;
+  def : PatGprGpr<smax, CV_MAX>;
+  def : PatGprGpr<umax, CV_MAXU>;
+
+  def : Pat<(sext_inreg GPR:$rs1, i16), (CV_EXTHS GPR:$rs1)>;
+  def : Pat<(sext_inreg GPR:$rs1, i8), (CV_EXTBS GPR:$rs1)>;
+  def : Pat<(and GPR:$rs1, 0xffff), (CV_EXTHZ GPR:$rs1)>;
+  def : Pat<(and GPR:$rs1, 0xff), (CV_EXTBZ GPR:$rs1)>;
+
+  def : Pat<(clip powerOf2Minus1:$upperBound, GPR:$rs1),
+            (CV_CLIP GPR:$rs1, (trailing1sPlus1 imm:$upperBound))>;
+  def : Pat<(between (not GPR:$rs2), GPR:$rs2, GPR:$rs1),
+            (CV_CLIPR GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(betweenu powerOf2Minus1:$upperBound, GPR:$rs1),
+            (CV_CLIPU GPR:$rs1, (trailing1sPlus1 imm:$upperBound))>;
+  def : Pat<(betweenu GPR:$rs2, GPR:$rs1),
+            (CV_CLIPUR GPR:$rs1, GPR:$rs2)>;
+
+  def : Pat<(sra (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_ADDN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(srl (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_ADDUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(shiftRound (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_ADDRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(ushiftRound (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_ADDURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+
+  def : Pat<(sra (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_SUBN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(srl (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_SUBUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(shiftRound (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_SUBRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+  def : Pat<(ushiftRound (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+            (CV_SUBURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+
+  def : Pat<(sra (add GPR:$rd, GPR:$rs1), GPR:$rs2),
+            (CV_ADDNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(srl (add GPR:$rd, GPR:$rs1), GPR:$rs2),
+            (CV_ADDUNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(sra (add (add GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+            (CV_ADDRNR  GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(srl (add (add GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+            (CV_ADDURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+
+  def : Pat<(sra (sub GPR:$rd, GPR:$rs1), GPR:$rs2),
+            (CV_SUBNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(srl (sub GPR:$rd, GPR:$rs1), GPR:$rs2),
+            (CV_SUBUNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(sra (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+            (CV_SUBRNR  GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+  def : Pat<(srl (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+            (CV_SUBURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+
+
+//===----------------------------------------------------------------------===//
+// Patterns for immediate branching operations
+//===----------------------------------------------------------------------===//
+
+  def : Pat<(brcond (XLenVT (seteq GPR:$rs1, simm5:$imm5)), bb:$imm12),
+            (CV_BEQIMM GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12)>;
+  def : Pat<(brcond (XLenVT (setne GPR:$rs1, simm5:$imm5)), bb:$imm12),
+            (CV_BNEIMM GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12)>;
 
 }
 
