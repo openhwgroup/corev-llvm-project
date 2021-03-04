@@ -113,3 +113,82 @@ class RVInstMac16I<bits<2> funct2, bits<3> funct3, dag outs, dag ins,
   let Inst{11-7} = rd;
   let Opcode = OPC_CUSTOM2.Value;
 }
+
+class RVInstAlu_rri<bits<2> funct2, bits<3> funct3, dag outs, dag ins,
+                    string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> imm5;
+  bits<5> rs2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-30} = funct2;
+  let Inst{29-25} = imm5;
+  let Inst{24-20} = rs2;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_CUSTOM2.Value;
+}
+
+class RVInstAlu_rr<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
+                   string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> rs2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-25} = funct7;
+  let Inst{24-20} = rs2;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_OP.Value;
+}
+
+class RVInstAlu_ri<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
+                   string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> imm5;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-25} = funct7;
+  let Inst{24-20} = imm5;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_OP.Value;
+}
+
+class RVInstAlu_r<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
+                  string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> rs2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-25} = funct7;
+  let Inst{24-20} = 0b00000;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_OP.Value;
+}
+
+class RVInstImmBranch<bits<3> funct3, dag outs, dag ins,
+                      string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatB> {
+  bits<12> imm12;
+  bits<5> imm5;
+  bits<5> rs1;
+
+  let Inst{31} = imm12{11};
+  let Inst{30-25} = imm12{9-4};
+  let Inst{24-20} = imm5;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-8} = imm12{3-0};
+  let Inst{7} = imm12{10};
+  let Opcode = OPC_BRANCH.Value;
+}

@@ -67,6 +67,7 @@ def cv_uimm12 : Operand<XLenVT>,
   let OperandNamespace = "RISCVOp";
 }
 
+
 //===----------------------------------------------------------------------===//
 // CORE-V specific instructions
 //===----------------------------------------------------------------------===//
@@ -176,6 +177,121 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
                     Sched<[]>;
 } // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0
 
+let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
+  // General ALU Operations
+  def CV_ABS    : RVInstAlu_r<0b0000010, 0b000, (outs GPR:$rd), (ins GPR:$rs1),
+                              "cv.abs", "$rd, $rs1", []>,
+                  Sched<[]>;
+  def CV_SLET   : RVInstAlu_rr<0b0000010, 0b010, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.slet", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+  def CV_SLETU  : RVInstAlu_rr<0b0000010, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.sletu", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+  def CV_MIN    : RVInstAlu_rr<0b0000010, 0b100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.min", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+  def CV_MINU   : RVInstAlu_rr<0b0000010, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.minu", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+  def CV_MAX    : RVInstAlu_rr<0b0000010, 0b110, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.max", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+  def CV_MAXU   : RVInstAlu_rr<0b0000010, 0b111, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.maxu", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+  def CV_EXTHS  : RVInstAlu_r<0b0001000, 0b100, (outs GPR:$rd), (ins GPR:$rs1),
+                              "cv.exths", "$rd, $rs1", []>,
+                  Sched<[]>;
+  def CV_EXTHZ  : RVInstAlu_r<0b0001000, 0b101, (outs GPR:$rd), (ins GPR:$rs1),
+                              "cv.exthz", "$rd, $rs1", []>,
+                  Sched<[]>;
+  def CV_EXTBS  : RVInstAlu_r<0b0001000, 0b110, (outs GPR:$rd), (ins GPR:$rs1),
+                              "cv.extbs", "$rd, $rs1", []>,
+                  Sched<[]>;
+  def CV_EXTBZ  : RVInstAlu_r<0b0001000, 0b111, (outs GPR:$rd), (ins GPR:$rs1),
+                              "cv.extbz", "$rd, $rs1", []>,
+                  Sched<[]>;
+
+  def CV_CLIP   : RVInstAlu_ri<0b0001010, 0b001, (outs GPR:$rd), (ins GPR:$rs1, uimm5:$imm5),
+                               "cv.clip", "$rd, $rs1, $imm5", []>,
+                  Sched<[]>;
+  def CV_CLIPU  : RVInstAlu_ri<0b0001010, 0b010, (outs GPR:$rd), (ins GPR:$rs1, uimm5:$imm5),
+                               "cv.clipu", "$rd, $rs1, $imm5", []>,
+                  Sched<[]>;
+  def CV_CLIPR  : RVInstAlu_rr<0b0001010, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.clipr", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+  def CV_CLIPUR : RVInstAlu_rr<0b0001010, 0b110, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.clipur", "$rd, $rs1, $rs2", []>,
+                  Sched<[]>;
+
+  def CV_ADDN   : RVInstAlu_rri<0b00, 0b010, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.addn", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+  def CV_ADDUN  : RVInstAlu_rri<0b10, 0b010, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.addun", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+  def CV_ADDRN  : RVInstAlu_rri<0b00, 0b110, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.addrn", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+  def CV_ADDURN : RVInstAlu_rri<0b10, 0b110, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.addurn", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+  def CV_SUBN   : RVInstAlu_rri<0b00, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.subn", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+  def CV_SUBUN  : RVInstAlu_rri<0b10, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.subun", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+  def CV_SUBRN  : RVInstAlu_rri<0b00, 0b111, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.subrn", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+  def CV_SUBURN : RVInstAlu_rri<0b10, 0b111, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+                                "cv.suburn", "$rd, $rs1, $rs2, $imm5", []>,
+                  Sched<[]>;
+} // Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0
+
+let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM2.Value, Constraints = "$rd = $rd_wb" in {
+  def CV_ADDNR   : RVInstAlu_rr<0b0100000, 0b010, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.addnr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+  def CV_ADDUNR  : RVInstAlu_rr<0b1100000, 0b010, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.addunr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+  def CV_ADDRNR  : RVInstAlu_rr<0b0100000, 0b110, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.addrnr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+  def CV_ADDURNR : RVInstAlu_rr<0b1100000, 0b110, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.addurnr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+  def CV_SUBNR   : RVInstAlu_rr<0b0100000, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.subnr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+  def CV_SUBUNR  : RVInstAlu_rr<0b1100000, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.subunr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+  def CV_SUBRNR  : RVInstAlu_rr<0b0100000, 0b111, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.subrnr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+  def CV_SUBURNR : RVInstAlu_rr<0b1100000, 0b111, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+                                "cv.suburnr", "$rd, $rs1, $rs2", []>,
+                   Sched<[]>;
+
+} // Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM2.Value, Constraints = "$rd = $rd_wb"
+
+let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1 in {
+  // Immediate branching operations
+  def CV_BEQIMM : RVInstImmBranch<0b010, (outs), (ins GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12),
+                                  "cv.beqimm", "$rs1, $imm5, $imm12", []>,
+                  Sched<[]>;
+  def CV_BNEIMM : RVInstImmBranch<0b011, (outs), (ins GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12),
+                                  "cv.bneimm", "$rs1, $imm5, $imm12", []>,
+                  Sched<[]>;
+
+} // Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1
+
+
 //===----------------------------------------------------------------------===//
 // CORE-V specific helper fragments
 //===----------------------------------------------------------------------===//
@@ -232,45 +348,45 @@ def : Pat<(muls GPR:$rs1, GPR:$rs2),
           (CV_MULS GPR:$rs1, GPR:$rs2)>;
 def : Pat<(mulhhs GPR:$rs1, GPR:$rs2),
           (CV_MULHHS GPR:$rs1, GPR:$rs2)>;
-def : Pat<(sra (muls GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULSN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULHHSN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(shiftRound (muls GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULSRN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(shiftRound (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULHHSRN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(sra (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULHHSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(shiftRound (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(shiftRound (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULHHSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
 def : Pat<(mulu GPR:$rs1, GPR:$rs2),
           (CV_MULU GPR:$rs1, GPR:$rs2)>;
 def : Pat<(mulhhu GPR:$rs1, GPR:$rs2),
           (CV_MULHHU GPR:$rs1, GPR:$rs2)>;
-def : Pat<(srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULUN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULHHUN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(ushiftRound (mulu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULURN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(ushiftRound (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MULHHURN GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULHHUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(ushiftRound (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(ushiftRound (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MULHHURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-def : Pat<(sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACHHSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(shiftRound (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACHHSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACHHSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(shiftRound (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACHHSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-def : Pat<(srl (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(srl (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACHHUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
-def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$Is3),
-          (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$Is3)>;
+def : Pat<(srl (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(srl (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACHHUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
+def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+          (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
 
 }
