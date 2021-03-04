@@ -190,11 +190,19 @@ def HasExtXCoreVMac
     : Predicate<"Subtarget->hasExtXCoreVMac()">,
                AssemblerPredicate<(any_of FeatureExtXCoreVMac),
                "'Xcorevmac' (Multiply-Accumulate)">;
+// CORE-V ALU Extension
+def FeatureExtXCoreVAlu
+    : SubtargetFeature<"xcorevalu", "HasExtXCoreVAlu", "true",
+                       "'Xcorevalu' (ALU Operations)">;
+def HasExtXCoreVAlu
+    : Predicate<"Subtarget->hasExtXCoreVAlu()">,
+               AssemblerPredicate<(any_of FeatureExtXCoreVAlu),
+               "'Xcorevalu' (ALU Operations)">;
 // All CORE-V extensions
 def FeatureExtXCoreV
     : SubtargetFeature<"xcorev", "HasExtXCoreV", "true",
                        "'Xcorev' (CORE-V extensions)",
-                       [FeatureExtXCoreVHwlp, FeatureExtXCoreVMac]>;
+                       [FeatureExtXCoreVHwlp, FeatureExtXCoreVMac, FeatureExtXCoreVAlu]>;
 def HasExtXCoreV : Predicate<"Subtarget->hasExtXCoreV()">,
                               AssemblerPredicate<(all_of FeatureExtXCoreV),
                               "'Xcorev' (CORE-V extensions)">;
