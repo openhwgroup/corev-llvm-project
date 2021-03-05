@@ -150,6 +150,55 @@ void RISCVDAGToDAGISel::Select(SDNode *Node) {
                                              MVT::i32, MVT::Other,
                                              Node->getOperand(0)));
     return;
+  case ISD::LOAD: {
+    // We have to match post-incrementing load here, because TableGen can't deal
+    // with multiple result values
+    LoadSDNode *Load = cast<LoadSDNode>(Node);
+    if (Load->getAddressingMode() != ISD::POST_INC)
+      break;
+
+    SDValue Chain = Node->getOperand(0);
+    SDValue Base = Node->getOperand(1);
+    SDValue Offset = Node->getOperand(2);
+
+    bool simm12 = false;
+    bool signExtend = Load->getExtensionType() == ISD::SEXTLOAD;
+
+    if(auto ConstantOffset = dyn_cast<ConstantSDNode>(Offset)) {
+      int ConstantVal = ConstantOffset->getSExtValue();
+      simm12 = isInt<12>(ConstantVal);
+      if (simm12)
+        Offset = CurDAG->getTargetConstant(ConstantVal, SDLoc(Offset),
+                                           Offset.getValueType());
+    }
+
+    unsigned Opcode = 0;
+
+    switch (Load->getMemoryVT().getSimpleVT().SimpleTy) {
+      case MVT::i8:
+        if      ( simm12 &&  signExtend) Opcode = RISCV::CV_LB_ri_inc;
+        else if ( simm12 && !signExtend) Opcode = RISCV::CV_LBU_ri_inc;
+        else if (!simm12 &&  signExtend) Opcode = RISCV::CV_LB_rr_inc;
+        else                             Opcode = RISCV::CV_LBU_rr_inc;
+        break;
+      case MVT::i16:
+        if      ( simm12 &&  signExtend) Opcode = RISCV::CV_LH_ri_inc;
+        else if ( simm12 && !signExtend) Opcode = RISCV::CV_LHU_ri_inc;
+        else if (!simm12 &&  signExtend) Opcode = RISCV::CV_LH_rr_inc;
+        else                             Opcode = RISCV::CV_LHU_rr_inc;
+        break;
+      case MVT::i32:
+        if (simm12) Opcode = RISCV::CV_LW_ri_inc;
+        else        Opcode = RISCV::CV_LW_rr_inc;
+      default: break;
+    }
+    if (!Opcode) break;
+
+    ReplaceNode(Node, CurDAG->getMachineNode(Opcode, DL, XLenVT, XLenVT,
+                                             Chain.getSimpleValueType(),
+                                             Base, Offset, Chain));
+    return;
+  }
   }
 
   // Select the default instruction.
