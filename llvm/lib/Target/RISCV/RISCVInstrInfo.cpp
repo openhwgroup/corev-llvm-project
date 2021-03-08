@@ -230,6 +230,10 @@ static unsigned getOppositeBranchOpcode(int Opc) {
     return RISCV::BGEU;
   case RISCV::BGEU:
     return RISCV::BLTU;
+  case RISCV::CV_BEQIMM:
+    return RISCV::CV_BNEIMM;
+  case RISCV::CV_BNEIMM:
+    return RISCV::CV_BEQIMM;
   }
 }
 
@@ -438,6 +442,8 @@ bool RISCVInstrInfo::isBranchOffsetInRange(unsigned BranchOp,
   case RISCV::BGE:
   case RISCV::BLTU:
   case RISCV::BGEU:
+  case RISCV::CV_BEQIMM:
+  case RISCV::CV_BNEIMM:
     return isIntN(13, BrOffset);
   case RISCV::JAL:
   case RISCV::PseudoBR:
