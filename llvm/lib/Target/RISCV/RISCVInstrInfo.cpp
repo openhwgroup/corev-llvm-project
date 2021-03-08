@@ -1045,6 +1045,8 @@ bool RISCVInstrInfo::isBranchOffsetInRange(unsigned BranchOp,
   case RISCV::BGE:
   case RISCV::BLTU:
   case RISCV::BGEU:
+  case RISCV::CV_BEQIMM:
+  case RISCV::CV_BNEIMM:
     return isIntN(13, BrOffset);
   case RISCV::JAL:
   case RISCV::PseudoBR:
