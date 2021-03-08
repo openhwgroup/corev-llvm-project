@@ -243,7 +243,7 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
     setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i8, Legal);
     setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i16, Legal);
   }
-  
+
   if (Subtarget.hasExtXCoreVMem()) {
     setIndexedLoadAction(ISD::POST_INC, MVT::i8, Legal);
     setIndexedLoadAction(ISD::POST_INC, MVT::i16, Legal);
