@@ -1007,3 +1007,7 @@ unsigned RISCVTTIImpl::getMaximumVF(unsigned ElemWidth, unsigned Opcode) const {
   // TODO: Figure out constant materialization cost modeling and remove.
   return SLPMaxVF;
 }
+
+bool RISCVTTIImpl::shouldFavorPostInc() const {
+  return ST->hasExtXCoreVMem();
+}

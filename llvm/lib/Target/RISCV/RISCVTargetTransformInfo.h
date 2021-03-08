@@ -308,6 +308,8 @@ public:
     }
     llvm_unreachable("unknown register class");
   }
+  
+  bool shouldFavorPostInc() const;
 };
 
 } // end namespace llvm
