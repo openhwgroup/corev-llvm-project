@@ -47,6 +47,7 @@ public:
                         Instruction *Inst = nullptr);
   int getIntImmCostIntrin(Intrinsic::ID IID, unsigned Idx, const APInt &Imm,
                           Type *Ty, TTI::TargetCostKind CostKind);
+  bool shouldFavorPostInc() const;
 };
 
 } // end namespace llvm

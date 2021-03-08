@@ -94,3 +94,7 @@ int RISCVTTIImpl::getIntImmCostIntrin(Intrinsic::ID IID, unsigned Idx,
   // Prevent hoisting in unknown cases.
   return TTI::TCC_Free;
 }
+
+bool RISCVTTIImpl::shouldFavorPostInc() const {
+  return ST->hasExtXCoreVMem();
+}
