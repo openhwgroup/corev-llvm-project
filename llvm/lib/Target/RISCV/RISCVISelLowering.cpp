@@ -415,6 +415,17 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
   if (Subtarget.is64Bit())
     setOperationAction(ISD::INTRINSIC_WO_CHAIN, MVT::i32, Custom);
 
+
+  if (Subtarget.hasExtXCoreVMem()) {
+    setIndexedLoadAction(ISD::POST_INC, MVT::i8, Legal);
+    setIndexedLoadAction(ISD::POST_INC, MVT::i16, Legal);
+    setIndexedLoadAction(ISD::POST_INC, MVT::i32, Legal);
+
+    setIndexedStoreAction(ISD::POST_INC, MVT::i8, Legal);
+    setIndexedStoreAction(ISD::POST_INC, MVT::i16, Legal);
+    setIndexedStoreAction(ISD::POST_INC, MVT::i32, Legal);
+  }
+
   if (Subtarget.hasStdExtA()) {
     setMaxAtomicSizeInBitsSupported(Subtarget.getXLen());
     setMinCmpXchgSizeInBits(32);
@@ -13114,3 +13125,31 @@ namespace llvm::RISCVVIntrinsicsTable {
 #include "RISCVGenSearchableTables.inc"
 
 } // namespace llvm::RISCVVIntrinsicsTable
+
+bool RISCVTargetLowering::getPostIndexedAddressParts(SDNode *N, SDNode *Op,
+                                                     SDValue &Base,
+                                                     SDValue &Offset,
+                                                     ISD::MemIndexedMode &AM,
+                                                     SelectionDAG &DAG) const {
+  if (!Subtarget.hasExtXCoreVMem())
+    return false;
+
+  if (Op->getOpcode() != ISD::ADD)
+    return false;
+
+  if (LSBaseSDNode *LS = dyn_cast<LSBaseSDNode>(N)) {
+    Base = LS->getBasePtr();
+  } else {
+    return false;
+  }
+
+  if (Base == Op->getOperand(0)) {
+    Offset = Op->getOperand(1);
+  } else if (Base == Op->getOperand(1)) {
+    Offset = Op->getOperand(0);
+  } else {
+    return false;
+  }
+  AM = ISD::POST_INC;
+  return true;
+}

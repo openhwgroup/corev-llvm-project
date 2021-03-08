@@ -12,6 +12,8 @@
 
 include "RISCVInstrFormatsCOREV.td"
 
+def AddrRegReg : ComplexPattern<iPTR, 2, "SelectAddrRegReg">;
+
 def CVUImm1AsmOperand : AsmOperandClass {
   let Name = "CVUImm1";
   let RenderMethod = "addImmOperands";
@@ -483,5 +485,49 @@ def : Pat<(ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
 def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
           (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
+
+}
+
+//===----------------------------------------------------------------------===//
+// Patterns for load & store operations
+//===----------------------------------------------------------------------===//
+
+let Predicates = [HasExtXCoreVMem] in {
+
+  def : Pat<(sextloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_LB_rr GPR:$base, GPR:$offset)>;
+  def : Pat<(zextloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_LBU_rr GPR:$base, GPR:$offset)>;
+  def : Pat<(extloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_LBU_rr GPR:$base, GPR:$offset)>;
+  def : Pat<(sextloadi16 (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_LH_rr GPR:$base, GPR:$offset)>;
+  def : Pat<(zextloadi16 (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_LHU_rr GPR:$base, GPR:$offset)>;
+  def : Pat<(extloadi16 (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_LHU_rr GPR:$base, GPR:$offset)>;
+  def : Pat<(load (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_LW_rr GPR:$base, GPR:$offset)>;
+
+  def : Pat<(post_truncsti8 GPR:$val, GPR:$base, simm12:$offset),
+            (CV_SB_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
+  def : Pat<(post_truncsti16 GPR:$val, GPR:$base, simm12:$offset),
+            (CV_SH_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
+  def : Pat<(post_store GPR:$val, GPR:$base, simm12:$offset),
+            (CV_SW_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
+
+  def : Pat<(post_truncsti8 GPR:$val, GPR:$base, GPR:$offset),
+            (CV_SB_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
+  def : Pat<(post_truncsti16 GPR:$val, GPR:$base, GPR:$offset),
+            (CV_SH_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
+  def : Pat<(post_store GPR:$val, GPR:$base, GPR:$offset),
+            (CV_SW_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
+
+  def : Pat<(truncstorei8 GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_SB_rr GPR:$val, GPR:$base, GPR:$offset)>;
+  def : Pat<(truncstorei16 GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_SH_rr GPR:$val, GPR:$base, GPR:$offset)>;
+  def : Pat<(store GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
+            (CV_SW_rr GPR:$val, GPR:$base, GPR:$offset)>;
 
 }
