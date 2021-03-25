@@ -254,6 +254,12 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
     setIndexedStoreAction(ISD::POST_INC, MVT::i32, Legal);
   }
 
+  if (Subtarget.hasExtXCoreVHwlp()) {
+    setTargetDAGCombine(ISD::BR);
+    // The default legalizer can't promote this to i32, so we do it manually
+    setOperationAction(ISD::INTRINSIC_W_CHAIN, MVT::i1, Custom);
+  }
+
   if (Subtarget.hasStdExtA()) {
     setMaxAtomicSizeInBitsSupported(Subtarget.getXLen());
     setMinCmpXchgSizeInBits(32);
@@ -480,6 +486,8 @@ SDValue RISCVTargetLowering::LowerOperation(SDValue Op,
   }
   case ISD::INTRINSIC_WO_CHAIN:
     return LowerINTRINSIC_WO_CHAIN(Op, DAG);
+  case ISD::INTRINSIC_W_CHAIN:
+    return SDValue();
   }
 }
 
@@ -1037,6 +1045,25 @@ void RISCVTargetLowering::ReplaceNodeResults(SDNode *N,
     Results.push_back(DAG.getNode(ISD::TRUNCATE, DL, MVT::i32, FPConv));
     break;
   }
+  case ISD::INTRINSIC_W_CHAIN: {
+    switch (N->getConstantOperandVal(1)) {
+    default: // don't custom legalize most intrinsics types
+      break;
+    case Intrinsic::loop_decrement:
+
+      SDValue Op0 = N->getOperand(0);
+      SDValue Op1 = N->getOperand(1);
+      SDValue Op2 = N->getOperand(2);
+
+      EVT ValueVTs[] = {Subtarget.getXLenVT(), N->getValueType(1)};
+
+      SDValue v = DAG.getNode(N->getOpcode(), SDLoc(N), DAG.getVTList(ValueVTs),
+                              Op0, Op1, Op2);
+      Results.push_back(DAG.getNode(ISD::TRUNCATE, SDLoc(N), MVT::i1, v));
+      Results.push_back(SDValue(v.getNode(), 1));
+      break;
+    }
+  }
   }
 }
 
@@ -1134,6 +1161,31 @@ SDValue RISCVTargetLowering::PerformDAGCombine(SDNode *N,
     assert(Op0.getOpcode() == ISD::FABS);
     return DAG.getNode(ISD::AND, DL, MVT::i64, NewFMV,
                        DAG.getConstant(~SignBit, DL, MVT::i64));
+  }
+  case ISD::BR: {
+    // The DAG builder might reverse the branch condition. This is not allowed
+    // for the branch of a hardware loop, so we undo it here.
+    SDValue BrCond = N->getOperand(0);
+    if (BrCond->getOpcode() != ISD::BRCOND)
+      break;
+    SDValue Xor = BrCond->getOperand(1);
+    if (Xor->getOpcode() != ISD::XOR)
+      break;
+    if (auto True = dyn_cast<ConstantSDNode>(Xor->getOperand(1))){
+      if (True->getSExtValue() != -1) break;
+    }
+    else break;
+    SDValue LoopDecrement = Xor->getOperand(0);
+    if (LoopDecrement->getOpcode() != ISD::INTRINSIC_W_CHAIN ||
+        LoopDecrement->getConstantOperandVal(1) != Intrinsic::loop_decrement)
+      break;
+    SDValue BB1 = N->getOperand(1);
+    SDValue LoopBranch = DAG.getNode(ISD::BRCOND, SDLoc(BrCond), MVT::Other,
+                                     BrCond->getOperand(0), LoopDecrement, BB1);
+    SDValue BB2 = BrCond->getOperand(2);
+    SDValue ElseBranch = DAG.getNode(ISD::BR, SDLoc(N), MVT::Other,
+                                     LoopBranch, BB2);
+    return DCI.CombineTo(N, ElseBranch);
   }
   }
 

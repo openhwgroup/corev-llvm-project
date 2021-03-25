@@ -98,3 +98,119 @@ int RISCVTTIImpl::getIntImmCostIntrin(Intrinsic::ID IID, unsigned Idx,
 bool RISCVTTIImpl::shouldFavorPostInc() const {
   return ST->hasExtXCoreVMem();
 }
+
+bool RISCVTTIImpl::isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
+                                            AssumptionCache &AC,
+                                            TargetLibraryInfo *LibInfo,
+                                            HardwareLoopInfo &HWLoopInfo) {
+  if (!ST->hasExtXCoreVHwlp()) {
+    return false;
+  }
+
+  // Hardware loops need exactly one latch and exiting block and they need to be
+  // the same block
+  if (L->getNumBackEdges() != 1 || L->getLoopLatch() != L->getExitingBlock()) {
+    return false;
+  }
+
+  if (!SE.hasLoopInvariantBackedgeTakenCount(L)) {
+    return false;
+  }
+
+  const SCEV *BackedgeTakenCount = SE.getBackedgeTakenCount(L);
+  if (isa<SCEVCouldNotCompute>(BackedgeTakenCount)) {
+    return false;
+  }
+
+  // The trip count needs to fit into 32 Bits
+  const SCEV *One = SE.getOne(BackedgeTakenCount->getType());
+  const SCEV *TripCount = SE.getAddExpr(BackedgeTakenCount, One);
+  if (SE.getUnsignedRangeMax(TripCount).getBitWidth() > 32) {
+    return false;
+  }
+
+  bool HasInnerHardwareLoop = false;
+  int InstrCount = 0;
+
+  // Check all instructions in the loop body
+  BasicBlock *BB = L->getHeader();
+  while (BB) {
+    BasicBlock *Next = BB->getSingleSuccessor();
+
+    for (auto &I : BB->instructionsWithoutDebug()) {
+      InstrCount++;
+
+      // Function calls are not allowed
+      const RISCVTargetLowering *TLI = getTLI();
+      unsigned ISD = TLI->InstructionOpcodeToISD(I.getOpcode());
+      EVT VT = TLI->getValueType(DL, I.getType(), true);
+      if (TLI->getOperationAction(ISD, VT) == TargetLowering::LibCall) {
+        return false;
+      }
+
+      if (auto *Call = dyn_cast<CallInst>(&I)) {
+        if (isa<IntrinsicInst>(Call)) {
+          if (!isLoweredToCall(Call->getCalledFunction())) {
+            continue;
+          }
+        }
+        return false;
+      }
+
+      // Unconditional branches are allowed, since they get removed, if the
+      // following block is the branch target.
+      // Conditional branches are only allowed, if they are the latch of this
+      // loop or the latch of an inner hardware loop.
+      if (auto *Branch = dyn_cast<BranchInst>(&I)) {
+        if (Branch->isUnconditional() || L->isLoopLatch(BB)) {
+          InstrCount--;
+          continue;
+        }
+        else if (auto *Cond = dyn_cast<IntrinsicInst>(Branch->getCondition())) {
+          if (Cond->getIntrinsicID() == Intrinsic::loop_decrement) {
+            HasInnerHardwareLoop = true;
+            Next = Branch->getSuccessor(1);
+            // Need two more instructions after this
+            InstrCount = 1;
+            continue;
+          }
+        }
+      }
+
+      // Other terminators are not allowed
+      if (I.isTerminator()) {
+        return false;
+      }
+
+      // These are lowered to libcalls
+      if (VT.isFloatingPoint() && !TLI->isOperationLegalOrCustom(ISD, VT)) {
+        return false;
+      }
+
+      // The select instruction is lowered to a conditional branch
+      if (I.getOpcode() == Instruction::Select) {
+        return false;
+      }
+    }
+    BB = Next;
+  }
+
+  if (InstrCount < 3) {
+    return false;
+  }
+
+  LLVMContext &C = L->getHeader()->getContext();
+  HWLoopInfo.CounterInReg = false;
+  HWLoopInfo.IsNestingLegal = !HasInnerHardwareLoop;
+  HWLoopInfo.PerformEntryTest = false;
+  HWLoopInfo.CountType = Type::getInt32Ty(C);
+  HWLoopInfo.LoopDecrement = ConstantInt::get(HWLoopInfo.CountType, 1);
+  return true;
+}
+
+bool RISCVTTIImpl::isLoweredToCall(const Function *F) {
+  if (F->getName().startswith("llvm.riscv.cv"))
+    return false;
+
+  return BaseT::isLoweredToCall(F);
+}

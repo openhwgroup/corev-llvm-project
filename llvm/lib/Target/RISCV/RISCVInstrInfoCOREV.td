@@ -635,3 +635,37 @@ let Predicates = [HasExtXCoreVMem] in {
             (CV_SW_rr GPR:$val, GPR:$base, GPR:$offset)>;
 
 }
+
+//===----------------------------------------------------------------------===//
+// Pseudo instructions and patterns for hardware loop generation
+//===----------------------------------------------------------------------===//
+
+let Predicates = [HasExtXCoreVHwlp], isNotDuplicable = 1,
+    hasSideEffects = 1, mayLoad = 1, mayStore = 1 in {
+
+  // RISCVInstrInfo assumes 3 operands for conditional branch instructions,
+  // so we add 2 immediates and ignore them.
+  let isBranch = 1, isTerminator = 1, Size = 0, mayStore = 0 in
+  def HwlpBranch : Pseudo<(outs),
+                          (ins uimm5:$op1, uimm5:$op2, simm13_lsb0:$rs1), []>;
+
+  let Size = 12 in {
+    def HwlpSetup : Pseudo<(outs), (ins GPR:$rs1), []>;
+    def HwlpSetupImm : Pseudo<(outs), (ins uimm12:$rs1), []>;
+  }
+}
+
+// We need to custom select the loop decrement intrinsic, because tablegen
+// doesn't know that we promoted it to i32
+def loop_decrement_32
+  : ComplexPattern<i32, 0, "SelectLoopDecrement", [intrinsic_w_chain],
+                   [SDNPSideEffect, SDNPMayLoad, SDNPMayStore]>;
+
+def : Pat<(brcond (i32 (and (loop_decrement_32), 1)), bb:$branchDest),
+          (HwlpBranch 0, 0, bb:$branchDest)>;
+
+def : Pat<(int_set_loop_iterations GPR:$rs1),
+          (HwlpSetup GPR:$rs1)>;
+
+def : Pat<(int_set_loop_iterations uimm12:$rs1),
+          (HwlpSetupImm uimm12:$rs1)>;

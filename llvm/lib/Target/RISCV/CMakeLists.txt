@@ -19,7 +19,9 @@ add_public_tablegen_target(RISCVCommonTableGen)
 add_llvm_target(RISCVCodeGen
   RISCVAsmPrinter.cpp
   RISCVCallLowering.cpp
+  RISCVCoreVHwlpBlocks.cpp
   RISCVExpandAtomicPseudoInsts.cpp
+  RISCVExpandCoreVHwlpPseudoInsts.cpp
   RISCVExpandPseudoInsts.cpp
   RISCVFrameLowering.cpp
   RISCVInstrInfo.cpp
