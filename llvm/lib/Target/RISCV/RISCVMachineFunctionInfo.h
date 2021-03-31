@@ -14,8 +14,10 @@
 #define LLVM_LIB_TARGET_RISCV_RISCVMACHINEFUNCTIONINFO_H
 
 #include "RISCVSubtarget.h"
+#include "llvm/ADT/SmallSet.h"
 #include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/MachineFunction.h"
+#include <set>
 
 namespace llvm {
 
@@ -32,6 +34,9 @@ private:
   int MoveF64FrameIndex = -1;
   /// Size of any opaque stack adjustment due to save/restore libcalls.
   unsigned LibCallStackSize = 0;
+  /// CORE-V specific: set of basic blocks containing hardware loop
+  /// instructions, that should not be compressed.
+  SmallSet<const MachineBasicBlock*, 4> HwlpBasicBlocks;
 
 public:
   RISCVMachineFunctionInfo(const MachineFunction &MF) {}
@@ -57,6 +62,15 @@ public:
     // function uses a varargs save area.
     return MF.getSubtarget<RISCVSubtarget>().enableSaveRestore() &&
            VarArgsSaveSize == 0 && !MF.getFrameInfo().hasTailCall();
+  }
+
+  void pushHwlpBasicBlock(const MachineBasicBlock *BB) {
+      HwlpBasicBlocks.insert(BB);
+  }
+
+  bool isHwlpBasicBlock(const MachineBasicBlock *BB) const {
+      auto Res = HwlpBasicBlocks.find(BB);
+      return Res != HwlpBasicBlocks.end();
   }
 };
 
