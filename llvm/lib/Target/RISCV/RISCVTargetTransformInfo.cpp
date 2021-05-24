@@ -103,31 +103,26 @@ bool RISCVTTIImpl::isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
                                             AssumptionCache &AC,
                                             TargetLibraryInfo *LibInfo,
                                             HardwareLoopInfo &HWLoopInfo) {
-  if (!ST->hasExtXCoreVHwlp()) {
+  if (!ST->hasExtXCoreVHwlp())
     return false;
-  }
 
   // Hardware loops need exactly one latch and exiting block and they need to be
   // the same block
-  if (L->getNumBackEdges() != 1 || L->getLoopLatch() != L->getExitingBlock()) {
+  if (L->getNumBackEdges() != 1 || L->getLoopLatch() != L->getExitingBlock())
     return false;
-  }
 
-  if (!SE.hasLoopInvariantBackedgeTakenCount(L)) {
+  if (!SE.hasLoopInvariantBackedgeTakenCount(L))
     return false;
-  }
 
   const SCEV *BackedgeTakenCount = SE.getBackedgeTakenCount(L);
-  if (isa<SCEVCouldNotCompute>(BackedgeTakenCount)) {
+  if (isa<SCEVCouldNotCompute>(BackedgeTakenCount))
     return false;
-  }
 
   // The trip count needs to fit into 32 Bits
   const SCEV *One = SE.getOne(BackedgeTakenCount->getType());
   const SCEV *TripCount = SE.getAddExpr(BackedgeTakenCount, One);
-  if (SE.getUnsignedRangeMax(TripCount).getBitWidth() > 32) {
+  if (SE.getUnsignedRangeMax(TripCount).getBitWidth() > 32)
     return false;
-  }
 
   bool HasInnerHardwareLoop = false;
   int InstrCount = 0;
@@ -178,26 +173,22 @@ bool RISCVTTIImpl::isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
       }
 
       // Other terminators are not allowed
-      if (I.isTerminator()) {
+      if (I.isTerminator())
         return false;
-      }
 
       // These are lowered to libcalls
-      if (VT.isFloatingPoint() && !TLI->isOperationLegalOrCustom(ISD, VT)) {
+      if (VT.isFloatingPoint() && !TLI->isOperationLegalOrCustom(ISD, VT))
         return false;
-      }
 
       // The select instruction is lowered to a conditional branch
-      if (I.getOpcode() == Instruction::Select) {
+      if (I.getOpcode() == Instruction::Select)
         return false;
-      }
     }
     BB = Next;
   }
 
-  if (InstrCount < 3) {
+  if (InstrCount < 3)
     return false;
-  }
 
   LLVMContext &C = L->getHeader()->getContext();
   HWLoopInfo.CounterInReg = false;
