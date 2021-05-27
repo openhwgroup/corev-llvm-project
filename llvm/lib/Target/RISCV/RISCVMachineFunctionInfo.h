@@ -15,8 +15,10 @@
 
 #include "RISCVSubtarget.h"
 #include "llvm/CodeGen/MIRYamlMapping.h"
+#include "llvm/ADT/SmallSet.h"
 #include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/MachineFunction.h"
+#include <set>
 
 namespace llvm {
 
@@ -68,6 +70,9 @@ private:
 
   /// Registers that have been sign extended from i32.
   SmallVector<Register, 8> SExt32Registers;
+  /// CORE-V specific: set of basic blocks containing hardware loop
+  /// instructions, that should not be compressed.
+  SmallSet<const MachineBasicBlock*, 4> HwlpBasicBlocks;
 
 public:
   RISCVMachineFunctionInfo(const MachineFunction &MF) {}
@@ -123,7 +128,15 @@ public:
   void initializeBaseYamlFields(const yaml::RISCVMachineFunctionInfo &YamlMFI);
 
   void addSExt32Register(Register Reg);
-  bool isSExt32Register(Register Reg) const;
+  bool isSExt32Register(Register Reg) const; 
+  void pushHwlpBasicBlock(const MachineBasicBlock *BB) {
+      HwlpBasicBlocks.insert(BB);
+  }
+
+  bool isHwlpBasicBlock(const MachineBasicBlock *BB) const {
+      auto Res = HwlpBasicBlocks.find(BB);
+      return Res != HwlpBasicBlocks.end();
+  }
 };
 
 } // end namespace llvm

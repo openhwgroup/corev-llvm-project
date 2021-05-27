@@ -38,6 +38,9 @@
 ; CHECK-NEXT:       Local Stack Slot Allocation
 ; CHECK-NEXT:       RISCV Pre-RA pseudo instruction expansion pass
 ; CHECK-NEXT:       RISCV Insert VSETVLI pass
+; CHECK-NEXT:       MachineDominator Tree Construction
+; CHECK-NEXT:       Machine Natural Loop Construction
+; CHECK-NEXT:       Core-V prepare hardware loop basic blocks pass
 ; CHECK-NEXT:       Eliminate PHI nodes for register allocation
 ; CHECK-NEXT:       Two-Address instruction pass
 ; CHECK-NEXT:       Fast Register Allocator

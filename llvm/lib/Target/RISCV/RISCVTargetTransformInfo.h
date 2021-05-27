@@ -310,6 +310,12 @@ public:
   }
   
   bool shouldFavorPostInc() const;
+  bool isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
+                                AssumptionCache &AC,
+                                TargetLibraryInfo *LibInfo,
+                                HardwareLoopInfo &HWLoopInfo);
+
+  bool isLoweredToCall(const Function *F);
 };
 
 } // end namespace llvm
