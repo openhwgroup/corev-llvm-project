@@ -352,6 +352,11 @@ void RISCVDAGToDAGISel::selectVLSEG(SDNode *Node, bool IsMasked,
   CurDAG->RemoveDeadNode(Node);
 }
 
+bool RISCVDAGToDAGISel::SelectLoopDecrement(SDValue LoopDecrement) {
+  return (LoopDecrement->getOpcode() == ISD::INTRINSIC_W_CHAIN &&
+          LoopDecrement->getConstantOperandVal(1) == Intrinsic::loop_decrement);
+}
+
 void RISCVDAGToDAGISel::selectVLSEGFF(SDNode *Node, bool IsMasked) {
   SDLoc DL(Node);
   unsigned NF = Node->getNumValues() - 2; // Do not count VL and Chain.
@@ -1290,10 +1295,17 @@ void RISCVDAGToDAGISel::Select(SDNode *Node) {
   }
   case ISD::INTRINSIC_W_CHAIN: {
     unsigned IntNo = cast<ConstantSDNode>(Node->getOperand(1))->getZExtValue();
+    
     switch (IntNo) {
       // By default we do not custom select any intrinsic.
     default:
       break;
+    // We already selected the the 0th Value and the chain can just be skipped.
+    case Intrinsic::loop_decrement: { 
+      ReplaceUses(SDValue(Node, 1),
+                  Node->getOperand(0));
+      return;
+    }
     case Intrinsic::riscv_vsetvli:
     case Intrinsic::riscv_vsetvlimax:
       return selectVSETVLI(Node);
