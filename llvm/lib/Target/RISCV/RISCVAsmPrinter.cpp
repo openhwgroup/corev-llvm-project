@@ -16,6 +16,7 @@
 #include "MCTargetDesc/RISCVTargetStreamer.h"
 #include "RISCV.h"
 #include "RISCVTargetMachine.h"
+#include "RISCVMachineFunctionInfo.h"
 #include "TargetInfo/RISCVTargetInfo.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/CodeGen/AsmPrinter.h"
@@ -68,6 +69,9 @@ public:
   void emitStartOfAsmFile(Module &M) override;
   void emitEndOfAsmFile(Module &M) override;
 
+  void emitBasicBlockStart(const MachineBasicBlock &MBB) override;
+  void emitBasicBlockEnd(const MachineBasicBlock &MBB) override;
+
 private:
   void emitAttributes();
 };
@@ -94,7 +98,14 @@ void RISCVAsmPrinter::emitInstruction(const MachineInstr *MI) {
 
   MCInst TmpInst;
   LowerRISCVMachineInstrToMCInst(MI, TmpInst, *this);
-  EmitToStreamer(*OutStreamer, TmpInst);
+
+  auto *MBB = MI->getParent();
+  auto *RVFI = MI->getMF()->getInfo<RISCVMachineFunctionInfo>();
+
+  if (RVFI->isHwlpBasicBlock(MBB))
+    AsmPrinter::EmitToStreamer(*OutStreamer, TmpInst);
+  else
+    EmitToStreamer(*OutStreamer, TmpInst);
 }
 
 bool RISCVAsmPrinter::PrintAsmOperand(const MachineInstr *MI, unsigned OpNo,
@@ -203,6 +214,29 @@ void RISCVAsmPrinter::emitAttributes() {
   const RISCVSubtarget STI(TT, CPU, /*TuneCPU=*/CPU, FS, /*ABIName=*/"", RTM);
 
   RTS.emitTargetAttributes(STI);
+}
+
+void RISCVAsmPrinter::emitBasicBlockStart(const MachineBasicBlock &MBB) {
+  AsmPrinter::emitBasicBlockStart(MBB);
+
+  auto *RVFI = MF->getInfo<RISCVMachineFunctionInfo>();
+  RISCVTargetStreamer &RTS =
+      static_cast<RISCVTargetStreamer &>(*OutStreamer->getTargetStreamer());
+  if (RVFI->isHwlpBasicBlock(&MBB)) {
+    RTS.emitDirectiveOptionPush();
+    RTS.emitDirectiveOptionNoRVC();
+  }
+}
+
+void RISCVAsmPrinter::emitBasicBlockEnd(const MachineBasicBlock &MBB) {
+  auto *RVFI = MF->getInfo<RISCVMachineFunctionInfo>();
+  RISCVTargetStreamer &RTS =
+      static_cast<RISCVTargetStreamer &>(*OutStreamer->getTargetStreamer());
+  if (RVFI->isHwlpBasicBlock(&MBB)) {
+    RTS.emitDirectiveOptionPop();
+  }
+
+  AsmPrinter::emitBasicBlockEnd(MBB);
 }
 
 // Force static initialization.

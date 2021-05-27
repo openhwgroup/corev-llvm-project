@@ -14,6 +14,7 @@
 #include "RISCV.h"
 #include "RISCVSubtarget.h"
 #include "RISCVTargetMachine.h"
+#include "RISCVMachineFunctionInfo.h"
 #include "Utils/RISCVMatInt.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/SmallVector.h"
@@ -245,10 +246,13 @@ bool RISCVInstrInfo::analyzeBranch(MachineBasicBlock &MBB,
   TBB = FBB = nullptr;
   Cond.clear();
 
+  auto *RVFI = MBB.getParent()->getInfo<RISCVMachineFunctionInfo>();
+
   // If the block has no terminators, it just falls into the block after it.
+  // If the next block is part of a hardware loop, this block must fall through.
   MachineBasicBlock::iterator I = MBB.getLastNonDebugInstr();
   if (I == MBB.end() || !isUnpredicatedTerminator(*I))
-    return false;
+    return RVFI->isHwlpBasicBlock(MBB.getNextNode());
 
   // Count the number of terminators and find the first unconditional or
   // indirect branch.
@@ -414,6 +418,9 @@ unsigned RISCVInstrInfo::insertIndirectBranch(MachineBasicBlock &MBB,
 
 bool RISCVInstrInfo::reverseBranchCondition(
     SmallVectorImpl<MachineOperand> &Cond) const {
+  if (Cond[0].getImm() == RISCV::HwlpBranch) {
+    return true;
+  }
   assert((Cond.size() == 3) && "Invalid branch condition!");
   Cond[0].setImm(getOppositeBranchOpcode(Cond[0].getImm()));
   return false;
@@ -450,6 +457,8 @@ bool RISCVInstrInfo::isBranchOffsetInRange(unsigned BranchOp,
     return isIntN(21, BrOffset);
   case RISCV::PseudoJump:
     return isIntN(32, SignExtend64(BrOffset + 0x800, XLen));
+  case RISCV::HwlpBranch:
+    return true;
   }
 }
 

@@ -48,6 +48,12 @@ public:
   int getIntImmCostIntrin(Intrinsic::ID IID, unsigned Idx, const APInt &Imm,
                           Type *Ty, TTI::TargetCostKind CostKind);
   bool shouldFavorPostInc() const;
+  bool isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
+                                AssumptionCache &AC,
+                                TargetLibraryInfo *LibInfo,
+                                HardwareLoopInfo &HWLoopInfo);
+
+  bool isLoweredToCall(const Function *F);
 };
 
 } // end namespace llvm

@@ -44,6 +44,7 @@ public:
                                     std::vector<SDValue> &OutOps) override;
 
   bool SelectAddrFI(SDValue Addr, SDValue &Base);
+  bool SelectLoopDecrement(SDValue LoopDecrement);
 
   bool SelectSLOI(SDValue N, SDValue &RS1, SDValue &Shamt);
   bool SelectSROI(SDValue N, SDValue &RS1, SDValue &Shamt);
