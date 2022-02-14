@@ -171,10 +171,37 @@ def GPRTC : RegisterClass<"RISCV", [XLenVT], 32, (add
       [RegInfo<32,32,32>, RegInfo<64,64,64>, RegInfo<32,32,32>]>;
 }
 
+def GP : RegisterClass<"RISCV", [XLenVT], 32, (add X3)> {
+  let RegInfos = RegInfoByHwMode<
+                       [RV32,              RV64,              DefaultMode],
+                       [RegInfo<32,32,32>, RegInfo<64,64,64>, RegInfo<32,32,32>]>;
+}
+
 def SP : RegisterClass<"RISCV", [XLenVT], 32, (add X2)> {
   let RegInfos = RegInfoByHwMode<
       [RV32,              RV64,              DefaultMode],
       [RegInfo<32,32,32>, RegInfo<64,64,64>, RegInfo<32,32,32>]>;
+}
+
+// Saved Registers from s0 to s7, for C.MVA01S07 instruction in Zce extension
+def SR07 : RegisterClass<"RISCV", [XLenVT], 32, (add
+    (sequence "X%u", 8, 9),
+    (sequence "X%u", 18, 23)
+  )> {
+  let RegInfos = RegInfoByHwMode<
+                       [RV32,              RV64,              DefaultMode],
+                       [RegInfo<32,32,32>, RegInfo<64,64,64>, RegInfo<32,32,32>]>;
+}
+
+// Registers saveable by PUSH instruction in Zce extension
+def PGPR : RegisterClass<"RISCV", [XLenVT], 32, (add
+    (sequence "X%u", 8, 9),
+    (sequence "X%u", 18, 27),
+    X1
+  )> {
+  let RegInfos = RegInfoByHwMode<
+                       [RV32,              RV64,              DefaultMode],
+                       [RegInfo<32,32,32>, RegInfo<64,64,64>, RegInfo<32,32,32>]>;
 }
 
 // Floating point registers
