@@ -36,7 +36,11 @@ jobs:
           - ubuntu-latest
           # Use windows-2019 due to:
           # https://developercommunity.visualstudio.com/t/Prev-Issue---with-__assume-isnan-/1597317
-          - windows-2019
+
+          # Disable windows for the time being. Because we're using GitHub
+          # hosted runner, which maximum number of timeout-minutes is 360.
+          # Otherwise, the job will exceeded the time and be canceled.
+          # - windows-2019
           # We're using a specific version of macOS due to:
           # https://github.com/actions/virtual-environments/issues/5900
           - macOS-11
