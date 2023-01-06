@@ -128,7 +128,7 @@ class RVInstAlu_rri<bits<2> funct2, bits<3> funct3, dag outs, dag ins,
   let Inst{19-15} = rs1;
   let Inst{14-12} = funct3;
   let Inst{11-7} = rd;
-  let Opcode = OPC_CUSTOM2.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
 class RVInstAlu_rr<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
@@ -143,7 +143,7 @@ class RVInstAlu_rr<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
   let Inst{19-15} = rs1;
   let Inst{14-12} = funct3;
   let Inst{11-7} = rd;
-  let Opcode = OPC_OP.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
 class RVInstAlu_ri<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
@@ -158,7 +158,7 @@ class RVInstAlu_ri<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
   let Inst{19-15} = rs1;
   let Inst{14-12} = funct3;
   let Inst{11-7} = rd;
-  let Opcode = OPC_OP.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
 class RVInstAlu_r<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
@@ -173,7 +173,7 @@ class RVInstAlu_r<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
   let Inst{19-15} = rs1;
   let Inst{14-12} = funct3;
   let Inst{11-7} = rd;
-  let Opcode = OPC_OP.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
 class RVInstImmBranch<bits<3> funct3, dag outs, dag ins,
