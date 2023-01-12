@@ -440,7 +440,7 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
     setIndexedStoreAction(ISD::POST_INC, MVT::i32, Legal);
   }
 
-  if (Subtarget.hasExtXCoreVHwlp()) {
+  if (Subtarget.hasExtXcvHwlp()) {
     setTargetDAGCombine(ISD::BR);
     // The default legalizer can't promote this to i32, so we do it manually
     setOperationAction(ISD::INTRINSIC_W_CHAIN, MVT::i1, Custom);

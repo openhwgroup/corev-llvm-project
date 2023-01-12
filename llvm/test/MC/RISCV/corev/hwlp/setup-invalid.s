@@ -11,10 +11,10 @@ cv.setup 0, s2, 4096
 # CHECK-ERROR: immediate must be an even integer in the range [0, 4094]
 
 cv.setup 2, s2, 0
-# CHECK-ERROR: immediate must be an integer in the range [0, 1]
+# CHECK-ERROR: loop ID must be an integer in the range [0, 1]
 
 cv.setup -1, s2, 0
-# CHECK-ERROR: immediate must be an integer in the range [0, 1]
+# CHECK-ERROR: loop ID must be an integer in the range [0, 1]
 
 cv.setup 0, s2
 # CHECK-ERROR: too few operands for instruction

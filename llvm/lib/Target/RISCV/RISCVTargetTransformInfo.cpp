@@ -1016,7 +1016,7 @@ bool RISCVTTIImpl::isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
                                             AssumptionCache &AC,
                                             TargetLibraryInfo *LibInfo,
                                             HardwareLoopInfo &HWLoopInfo) {
-  if (!ST->hasExtXCoreVHwlp())
+  if (!ST->hasExtXcvHwlp())
     return false;
 
   // Hardware loops need exactly one latch and exiting block and they need to be

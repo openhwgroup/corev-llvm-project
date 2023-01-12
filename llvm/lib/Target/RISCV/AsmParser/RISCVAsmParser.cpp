@@ -1325,7 +1325,8 @@ bool RISCVAsmParser::MatchAndEmitInstruction(SMLoc IDLoc, unsigned &Opcode,
     return generateImmOutOfRangeError(Operands, ErrorInfo, 0, 10);
   }
   case Match_InvalidCVUImm1: {
-    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, 1);
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, 1,
+                                      "loop ID must be an integer in the range");
   }
   case Match_InvalidCVUImm5: {
     return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 5) - 2,

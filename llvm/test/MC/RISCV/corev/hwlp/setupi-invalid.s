@@ -20,13 +20,13 @@ cv.setupi 1, -10, 30
 # CHECK-ERROR: immediate must be an integer in the range [0, 4095]
 
 cv.setupi 2, 0, 0
-# CHECK-ERROR: immediate must be an integer in the range [0, 1]
+# CHECK-ERROR: loop ID must be an integer in the range [0, 1]
 
 cv.setupi -1, 0, 0
-# CHECK-ERROR: immediate must be an integer in the range [0, 1]
+# CHECK-ERROR: loop ID must be an integer in the range [0, 1]
 
 cv.setupi s2, 0, 0
-# CHECK-ERROR: immediate must be an integer in the range [0, 1]
+# CHECK-ERROR: loop ID must be an integer in the range [0, 1]
 
 cv.setupi 0, 0, s2
 # CHECK-ERROR: immediate must be an even integer in the range [0, 30]
@@ -35,7 +35,7 @@ cv.setupi 0, s2, 0
 # CHECK-ERROR: immediate must be an integer in the range [0, 4095]
 
 cv.setupi 2
-# CHECK-ERROR: immediate must be an integer in the range [0, 1]
+# CHECK-ERROR: loop ID must be an integer in the range [0, 1]
 
 cv.setupi 1, 30
 # CHECK-ERROR: too few operands for instruction

@@ -417,10 +417,10 @@ def Feature32Bit
 //
 // CORE-V Hardware Loop Extension
 def FeatureExtXCoreVHwlp
-    : SubtargetFeature<"xcorevhwlp", "HasExtXCoreVHwlp", "true",
+    : SubtargetFeature<"xcorevhwlp", "HasExtXcvHwlp", "true",
                        "'Xcorevhwlp' (Hardware Loop)">;
-def HasExtXCoreVHwlp
-    : Predicate<"Subtarget->hasExtXCoreVHwlp()">,
+def HasExtXcvHwlp
+    : Predicate<"Subtarget->hasExtXcvHwlp()">,
                AssemblerPredicate<(any_of FeatureExtXCoreVHwlp),
                "'Xcorevhwlp' (Hardware Loop)">;
 // CORE-V Multiply-Accumulate Extension

@@ -74,26 +74,32 @@ def cv_uimm12 : Operand<XLenVT>,
 // CORE-V specific instructions
 //===----------------------------------------------------------------------===//
 
-let Predicates = [HasExtXCoreVHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0 in {
-  def CV_STARTI  : RVInstHwlp_i<0b000, (ins cv_uimm1:$imm1, cv_uimm12:$imm12),
+let Predicates = [HasExtXcvHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0 in {
+  def CV_STARTI  : RVInstHwlp_i<0b0000, (ins cv_uimm1:$imm1, cv_uimm12:$imm12),
                                 "cv.starti", "$imm1, $imm12">,
                    Sched<[]>;
-  def CV_ENDI    : RVInstHwlp_i<0b001, (ins cv_uimm1:$imm1, cv_uimm12:$imm12),
+  def CV_START  : RVInstHwlp_r<0b0001, (ins cv_uimm1:$imm1, GPR:$rs1),
+                             "cv.start", "$imm1, $rs1">,
+                 Sched<[]>;
+  def CV_ENDI    : RVInstHwlp_i<0b0010, (ins cv_uimm1:$imm1, cv_uimm12:$imm12),
                                 "cv.endi", "$imm1, $imm12">,
                    Sched<[]>;
-  def CV_COUNT   : RVInstHwlp_r<0b010, (ins cv_uimm1:$imm1, GPR:$rs1),
-                                "cv.count", "$imm1, $rs1">,
-                   Sched<[]>;
-  def CV_COUNTI  : RVInstHwlp_i<0b011, (ins cv_uimm1:$imm1, uimm12:$imm12),
+  def CV_END    : RVInstHwlp_r<0b0011, (ins cv_uimm1:$imm1, GPR:$rs1),
+                             "cv.end", "$imm1, $rs1">,
+                    Sched<[]>;
+  def CV_COUNTI  : RVInstHwlp_i<0b0100, (ins cv_uimm1:$imm1, uimm12:$imm12),
                                 "cv.counti", "$imm1, $imm12">,
                    Sched<[]>;
-  def CV_SETUP   : RVInstHwlp_ri<0b100, (ins cv_uimm1:$imm1, GPR:$rs1, cv_uimm12:$imm12),
-                                 "cv.setup", "$imm1, $rs1, $imm12">,
+  def CV_COUNT   : RVInstHwlp_r<0b0101, (ins cv_uimm1:$imm1, GPR:$rs1),
+                                "cv.count", "$imm1, $rs1">,
                    Sched<[]>;
-  def CV_SETUPI  : RVInstHwlp_ii<0b101, (ins cv_uimm1:$imm1, uimm12:$imm12, cv_uimm5:$imm5),
+  def CV_SETUPI  : RVInstHwlp_ii<0b0110, (ins cv_uimm1:$imm1, uimm12:$imm12, cv_uimm5:$imm5),
                               "cv.setupi", "$imm1, $imm12, $imm5">,
                 Sched<[]>;
-} // Predicates = [HasExtXCoreVHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0
+  def CV_SETUP   : RVInstHwlp_ri<0b0111, (ins cv_uimm1:$imm1, GPR:$rs1, cv_uimm12:$imm12),
+                                 "cv.setup", "$imm1, $rs1, $imm12">,
+                   Sched<[]>;
+} // Predicates = [HasExtXcvHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0
 
 let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb" in {
   // 32x32 bit macs
@@ -642,7 +648,7 @@ let Predicates = [HasExtXCoreVMem] in {
 // Pseudo instructions and patterns for hardware loop generation
 //===----------------------------------------------------------------------===//
 
-let Predicates = [HasExtXCoreVHwlp], isNotDuplicable = 1,
+let Predicates = [HasExtXcvHwlp], isNotDuplicable = 1,
     hasSideEffects = 1, mayLoad = 1, mayStore = 1 in {
 
   // RISCVInstrInfo assumes 3 operands for conditional branch instructions,
