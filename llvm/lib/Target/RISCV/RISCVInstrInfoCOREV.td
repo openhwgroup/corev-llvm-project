@@ -436,8 +436,8 @@ def between : PatFrags<(ops node:$lowerBound, node:$upperBound, node:$value),
                         (smax (smin node:$value, node:$upperBound), node:$lowerBound)]>;
 
 def betweenu : PatFrags<(ops node:$upperBound, node:$value),
-                        [(umin (umax node:$value, 0), node:$upperBound),
-                         (umax (umin node:$value, node:$upperBound), 0)]>;
+                        [(smin (smax node:$value, 0), node:$upperBound),
+                         (smax (smin node:$value, node:$upperBound), 0)]>;
 
 
 def clip : PatFrag<(ops node:$upperBound, node:$value),
