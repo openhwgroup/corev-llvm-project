@@ -439,6 +439,15 @@ def HasExtXCoreVAlu
     : Predicate<"Subtarget->hasExtXCoreVAlu()">,
                AssemblerPredicate<(any_of FeatureExtXCoreVAlu),
                "'Xcorevalu' (ALU Operations)">;
+
+def FeatureExtXcvsimd
+    : SubtargetFeature<"xcvsimd", "HasExtXcvsimd", "true",
+                       "'Xcvsimd' (SIMD ALU)">;
+def HasExtXcvsimd
+    : Predicate<"Subtarget->hasExtXcvsimd()">,
+               AssemblerPredicate<(any_of FeatureExtXcvsimd),
+               "'Xcvsimd' (SIMD ALU)">;
+
 // CORE-V Load-Store Extension
 def FeatureExtXCoreVMem
     : SubtargetFeature<"xcorevmem", "HasExtXCoreVMem", "true",
@@ -452,7 +461,8 @@ def FeatureExtXCoreV
     : SubtargetFeature<"xcorev", "HasExtXCoreV", "true",
                        "'Xcorev' (CORE-V extensions)",
                        [FeatureExtXCoreVHwlp, FeatureExtXCoreVMac,
-                        FeatureExtXCoreVAlu, FeatureExtXCoreVMem]>;
+                        FeatureExtXCoreVAlu, FeatureExtXcvsimd, 
+                        FeatureExtXCoreVMem]>;
 def HasExtXCoreV : Predicate<"Subtarget->hasExtXCoreV()">,
                               AssemblerPredicate<(all_of FeatureExtXCoreV),
                               "'Xcorev' (CORE-V extensions)">;
