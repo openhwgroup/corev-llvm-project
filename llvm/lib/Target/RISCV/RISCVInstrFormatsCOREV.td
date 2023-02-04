@@ -78,7 +78,7 @@ class RVInstMac<bits<7> funct7, bits<3> funct3, dag outs, dag ins,
   let Inst{19-15} = rs1;
   let Inst{14-12} = funct3;
   let Inst{11-7} = rd;
-  let Opcode = OPC_OP.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
 class RVInstMac16<bits<2> funct2, bits<3> funct3, dag outs, dag ins,

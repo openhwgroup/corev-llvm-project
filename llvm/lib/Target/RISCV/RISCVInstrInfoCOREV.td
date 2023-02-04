@@ -97,38 +97,38 @@ let Predicates = [HasExtXCoreVHwlp], hasSideEffects = 1, mayLoad = 0, mayStore =
 
 let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb" in {
   // 32x32 bit macs
-  def CV_MAC      : RVInstMac<0b0100001, 0b000, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+  def CV_MAC      : RVInstMac<0b1001000, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
                               "cv.mac", "$rd, $rs1, $rs2", []>,
                     Sched<[]>;
-  def CV_MSU      : RVInstMac<0b0100001, 0b001, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
+  def CV_MSU      : RVInstMac<0b1001001, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
                               "cv.msu", "$rd, $rs1, $rs2", []>,
                     Sched<[]>;
 
   // Signed 16x16 bit macs with imm
-  def CV_MACSN    : RVInstMac16I<0b10, 0b001, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACSN    : RVInstMac16I<0b00, 0b110, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.macsn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MACHHSN  : RVInstMac16I<0b11, 0b001, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACHHSN  : RVInstMac16I<0b01, 0b110, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.machhsn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MACSRN   : RVInstMac16I<0b10, 0b101, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACSRN   : RVInstMac16I<0b10, 0b110, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.macsrn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MACHHSRN : RVInstMac16I<0b11, 0b101, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACHHSRN : RVInstMac16I<0b11, 0b110, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.machhsrn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
 
   // Unsigned 16x16 bit macs with imm
-  def CV_MACUN    : RVInstMac16I<0b00, 0b001, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACUN    : RVInstMac16I<0b00, 0b111, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.macun", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MACHHUN  : RVInstMac16I<0b01, 0b001, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACHHUN  : RVInstMac16I<0b01, 0b111, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.machhun", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MACURN   : RVInstMac16I<0b00, 0b101, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACURN   : RVInstMac16I<0b10, 0b111, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.macurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MACHHURN : RVInstMac16I<0b01, 0b101, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MACHHURN : RVInstMac16I<0b11, 0b111, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.machhurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
 } // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb"
@@ -279,10 +279,10 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
                     Sched<[]>;
 
   // Signed 16x16 bit muls with imm
-  def CV_MULSN    : RVInstMac16I<0b10, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULSN    : RVInstMac16I<0b00, 0b100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulsn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MULHHSN  : RVInstMac16I<0b11, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULHHSN  : RVInstMac16I<0b01, 0b100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulhhsn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
   def CV_MULSRN   : RVInstMac16I<0b10, 0b100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
@@ -301,16 +301,16 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
                     Sched<[]>;
 
   // Unsigned 16x16 bit muls with imm
-  def CV_MULUN    : RVInstMac16I<0b00, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULUN    : RVInstMac16I<0b00, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulun", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MULHHUN  : RVInstMac16I<0b01, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULHHUN  : RVInstMac16I<0b01, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulhhun", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MULURN   : RVInstMac16I<0b00, 0b100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULURN   : RVInstMac16I<0b00, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MULHHURN : RVInstMac16I<0b01, 0b100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULHHURN : RVInstMac16I<0b01, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulhhurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
 } // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0

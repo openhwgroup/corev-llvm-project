@@ -3,12 +3,12 @@
 
 cv.machhsn t0, t1, t2, 0
 # CHECK-INSTR: cv.machhsn t0, t1, t2, 0
-# CHECK-ENCODING: [0xdb,0x12,0x73,0xc0]
+# CHECK-ENCODING: [0xdb,0x62,0x73,0x40]
 
 cv.machhsn t0, t1, zero, 16
 # CHECK-INSTR: cv.machhsn t0, t1, zero, 16
-# CHECK-ENCODING: [0xdb,0x12,0x03,0xe0]
+# CHECK-ENCODING: [0xdb,0x62,0x03,0x60]
 
 cv.machhsn t0, t1, zero, 31
 # CHECK-INSTR: cv.machhsn t0, t1, zero, 31
-# CHECK-ENCODING: [0xdb,0x12,0x03,0xfe]
+# CHECK-ENCODING: [0xdb,0x62,0x03,0x7e]
