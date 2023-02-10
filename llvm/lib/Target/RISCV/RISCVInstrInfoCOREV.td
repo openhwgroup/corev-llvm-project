@@ -315,35 +315,35 @@ let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 
   def CV_LB_rr_inc  : RVInstLoad_rr_inc<0b0000000, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lb", "$rd, ${rs2}(${rs1}!)", []>,
                       Sched<[]>;
-  def CV_LBU_rr_inc : RVInstLoad_rr_inc<0b0100000, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LBU_rr_inc : RVInstLoad_rr_inc<0b0001000, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lbu", "$rd, ${rs2}(${rs1}!)", []>,
                       Sched<[]>;
-  def CV_LH_rr_inc  : RVInstLoad_rr_inc<0b0001000, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LH_rr_inc  : RVInstLoad_rr_inc<0b0000001, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lh", "$rd, ${rs2}(${rs1}!)", []>,
                       Sched<[]>;
-  def CV_LHU_rr_inc : RVInstLoad_rr_inc<0b0101000, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LHU_rr_inc : RVInstLoad_rr_inc<0b0001001, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lhu", "$rd, ${rs2}(${rs1}!)", []>,
                       Sched<[]>;
-  def CV_LW_rr_inc  : RVInstLoad_rr_inc<0b0010000, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LW_rr_inc  : RVInstLoad_rr_inc<0b0000010, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lw", "$rd, ${rs2}(${rs1}!)", []>,
                       Sched<[]>;
 } // Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 0, Constraints = "$rs1_wb = $rs1"
 
 let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 0 in {
   // Register-Register load
-  def CV_LB_rr  : RVInstLoad_rr<0b0000000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LB_rr  : RVInstLoad_rr<0b0000100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lb", "$rd, ${rs2}(${rs1})", []>,
                       Sched<[]>;
-  def CV_LBU_rr : RVInstLoad_rr<0b0100000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LBU_rr : RVInstLoad_rr<0b0001100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lbu", "$rd, ${rs2}(${rs1})", []>,
                       Sched<[]>;
-  def CV_LH_rr  : RVInstLoad_rr<0b0001000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LH_rr  : RVInstLoad_rr<0b0000101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lh", "$rd, ${rs2}(${rs1})", []>,
                       Sched<[]>;
-  def CV_LHU_rr : RVInstLoad_rr<0b0101000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LHU_rr : RVInstLoad_rr<0b0001101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lhu", "$rd, ${rs2}(${rs1})", []>,
                       Sched<[]>;
-  def CV_LW_rr  : RVInstLoad_rr<0b0010000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+  def CV_LW_rr  : RVInstLoad_rr<0b0000110, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lw", "$rd, ${rs2}(${rs1})", []>,
                       Sched<[]>;
 
@@ -362,26 +362,26 @@ let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 
                      Sched<[]>;
 
   // Register-Register store with post-increment
-  def CV_SB_rr_inc : RVInstStore_rr_inc<0b100, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
+  def CV_SB_rr_inc : RVInstStore_rr_inc<0b011, 0b0010000, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                         "cv.sb", "$rs2, ${rs3}(${rs1}!)", []>,
                      Sched<[]>;
-  def CV_SH_rr_inc : RVInstStore_rr_inc<0b101, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
+  def CV_SH_rr_inc : RVInstStore_rr_inc<0b011, 0b0010001, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                         "cv.sh", "$rs2, ${rs3}(${rs1}!)", []>,
                      Sched<[]>;
-  def CV_SW_rr_inc : RVInstStore_rr_inc<0b110, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
+  def CV_SW_rr_inc : RVInstStore_rr_inc<0b011, 0b0010010, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                         "cv.sw", "$rs2, ${rs3}(${rs1}!)", []>,
                      Sched<[]>;
 } // Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 1, Constraints = "$rs1_wb = $rs1"
 
 let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 1 in {
   // Register-Register store
-  def CV_SB_rr : RVInstStore_rr<0b100, (outs), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
+  def CV_SB_rr : RVInstStore_rr<0b011, 0b0010100, (outs), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                 "cv.sb", "$rs2, ${rs3}(${rs1})", []>,
                  Sched<[]>;
-  def CV_SH_rr : RVInstStore_rr<0b101, (outs), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
+  def CV_SH_rr : RVInstStore_rr<0b011, 0b0010101, (outs), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                 "cv.sh", "$rs2, ${rs3}(${rs1})", []>,
                  Sched<[]>;
-  def CV_SW_rr : RVInstStore_rr<0b110, (outs), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
+  def CV_SW_rr : RVInstStore_rr<0b011, 0b0010110, (outs), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                 "cv.sw", "$rs2, ${rs3}(${rs1})", []>,
                  Sched<[]>;
 
