@@ -281,3 +281,57 @@ class RVInstStore_rr<bits<3> funct3, bits<7> funct7, dag outs, dag ins,
   let Inst{11-7} = rs3;
   let Opcode = OPC_CUSTOM1.Value;
 }
+
+
+class CVInstSIMDRR<bits<5> funct5, bit F, bit funct1, bits<3> funct3, RISCVOpcode opcode, dag outs,
+              dag ins, string opcodestr, string argstr>
+    : RVInst<outs, ins, opcodestr, argstr, [], InstFormatR> {
+  bits<5> rs2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-27} = funct5;
+  let Inst{26} = F;
+  let Inst{25} = funct1;
+  let Inst{24-20} = rs2;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = opcode.Value;
+  let DecoderNamespace = "CoreVSIMD";
+}
+
+class CVInstSIMDR<bits<5> funct5, bit F, bit funct1, bits<3> funct3, RISCVOpcode opcode, dag outs,
+              dag ins, string opcodestr, string argstr>
+    : RVInst<outs, ins, opcodestr, argstr, [], InstFormatR> {
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-27} = funct5;
+  let Inst{26} = F;
+  let Inst{25} = funct1;
+  let Inst{24-20} = 0;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = opcode.Value;
+  let DecoderNamespace = "CoreVSIMD";
+}
+
+class CVInstSIMDRI<bits<5> funct5, bit F, bits<3> funct3, RISCVOpcode opcode, dag outs,
+              dag ins, string opcodestr, string argstr>
+    : RVInst<outs, ins, opcodestr, argstr, [], InstFormatOther> {
+  bits<6> imm6;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-27} = funct5;
+  let Inst{26} = F;
+  let Inst{25} = imm6{0}; // funct1 unused
+  let Inst{24-20} = imm6{5-1};
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = opcode.Value;
+  let DecoderNamespace = "CoreVSIMD";
+}
