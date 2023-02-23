@@ -1,4 +1,4 @@
-# RUN: llvm-mc -triple=riscv32 --mattr=+xcorevmac -show-encoding %s \
+# RUN: llvm-mc -triple=riscv32 --mattr=+xcvmac -show-encoding %s \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ENCODING,CHECK-INSTR
 
 cv.mulhhu t0, t1, t2

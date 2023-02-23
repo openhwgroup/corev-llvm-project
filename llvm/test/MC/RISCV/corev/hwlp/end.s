@@ -1,4 +1,4 @@
-# RUN: llvm-mc -triple=riscv32 --mattr=+xcorevhwlp -show-encoding %s \
+# RUN: llvm-mc -triple=riscv32 --mattr=+xcvhwlp -show-encoding %s \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ENCODING,CHECK-INSTR
 
 cv.end 0, t0

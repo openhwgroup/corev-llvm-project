@@ -1,4 +1,4 @@
-# RUN: llvm-mc -triple=riscv32 --mattr=+xcorev -show-encoding %s 2>&1 \
+# RUN: llvm-mc -triple=riscv32 --mattr=+xcv -show-encoding %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-INSTR,CHECK-ENCODING
 
 # Load instructions

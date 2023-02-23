@@ -1,4 +1,4 @@
-# RUN: llvm-mc -triple=riscv32 --mattr=+xcorevalu -show-encoding %s \
+# RUN: llvm-mc -triple=riscv32 --mattr=+xcvalu -show-encoding %s \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ENCODING,CHECK-INSTR
 
 cv.subrnr t0, t1, t2

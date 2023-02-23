@@ -1,4 +1,4 @@
-# RUN: not llvm-mc -triple=riscv32 --mattr=+xcorevalu %s 2>&1 \
+# RUN: not llvm-mc -triple=riscv32 --mattr=+xcvalu %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ERROR
 
 cv.suburnr t0, t1, 0

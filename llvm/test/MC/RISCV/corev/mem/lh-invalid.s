@@ -1,4 +1,4 @@
-# RUN: not llvm-mc -triple=riscv32 --mattr=+xcorevmem %s 2>&1 \
+# RUN: not llvm-mc -triple=riscv32 --mattr=+xcvmem %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ERROR
 
 cv.lh t0, 0(0!)

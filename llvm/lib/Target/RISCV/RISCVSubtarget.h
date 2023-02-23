@@ -94,11 +94,11 @@ private:
   bool HasRV32 = false;
   bool HasStdExtZvlsseg = false;
   bool HasStdExtZvamo = false;
-  bool HasExtXCoreV = false;
-  bool HasExtXcvHwlp = false;
-  bool HasExtXCoreVMac = false;
-  bool HasExtXCoreVAlu = false;
-  bool HasExtXCoreVMem = false;
+  bool HasExtXcv = false;
+  bool HasExtXcvhwlp = false;
+  bool HasExtXcvmac = false;
+  bool HasExtXcvalu = false;
+  bool HasExtXcvmem = false;
   bool HasExtXcvsimd = false;
   bool HasExtXcvbitmanip = false;
   bool HasExtXcvbi = false;
@@ -203,11 +203,11 @@ public:
   bool hasStdExtZbproposedc() const { return HasStdExtZbproposedc; }
   bool hasStdExtZvlsseg() const { return HasStdExtZvlsseg; }
   bool hasStdExtZvamo() const { return HasStdExtZvamo; }
-  bool hasExtXCoreV() const { return HasExtXCoreV; }
-  bool hasExtXcvHwlp() const { return HasExtXcvHwlp; }
-  bool hasExtXCoreVMac() const { return HasExtXCoreVMac; }
-  bool hasExtXCoreVAlu() const { return HasExtXCoreVAlu; }
-  bool hasExtXCoreVMem() const { return HasExtXCoreVMem; }
+  bool hasExtXcv() const { return HasExtXcv; }
+  bool hasExtXcvhwlp() const { return HasExtXcvhwlp; }
+  bool hasExtXcvmac() const { return HasExtXcvmac; }
+  bool hasExtXcvalu() const { return HasExtXcvalu; }
+  bool hasExtXcvmem() const { return HasExtXcvmem; }
   bool hasExtXcvsimd() const { return HasExtXcvsimd; }
   bool hasExtXcvbitmanip() const { return HasExtXcvbitmanip; }
   bool hasExtXcvbi() const { return HasExtXcvbi; }
