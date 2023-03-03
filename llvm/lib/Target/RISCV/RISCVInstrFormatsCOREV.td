@@ -12,33 +12,33 @@
 //
 //===----------------------------------------------------------------------===//
 
-class RVInstHwlp_i<bits<3> funct3, dag ins, string opcodestr, string argstr>
+class RVInstHwlp_i<bits<4> rd, dag ins, string opcodestr, string argstr>
     : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<12> imm12;
   bits<1> imm1;
 
   let Inst{31-20} = imm12;
-  let Inst{19-15} = 0b00000;
-  let Inst{14-12} = funct3;
-  let Inst{11-8} = 0b0000;
+  let Inst{19-15} = 0b00000; // rs1
+  let Inst{14-12} = 0b100; // funct3
+  let Inst{11-8} = rd;
   let Inst{7} = imm1;
-  let Opcode = OPC_CUSTOM3.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
-class RVInstHwlp_r<bits<3> funct3, dag ins, string opcodestr, string argstr>
+class RVInstHwlp_r<bits<4> rd, dag ins, string opcodestr, string argstr>
     : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<5> rs1;
   bits<1> imm1;
 
-  let Inst{31-20} = 0;
+  let Inst{31-20} = 0; // imm12
   let Inst{19-15} = rs1;
-  let Inst{14-12} = funct3;
-  let Inst{11-8} = 0b0000;
+  let Inst{14-12} = 0b100; // funct3
+  let Inst{11-8} = rd;
   let Inst{7} = imm1;
-  let Opcode = OPC_CUSTOM3.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
-class RVInstHwlp_ri<bits<3> funct3, dag ins, string opcodestr, string argstr>
+class RVInstHwlp_ri<bits<4> rd, dag ins, string opcodestr, string argstr>
     : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<12> imm12;
   bits<5> rs1;
@@ -46,13 +46,13 @@ class RVInstHwlp_ri<bits<3> funct3, dag ins, string opcodestr, string argstr>
 
   let Inst{31-20} = imm12;
   let Inst{19-15} = rs1;
-  let Inst{14-12} = funct3;
-  let Inst{11-8} = 0b0000;
+  let Inst{14-12} = 0b100; // funct3
+  let Inst{11-8} = rd;
   let Inst{7} = imm1;
-  let Opcode = OPC_CUSTOM3.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
-class RVInstHwlp_ii<bits<3> funct3, dag ins, string opcodestr, string argstr>
+class RVInstHwlp_ii<bits<4> rd, dag ins, string opcodestr, string argstr>
     : RVInst<(outs), ins, opcodestr, argstr, [], InstFormatCVHwlp> {
   bits<12> imm12;
   bits<5> imm5;
@@ -60,10 +60,10 @@ class RVInstHwlp_ii<bits<3> funct3, dag ins, string opcodestr, string argstr>
 
   let Inst{31-20} = imm12;
   let Inst{19-15} = imm5;
-  let Inst{14-12} = funct3;
-  let Inst{11-8} = 0b0000;
+  let Inst{14-12} = 0b100; // funct3
+  let Inst{11-8} = rd;
   let Inst{7} = imm1;
-  let Opcode = OPC_CUSTOM3.Value;
+  let Opcode = OPC_CUSTOM1.Value;
 }
 
 class RVInstMac<bits<7> funct7, bits<3> funct3, dag outs, dag ins,

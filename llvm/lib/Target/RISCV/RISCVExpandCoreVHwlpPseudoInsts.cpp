@@ -51,7 +51,7 @@ namespace {
 char RISCVExpandCoreVHwlpPseudo::ID = 0;
 
 bool RISCVExpandCoreVHwlpPseudo::runOnMachineFunction(MachineFunction &MF) {
-  if (!MF.getSubtarget<RISCVSubtarget>().hasExtXCoreVHwlp()) {
+  if (!MF.getSubtarget<RISCVSubtarget>().hasExtXcvHwlp()) {
     return false;
   }
 

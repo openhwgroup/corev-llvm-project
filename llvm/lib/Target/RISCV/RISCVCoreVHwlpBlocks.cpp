@@ -50,7 +50,7 @@ namespace {
 char RISCVCoreVHwlpBlocks::ID = 0;
 
 bool RISCVCoreVHwlpBlocks::runOnMachineFunction(MachineFunction &MF) {
-  if (!MF.getSubtarget<RISCVSubtarget>().hasExtXCoreVHwlp()) {
+  if (!MF.getSubtarget<RISCVSubtarget>().hasExtXcvHwlp()) {
     return false;
   }
 

@@ -95,7 +95,7 @@ private:
   bool HasStdExtZvlsseg = false;
   bool HasStdExtZvamo = false;
   bool HasExtXCoreV = false;
-  bool HasExtXCoreVHwlp = false;
+  bool HasExtXcvHwlp = false;
   bool HasExtXCoreVMac = false;
   bool HasExtXCoreVAlu = false;
   bool HasExtXCoreVMem = false;
@@ -202,7 +202,7 @@ public:
   bool hasStdExtZvlsseg() const { return HasStdExtZvlsseg; }
   bool hasStdExtZvamo() const { return HasStdExtZvamo; }
   bool hasExtXCoreV() const { return HasExtXCoreV; }
-  bool hasExtXCoreVHwlp() const { return HasExtXCoreVHwlp; }
+  bool hasExtXcvHwlp() const { return HasExtXcvHwlp; }
   bool hasExtXCoreVMac() const { return HasExtXCoreVMac; }
   bool hasExtXCoreVAlu() const { return HasExtXCoreVAlu; }
   bool hasExtXCoreVMem() const { return HasExtXCoreVMem; }
