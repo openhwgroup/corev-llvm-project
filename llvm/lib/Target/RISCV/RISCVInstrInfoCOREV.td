@@ -313,10 +313,10 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
   def CV_MULHHUN  : RVInstMac16I<0b01, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulhhun", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MULURN   : RVInstMac16I<0b00, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULURN   : RVInstMac16I<0b10, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-  def CV_MULHHURN : RVInstMac16I<0b01, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
+  def CV_MULHHURN : RVInstMac16I<0b11, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulhhurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
 } // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0
