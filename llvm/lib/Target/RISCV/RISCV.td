@@ -472,14 +472,22 @@ def HasExtXcvmem
     : Predicate<"Subtarget->hasExtXcvmem()">,
                AssemblerPredicate<(any_of FeatureExtXcvmem),
                "'Xcvmem' (Post-incrementing Load & Store)">;
+// CORE-V Event Load Word Extension
+def FeatureExtXcvelw
+   : SubtargetFeature<"xcvelw", "HasExtXcvelw", "true",
+                      "'Xcvelw' (Event Load Word)">;
+def HasExtXcvelw
+   : Predicate<"Subtarget->hasExtXcvelw()">,
+              AssemblerPredicate<(any_of FeatureExtXcvelw),
+              "'Xcvelw' (Event Load Word)">;
 // All CORE-V extensions
 def FeatureExtXcv
     : SubtargetFeature<"xcv", "HasExtXcv", "true",
                        "'Xcv' (CORE-V extensions)",
                        [FeatureExtXcvhwlp, FeatureExtXcvmac,
-                        FeatureExtXcvalu, FeatureExtXcvsimd, 
+                        FeatureExtXcvalu, FeatureExtXcvsimd,
                         FeatureExtXcvbitmanip, FeatureExtXcvmem,
-                        FeatureExtXcvbi]>;
+                        FeatureExtXcvbi,FeatureExtXcvelw]>;
 def HasExtXCoreV : Predicate<"Subtarget->hasExtXcv()">,
                               AssemblerPredicate<(all_of FeatureExtXcv),
                               "'Xcv' (CORE-V extensions)">;

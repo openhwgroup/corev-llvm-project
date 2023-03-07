@@ -100,6 +100,7 @@ private:
   bool HasExtXcvalu = false;
   bool HasExtXcvmem = false;
   bool HasExtXcvsimd = false;
+  bool HasExtXcvelw = false;
   bool HasExtXcvbitmanip = false;
   bool HasExtXcvbi = false;
   bool HasRV64 = false;
@@ -209,6 +210,7 @@ public:
   bool hasExtXcvalu() const { return HasExtXcvalu; }
   bool hasExtXcvmem() const { return HasExtXcvmem; }
   bool hasExtXcvsimd() const { return HasExtXcvsimd; }
+  bool hasExtXcvelw() const { return HasExtXcvelw; }
   bool hasExtXcvbitmanip() const { return HasExtXcvbitmanip; }
   bool hasExtXcvbi() const { return HasExtXcvbi; }
   bool is64Bit() const { return HasRV64; }

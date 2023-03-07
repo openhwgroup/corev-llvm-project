@@ -590,15 +590,15 @@ let Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 0, mayStore = 1 i
 } // Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 0, mayStore = 1
 
 class CVBitManipRII<bits<2> funct2, bits<3> funct3, string opcodestr>
-  : RVInstBitManip<funct2, funct3, (outs GPR:$rd), (ins GPR:$rs1, uimm5:$is3, uimm5:$is2), 
+  : RVInstBitManip<funct2, funct3, (outs GPR:$rd), (ins GPR:$rs1, uimm5:$is3, uimm5:$is2),
                    opcodestr, "$rd, $rs1, $is3, $is2", []>;
 
 class CVBitManipRR<bits<7> funct7, string opcodestr>
-  : RVInstAlu_rr<funct7, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2), 
+  : RVInstAlu_rr<funct7, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                    opcodestr, "$rd, $rs1, $rs2", []>;
 
 class CVBitManipR<bits<7> funct7, string opcodestr>
-  : RVInstAlu_r<funct7, 0b011, (outs GPR:$rd), (ins GPR:$rs1), 
+  : RVInstAlu_r<funct7, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
                    opcodestr, "$rd, $rs1", []>;
 
 let Predicates = [HasExtXcvbitmanip, IsRV32], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
@@ -607,18 +607,18 @@ let Predicates = [HasExtXcvbitmanip, IsRV32], hasSideEffects = 0, mayLoad = 0, m
 
   def CV_BCLR : CVBitManipRII<0b00, 0b001, "cv.bclr">;
   def CV_BSET : CVBitManipRII<0b01, 0b001, "cv.bset">;
-  def CV_BITREV : RVInstBitManip<0b11, 0b001, (outs GPR:$rd), (ins GPR:$rs1, uimm2:$is3, uimm5:$is2), 
+  def CV_BITREV : RVInstBitManip<0b11, 0b001, (outs GPR:$rd), (ins GPR:$rs1, uimm2:$is3, uimm5:$is2),
                                  "cv.bitrev", "$rd, $rs1, $is3, $is2", []>;
 
   def CV_EXTRACTR : CVBitManipRR<0b0011000, "cv.extractr">;
   def CV_EXTRACTUR : CVBitManipRR<0b0011001, "cv.extractur">;
 
   let Constraints = "$rd = $rd_wb" in {
-  def CV_INSERT : RVInstBitManip<0b10, 0b000, (outs GPR:$rd_wb), 
-                                 (ins GPR:$rs1, uimm5:$is3, uimm5:$is2, GPR:$rd), 
+  def CV_INSERT : RVInstBitManip<0b10, 0b000, (outs GPR:$rd_wb),
+                                 (ins GPR:$rs1, uimm5:$is3, uimm5:$is2, GPR:$rd),
                                  "cv.insert", "$rd, $rs1, $is3, $is2", []>;
-  def CV_INSERTR : RVInstAlu_rr<0b0011010, 0b011, (outs GPR:$rd_wb), 
-                                 (ins GPR:$rs1, GPR:$rs2, GPR:$rd), 
+  def CV_INSERTR : RVInstAlu_rr<0b0011010, 0b011, (outs GPR:$rd_wb),
+                                 (ins GPR:$rs1, GPR:$rs2, GPR:$rd),
                                  "cv.insertr", "$rd, $rs1, $rs2", []>;
   }
 
@@ -631,6 +631,12 @@ let Predicates = [HasExtXcvbitmanip, IsRV32], hasSideEffects = 0, mayLoad = 0, m
   def CV_CLB : CVBitManipR<0b0100011, "cv.clb">;
   def CV_CNT : CVBitManipR<0b0100100, "cv.cnt">;
 }
+
+let Predicates = [HasExtXcvelw], hasSideEffects = 0, mayLoad = 1, mayStore = 0 in {
+  def CV_ELW : RVInstLoad_ri_inc<0b011, (outs GPR:$rd), (ins GPR:$rs1, simm12:$imm12),
+                                 "cv.elw", "$rd, ${imm12}(${rs1})", []>,
+               Sched<[]>;
+} // Predicates = [HasExtXcvelw], hasSideEffects = 0, mayLoad = 1, mayStore = 0
 
 //===----------------------------------------------------------------------===//
 // CORE-V specific helper fragments
