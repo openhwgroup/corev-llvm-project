@@ -40,14 +40,14 @@ def cv_uimm1 : Operand<XLenVT>, ImmLeaf<XLenVT, [{return isUInt<1>(Imm);}]> {
 }
 
 def cv_uimm5 : Operand<XLenVT>,
-               ImmLeaf<XLenVT, [{return isUInt<5>(Imm) && (Imm & 1) == 0;}]> {
+               ImmLeaf<XLenVT, [{return isShiftedUInt<5, 2>(Imm);}]> {
   let ParserMatchClass = CVUImmAsmOperand<5>;
-  let EncoderMethod = "getImmOpValue";
-  let DecoderMethod = "decodeUImmOperand<5>";
+  let EncoderMethod = "getImmOpValueAsr2";
+  let DecoderMethod = "decodeUImmOperandAndLsl2<5>";
   let MCOperandPredicate = [{
     int64_t Imm;
     if (MCOp.evaluateAsConstantImm(Imm))
-      return isUInt<5>(Imm) && (Imm & 1) == 0;
+      return isShiftedUInt<5, 2>(Imm);
     return MCOp.isBareSymbolRef();
   }];
   let OperandType = "OPERAND_UIMM5";
@@ -55,14 +55,14 @@ def cv_uimm5 : Operand<XLenVT>,
 }
 
 def cv_uimm12 : Operand<XLenVT>,
-                ImmLeaf<XLenVT, [{return isUInt<12>(Imm) && (Imm & 1) == 0;}]> {
+                ImmLeaf<XLenVT, [{return isShiftedUInt<12, 2>(Imm);}]> {
   let ParserMatchClass = CVUImmAsmOperand<12>;
-  let EncoderMethod = "getImmOpValue";
-  let DecoderMethod = "decodeUImmOperand<12>";
+  let EncoderMethod = "getImmOpValueAsr2";
+  let DecoderMethod = "decodeUImmOperandAndLsl2<12>";
   let MCOperandPredicate = [{
     int64_t Imm;
     if (MCOp.evaluateAsConstantImm(Imm))
-      return isUInt<12>(Imm) && (Imm & 1) == 0;
+      return isShiftedUInt<12, 2>(Imm);
     return MCOp.isBareSymbolRef();
   }];
   let OperandType = "OPERAND_UIMM12";

@@ -601,7 +601,7 @@ public:
     if (!IsConstantImm)
       IsValid = RISCVAsmParser::classifySymbolRef(getImm(), VK);
     else
-      IsValid = isUInt<5>(Imm) && (Imm & 1) == 0;
+      IsValid = isShiftedUInt<5, 2>(Imm);
     return IsValid && VK == RISCVMCExpr::VK_RISCV_None;
   }
 
@@ -617,7 +617,7 @@ public:
     if (!IsConstantImm)
       IsValid = RISCVAsmParser::classifySymbolRef(getImm(), VK);
     else
-      IsValid = isUInt<12>(Imm) && (Imm & 1) == 0;
+      IsValid = isShiftedUInt<12, 2>(Imm);
     return IsValid && VK == RISCVMCExpr::VK_RISCV_None;
   }
 
@@ -1331,15 +1331,15 @@ bool RISCVAsmParser::MatchAndEmitInstruction(SMLoc IDLoc, unsigned &Opcode,
                                       "loop ID must be an integer in the range");
   }
   case Match_InvalidCVUImm5: {
-    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 5) - 2,
-                                      "immediate must be an even integer in the range");
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 7) - 4,
+                                      "immediate must be a multiple of 4 bytes in the range");
   }
   case Match_InvalidCVUImm6: {
     return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 6) - 1);
   }
   case Match_InvalidCVUImm12: {
-    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 12) - 2,
-                                      "immediate must be an even integer in the range");
+    return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 14) - 4,
+                                      "immediate must be a multiple of 4 bytes in the range");
   }
   }
 

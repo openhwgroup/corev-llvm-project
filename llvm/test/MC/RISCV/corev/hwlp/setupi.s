@@ -1,13 +1,13 @@
 # RUN: llvm-mc -triple=riscv32 --mattr=+xcorevhwlp -show-encoding %s \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ENCODING,CHECK-INSTR
 
-cv.setupi 1, 0, 30
-# CHECK-INSTR: cv.setupi 1, 0, 30
-# CHECK-ENCODING: [0xab,0x46,0x0f,0x00]
+cv.setupi 1, 0, 32
+# CHECK-INSTR: cv.setupi 1, 0, 32
+# CHECK-ENCODING: [0xab,0x46,0x04,0x00]
 
-cv.setupi 1, 0, 18
-# CHECK-INSTR: cv.setupi 1, 0, 18
-# CHECK-ENCODING: [0xab,0x46,0x09,0x00]
+cv.setupi 1, 0, 20
+# CHECK-INSTR: cv.setupi 1, 0, 20
+# CHECK-ENCODING: [0xab,0xc6,0x02,0x00]
 
 cv.setupi 1, 0, 0
 # CHECK-INSTR: cv.setupi 1, 0, 0
@@ -27,4 +27,4 @@ cv.setupi 0, 0, 0
 
 cv.setupi 0, 0x400, 0x10
 # CHECK-INSTR: cv.setupi 0, 1024, 16
-# CHECK-ENCODING: [0x2b,0x46,0x08,0x40]
+# CHECK-ENCODING: [0x2b,0x46,0x02,0x40]

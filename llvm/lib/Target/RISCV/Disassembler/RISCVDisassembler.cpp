@@ -349,6 +349,15 @@ static DecodeStatus decodeFRMArg(MCInst &Inst, uint64_t Imm, int64_t Address,
   return MCDisassembler::Success;
 }
 
+template <unsigned N>
+static DecodeStatus decodeUImmOperandAndLsl2(MCInst &Inst, uint64_t Imm,
+                                             int64_t Address,
+                                             const MCDisassembler *Decoder) {
+  assert(isUInt<N>(Imm) && "Invalid immediate");
+  Inst.addOperand(MCOperand::createImm(Imm << 2));
+  return MCDisassembler::Success;
+}
+
 static DecodeStatus decodeRVCInstrSImm(MCInst &Inst, unsigned Insn,
                                        uint64_t Address,
                                        const MCDisassembler *Decoder);
