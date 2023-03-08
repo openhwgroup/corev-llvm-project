@@ -2,16 +2,16 @@
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ERROR
 
 cv.endi 1, 4093
-# CHECK-ERROR: immediate must be an even integer in the range [0, 4094]
+# CHECK-ERROR: immediate must be a multiple of 4 bytes in the range [0, 16380]
 
-cv.endi 1, 4096
-# CHECK-ERROR: immediate must be an even integer in the range [0, 4094]
+cv.endi 1, 131072
+# CHECK-ERROR: immediate must be a multiple of 4 bytes in the range [0, 16380]
 
 cv.endi 0, -6
-# CHECK-ERROR: immediate must be an even integer in the range [0, 4094]
+# CHECK-ERROR: immediate must be a multiple of 4 bytes in the range [0, 16380]
 
 cv.endi 0, -7
-# CHECK-ERROR: immediate must be an even integer in the range [0, 4094]
+# CHECK-ERROR: immediate must be a multiple of 4 bytes in the range [0, 16380]
 
 cv.endi 2, 0
 # CHECK-ERROR: loop ID must be an integer in the range [0, 1]
@@ -23,7 +23,7 @@ cv.endi s2, 0
 # CHECK-ERROR: loop ID must be an integer in the range [0, 1]
 
 cv.endi 0, s2
-# CHECK-ERROR: immediate must be an even integer in the range [0, 4094]
+# CHECK-ERROR: immediate must be a multiple of 4 bytes in the range [0, 16380]
 
 cv.endi 2
 # CHECK-ERROR: loop ID must be an integer in the range [0, 1]
