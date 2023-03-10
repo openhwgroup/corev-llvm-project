@@ -69,31 +69,31 @@ cv.minu.sc.b s0, s1, s2
 // cv.minu.sci.h
 //===----------------------------------------------------------------------===//
 
-cv.minu.sci.h t0, t1, -32
-# CHECK-INSTR: cv.minu.sci.h t0, t1, -32
+cv.minu.sci.h t0, t1, 32
+# CHECK-INSTR: cv.minu.sci.h t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x62,0x03,0x29]
 
 cv.minu.sci.h a0, a1, 7
 # CHECK-INSTR: cv.minu.sci.h a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xe5,0x35,0x2a]
 
-cv.minu.sci.h s0, s1, -1
-# CHECK-INSTR: cv.minu.sci.h s0, s1, -1
+cv.minu.sci.h s0, s1, 63
+# CHECK-INSTR: cv.minu.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x2b]
 
 //===----------------------------------------------------------------------===//
 // cv.minu.sci.b
 //===----------------------------------------------------------------------===//
 
-cv.minu.sci.b t0, t1, -32
-# CHECK-INSTR: cv.minu.sci.b t0, t1, -32
+cv.minu.sci.b t0, t1, 32
+# CHECK-INSTR: cv.minu.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0x29]
 
 cv.minu.sci.b a0, a1, 7
 # CHECK-INSTR: cv.minu.sci.b a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xf5,0x35,0x2a]
 
-cv.minu.sci.b s0, s1, -1
-# CHECK-INSTR: cv.minu.sci.b s0, s1, -1
+cv.minu.sci.b s0, s1, 63
+# CHECK-INSTR: cv.minu.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x2b]
 

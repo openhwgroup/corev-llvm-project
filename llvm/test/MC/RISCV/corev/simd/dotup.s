@@ -69,31 +69,31 @@ cv.dotup.sc.b s0, s1, s2
 // cv.dotup.sci.h
 //===----------------------------------------------------------------------===//
 
-cv.dotup.sci.h t0, t1, -32
-# CHECK-INSTR: cv.dotup.sci.h t0, t1, -32
+cv.dotup.sci.h t0, t1, 32
+# CHECK-INSTR: cv.dotup.sci.h t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x62,0x03,0x81]
 
 cv.dotup.sci.h a0, a1, 7
 # CHECK-INSTR: cv.dotup.sci.h a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xe5,0x35,0x82]
 
-cv.dotup.sci.h s0, s1, -1
-# CHECK-INSTR: cv.dotup.sci.h s0, s1, -1
+cv.dotup.sci.h s0, s1, 63
+# CHECK-INSTR: cv.dotup.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x83]
 
 //===----------------------------------------------------------------------===//
 // cv.dotup.sci.b
 //===----------------------------------------------------------------------===//
 
-cv.dotup.sci.b t0, t1, -32
-# CHECK-INSTR: cv.dotup.sci.b t0, t1, -32
+cv.dotup.sci.b t0, t1, 32
+# CHECK-INSTR: cv.dotup.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0x81]
 
 cv.dotup.sci.b a0, a1, 7
 # CHECK-INSTR: cv.dotup.sci.b a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xf5,0x35,0x82]
 
-cv.dotup.sci.b s0, s1, -1
-# CHECK-INSTR: cv.dotup.sci.b s0, s1, -1
+cv.dotup.sci.b s0, s1, 63
+# CHECK-INSTR: cv.dotup.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x83]
 

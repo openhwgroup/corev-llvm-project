@@ -69,31 +69,31 @@ cv.srl.sc.b s0, s1, s2
 // cv.srl.sci.h
 //===----------------------------------------------------------------------===//
 
-cv.srl.sci.h t0, t1, -32
-# CHECK-INSTR: cv.srl.sci.h t0, t1, -32
+cv.srl.sci.h t0, t1, 32
+# CHECK-INSTR: cv.srl.sci.h t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x62,0x03,0x41]
 
 cv.srl.sci.h a0, a1, 7
 # CHECK-INSTR: cv.srl.sci.h a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xe5,0x35,0x42]
 
-cv.srl.sci.h s0, s1, -1
-# CHECK-INSTR: cv.srl.sci.h s0, s1, -1
+cv.srl.sci.h s0, s1, 63
+# CHECK-INSTR: cv.srl.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x43]
 
 //===----------------------------------------------------------------------===//
 // cv.srl.sci.b
 //===----------------------------------------------------------------------===//
 
-cv.srl.sci.b t0, t1, -32
-# CHECK-INSTR: cv.srl.sci.b t0, t1, -32
+cv.srl.sci.b t0, t1, 32
+# CHECK-INSTR: cv.srl.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0x41]
 
 cv.srl.sci.b a0, a1, 7
 # CHECK-INSTR: cv.srl.sci.b a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xf5,0x35,0x42]
 
-cv.srl.sci.b s0, s1, -1
-# CHECK-INSTR: cv.srl.sci.b s0, s1, -1
+cv.srl.sci.b s0, s1, 63
+# CHECK-INSTR: cv.srl.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x43]
 

@@ -69,31 +69,31 @@ cv.cmpgtu.sc.b s0, s1, s2
 // cv.cmpgtu.sci.h
 //===----------------------------------------------------------------------===//
 
-cv.cmpgtu.sci.h t0, t1, -32
-# CHECK-INSTR: cv.cmpgtu.sci.h t0, t1, -32
+cv.cmpgtu.sci.h t0, t1, 32
+# CHECK-INSTR: cv.cmpgtu.sci.h t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x62,0x03,0x35]
 
 cv.cmpgtu.sci.h a0, a1, 7
 # CHECK-INSTR: cv.cmpgtu.sci.h a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xe5,0x35,0x36]
 
-cv.cmpgtu.sci.h s0, s1, -1
-# CHECK-INSTR: cv.cmpgtu.sci.h s0, s1, -1
+cv.cmpgtu.sci.h s0, s1, 63
+# CHECK-INSTR: cv.cmpgtu.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x37]
 
 //===----------------------------------------------------------------------===//
 // cv.cmpgtu.sci.b
 //===----------------------------------------------------------------------===//
 
-cv.cmpgtu.sci.b t0, t1, -32
-# CHECK-INSTR: cv.cmpgtu.sci.b t0, t1, -32
+cv.cmpgtu.sci.b t0, t1, 32
+# CHECK-INSTR: cv.cmpgtu.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0x35]
 
 cv.cmpgtu.sci.b a0, a1, 7
 # CHECK-INSTR: cv.cmpgtu.sci.b a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xf5,0x35,0x36]
 
-cv.cmpgtu.sci.b s0, s1, -1
-# CHECK-INSTR: cv.cmpgtu.sci.b s0, s1, -1
+cv.cmpgtu.sci.b s0, s1, 63
+# CHECK-INSTR: cv.cmpgtu.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x37]
 
