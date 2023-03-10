@@ -583,3 +583,12 @@
 // RUN: %clang -target riscv32-unknown-elf -march=rv32i_zmmul1p0 -### %s \
 // RUN: -fsyntax-only 2>&1 | FileCheck -check-prefix=RV32-ZMMUL-GOODVERS %s
 // RV32-ZMMUL-GOODVERS: "-target-feature" "+zmmul"
+
+// RUN: %clang -target riscv32-unknown-elf -march=rv32i_xcvsimd1p0 -### %s \
+// RUN: -fsyntax-only 2>&1 | FileCheck -check-prefix=RV32-XCVSIMD-GOODVERS %s
+// RV32-XCVSIMD-GOODVERS: "-target-feature" "+xcvsimd"
+
+// RUN: %clang -target riscv32-unknown-elf -march=rv32i_xcvsimd2p0 -### %s \
+// RUN: -fsyntax-only 2>&1 | FileCheck -check-prefix=RV32-XCVSIMD-BADVERS %s
+// RV32-XCVSIMD-BADVERS: error: invalid arch name 'rv32i_xcvsimd2p0'
+// RV32-XCVSIMD-BADVERS: unsupported version number 2.0 for extension
