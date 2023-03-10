@@ -33,14 +33,15 @@ jobs:
       fail-fast: false
       matrix:
         os:
+          # Note that for all the below builds, with cold build caches all the
+          # below can get close to hitting the maximum execution time of 360
+          # minutes. Should these builds fail, it should be checked whether it
+          # was due to timeouts, and in theory when re-run, the cache will now
+          # be warm, and tests will now succeed.
           - ubuntu-latest
           # Use windows-2019 due to:
           # https://developercommunity.visualstudio.com/t/Prev-Issue---with-__assume-isnan-/1597317
-
-          # Disable windows for the time being. Because we're using GitHub
-          # hosted runner, which maximum number of timeout-minutes is 360.
-          # Otherwise, the job will exceeded the time and be canceled.
-          # - windows-2019
+          - windows-2019
           # We're using a specific version of macOS due to:
           # https://github.com/actions/virtual-environments/issues/5900
           - macOS-11
