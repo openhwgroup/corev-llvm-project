@@ -1290,6 +1290,7 @@ bool RISCVInstrInfo::verifyInstruction(const MachineInstr &MI,
         CASE_OPERAND_UIMM(3)
         CASE_OPERAND_UIMM(4)
         CASE_OPERAND_UIMM(5)
+        CASE_OPERAND_UIMM(6)
         CASE_OPERAND_UIMM(7)
         case RISCVOp::OPERAND_UIMM7_LSB00:
           Ok = isShiftedUInt<5, 2>(Imm);
