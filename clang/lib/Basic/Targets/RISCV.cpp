@@ -201,6 +201,11 @@ const Builtin::Info RISCVTargetInfo::BuiltinInfo[] = {
     {#ID, TYPE, ATTRS, nullptr, ALL_LANGUAGES, FEATURE},
 #include "clang/Basic/BuiltinsRISCVVector.def"
 #define BUILTIN(ID, TYPE, ATTRS)                                               \
+  {"__builtin_riscv_cv_" #ID, TYPE, ATTRS, nullptr, ALL_LANGUAGES, nullptr},
+#define TARGET_BUILTIN(ID, TYPE, ATTRS, FEATURE)                               \
+    {"__builtin_riscv_cv_" #ID, TYPE, ATTRS, nullptr, ALL_LANGUAGES, FEATURE},
+#include "clang/Basic/BuiltinsRISCVCOREV.def"
+#define BUILTIN(ID, TYPE, ATTRS)                                               \
   {#ID, TYPE, ATTRS, nullptr, ALL_LANGUAGES, nullptr},
 #define TARGET_BUILTIN(ID, TYPE, ATTRS, FEATURE)                               \
     {#ID, TYPE, ATTRS, nullptr, ALL_LANGUAGES, FEATURE},
