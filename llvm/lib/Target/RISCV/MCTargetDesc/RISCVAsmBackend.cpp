@@ -492,9 +492,13 @@ static uint64_t adjustFixupValue(const MCFixup &Fixup, uint64_t Value,
     return Value;
   }
   case RISCV::fixup_riscv_cvpcrel_ui12:
-    return (Value >> 1) & 0xfff;
+    if (!isShiftedUInt<12, 2>(Value))
+      Ctx.reportError(Fixup.getLoc(), "Hardware loop target out of range");
+    return (Value >> 2) & 0xfff;
   case RISCV::fixup_riscv_cvpcrel_urs1:
-    return (Value >> 1) & 0x1f;
+    if (!isShiftedUInt<5, 2>(Value))
+      Ctx.reportError(Fixup.getLoc(), "Hardware loop target out of range");
+    return (Value >> 2) & 0x1f;
   }
 }
 
