@@ -335,3 +335,20 @@ class CVInstSIMDRI<bits<5> funct5, bit F, bits<3> funct3, RISCVOpcode opcode, da
   let Opcode = opcode.Value;
   let DecoderNamespace = "CoreVSIMD";
 }
+
+class RVInstBitManip<bits<2> funct2, bits<3> funct3, dag outs, dag ins,
+                    string opcodestr, string argstr, list<dag> pattern>
+    : RVInst<outs, ins, opcodestr, argstr, pattern, InstFormatOther> {
+  bits<5> is3;
+  bits<5> is2;
+  bits<5> rs1;
+  bits<5> rd;
+
+  let Inst{31-30} = funct2;
+  let Inst{29-25} = is3;
+  let Inst{24-20} = is2;
+  let Inst{19-15} = rs1;
+  let Inst{14-12} = funct3;
+  let Inst{11-7} = rd;
+  let Opcode = OPC_CUSTOM2.Value;
+}
