@@ -52,6 +52,7 @@ private:
                          MachineBasicBlock::iterator MBBI, unsigned Opcode);
   bool expandVSPILL(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
   bool expandVRELOAD(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
+  bool expandCoreVShuffle(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
 };
 
 char RISCVExpandPseudo::ID = 0;
@@ -132,6 +133,8 @@ bool RISCVExpandPseudo::expandMI(MachineBasicBlock &MBB,
   case RISCV::PseudoVRELOAD7_M1:
   case RISCV::PseudoVRELOAD8_M1:
     return expandVRELOAD(MBB, MBBI);
+  case RISCV::CV_SHUFFLE_SCI_B_PSEUDO:
+    return expandCoreVShuffle(MBB, MBBI);
   }
 
   return false;
@@ -325,6 +328,23 @@ bool RISCVExpandPseudo::expandVRELOAD(MachineBasicBlock &MBB,
           .addReg(Base)
           .addReg(VL);
   }
+  MBBI->eraseFromParent();
+  return true;
+}
+
+bool RISCVExpandPseudo::expandCoreVShuffle(MachineBasicBlock &MBB,
+                                           MachineBasicBlock::iterator MBBI) {
+  DebugLoc DL = MBBI->getDebugLoc();
+  Register DstReg = MBBI->getOperand(0).getReg();
+  Register SrcReg = MBBI->getOperand(1).getReg();
+  uint8_t Imm = MBBI->getOperand(2).getImm();
+  const unsigned Opcodes[] = {
+      RISCV::CV_SHUFFLEI0_SCI_B, RISCV::CV_SHUFFLEI1_SCI_B,
+      RISCV::CV_SHUFFLEI2_SCI_B, RISCV::CV_SHUFFLEI3_SCI_B};
+  const MCInstrDesc &Desc = TII->get(Opcodes[Imm >> 6]);
+  BuildMI(MBB, MBBI, DL, Desc, DstReg)
+      .addReg(SrcReg)
+      .addImm(APInt(6, Imm, true).getSExtValue());
   MBBI->eraseFromParent();
   return true;
 }
