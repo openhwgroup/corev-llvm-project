@@ -386,16 +386,16 @@ let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 
   def CV_MAXU   : RVInstAlu_rr<0b0101110, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                "cv.maxu", "$rd, $rs1, $rs2", []>,
                   Sched<[]>;
-  def CV_EXTHS  : RVInstAlu_r<0b0101111, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
+  def CV_EXTHS  : RVInstAlu_r<0b0110000, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
                               "cv.exths", "$rd, $rs1", []>,
                   Sched<[]>;
-  def CV_EXTHZ  : RVInstAlu_r<0b0110000, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
+  def CV_EXTHZ  : RVInstAlu_r<0b0110001, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
                               "cv.exthz", "$rd, $rs1", []>,
                   Sched<[]>;
-  def CV_EXTBS  : RVInstAlu_r<0b0110001, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
+  def CV_EXTBS  : RVInstAlu_r<0b0110010, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
                               "cv.extbs", "$rd, $rs1", []>,
                   Sched<[]>;
-  def CV_EXTBZ  : RVInstAlu_r<0b0110010, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
+  def CV_EXTBZ  : RVInstAlu_r<0b0110011, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
                               "cv.extbz", "$rd, $rs1", []>,
                   Sched<[]>;
 
