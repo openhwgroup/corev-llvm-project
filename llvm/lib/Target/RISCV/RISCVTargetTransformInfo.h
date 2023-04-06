@@ -308,8 +308,11 @@ public:
     }
     llvm_unreachable("unknown register class");
   }
-  
+
   bool shouldFavorPostInc() const;
+  TTI::AddressingModeKind
+    getPreferredAddressingMode(const Loop *L, ScalarEvolution *SE) const;
+
   bool isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
                                 AssumptionCache &AC,
                                 TargetLibraryInfo *LibInfo,

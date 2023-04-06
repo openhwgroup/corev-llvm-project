@@ -1012,6 +1012,15 @@ bool RISCVTTIImpl::shouldFavorPostInc() const {
   return ST->hasExtXcvmem();
 }
 
+TTI::AddressingModeKind
+RISCVTTIImpl::getPreferredAddressingMode(const Loop *L,
+                                       ScalarEvolution *SE) const {
+  if (ST->hasExtXcvmem())
+    return TTI::AMK_PostIndexed;
+
+  return TTI::AMK_None;
+}
+
 bool RISCVTTIImpl::isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
                                             AssumptionCache &AC,
                                             TargetLibraryInfo *LibInfo,
