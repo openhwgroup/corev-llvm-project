@@ -100,6 +100,7 @@ private:
   bool HasExtXCoreVAlu = false;
   bool HasExtXCoreVMem = false;
   bool HasExtXcvsimd = false;
+  bool HasExtXcvbitmanip = false;
   bool HasRV64 = false;
   bool IsRV32E = false;
   bool EnableLinkerRelax = false;
@@ -207,6 +208,7 @@ public:
   bool hasExtXCoreVAlu() const { return HasExtXCoreVAlu; }
   bool hasExtXCoreVMem() const { return HasExtXCoreVMem; }
   bool hasExtXcvsimd() const { return HasExtXcvsimd; }
+  bool hasExtXcvbitmanip() const { return HasExtXcvbitmanip; }
   bool is64Bit() const { return HasRV64; }
   bool isRV32E() const { return IsRV32E; }
   bool enableLinkerRelax() const { return EnableLinkerRelax; }
