@@ -8,6 +8,7 @@ on:
       - 'development'
     paths:
       - 'llvm/**'
+      - 'clang/**'
       - '.github/workflows/corev-llvm-tests.yml'
       - '.github/workflows/llvm-project-tests.yml'
   pull_request:
@@ -16,6 +17,7 @@ on:
       - 'development'
     paths:
       - 'llvm/**'
+      - 'clang/**'
       - '.github/workflows/corev-llvm-tests.yml'
       - '.github/workflows/llvm-project-tests.yml'
 
