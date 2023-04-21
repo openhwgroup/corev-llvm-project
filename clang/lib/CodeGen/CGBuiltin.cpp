@@ -19354,6 +19354,28 @@ Value *CodeGenFunction::EmitHexagonBuiltinExpr(unsigned BuiltinID,
   return nullptr;
 }
 
+static Value *EmitCoreVIntrinsic(CodeGenFunction &CGF, unsigned IntrinsicID,
+                                 MutableArrayRef<Value *> Ops,
+                                 const CallExpr *E) {
+  llvm::Type *MachineType =
+      llvm::IntegerType::getInt32Ty(CGF.CGM.getLLVMContext());
+  for (unsigned i = 0, e = E->getNumArgs(); i != e; i++) {
+    if (Ops[i]->getType() != MachineType) {
+      QualType type = E->getArg(i)->getType();
+      assert((type->isSignedIntegerType() || type->isUnsignedIntegerType()) &&
+             "Argument of Core-V builtin must have signed or unsigned integer "
+             "type");
+      if (type->isSignedIntegerType()) {
+        Ops[i] = CGF.Builder.CreateSExt(Ops[i], MachineType);
+      } else {
+        Ops[i] = CGF.Builder.CreateZExt(Ops[i], MachineType);
+      }
+    }
+  }
+  llvm::Function *F = CGF.CGM.getIntrinsic(IntrinsicID);
+  return CGF.Builder.CreateCall(F, Ops);
+}
+
 Value *CodeGenFunction::EmitRISCVBuiltinExpr(unsigned BuiltinID,
                                              const CallExpr *E,
                                              ReturnValueSlot ReturnValue) {
@@ -19575,6 +19597,13 @@ Value *CodeGenFunction::EmitRISCVBuiltinExpr(unsigned BuiltinID,
     ID = Intrinsic::riscv_sm3p1;
     IntrinsicTypes = {ResultType};
     break;
+  
+  // CoreV
+#define BUILTIN(NAME, TYPE, ATTRS)              \
+  case RISCVCOREV::BI__builtin_riscv_cv_##NAME: \
+    ID = Intrinsic::riscv_cv_##NAME;            \
+    return EmitCoreVIntrinsic(*this, ID, Ops, E);
+#include "clang/Basic/BuiltinsRISCVCOREV.def"
 
   // Vector builtins are handled from here.
 #include "clang/Basic/riscv_vector_builtin_cg.inc"
