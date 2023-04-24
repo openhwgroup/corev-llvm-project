@@ -97,10 +97,3 @@ cv.subrnr t0, t1, t2
 
 cv.suburnr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcorevalu' (ALU Operations)
-
-
-cv.beqimm t0, 0, 0
-# CHECK-ERROR: instruction requires the following: 'Xcorevalu' (ALU Operations)
-
-cv.bneimm t0, 0, 0
-# CHECK-ERROR: instruction requires the following: 'Xcorevalu' (ALU Operations)

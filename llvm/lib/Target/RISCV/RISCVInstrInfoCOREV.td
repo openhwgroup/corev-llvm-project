@@ -484,12 +484,12 @@ let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 
 
 } // Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb"
 
-let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1 in {
+let Predicates = [HasExtXcvbi], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1 in {
   // Immediate branching operations
-  def CV_BEQIMM : RVInstImmBranch<0b010, (outs), (ins GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12),
+  def CV_BEQIMM : RVInstImmBranch<0b110, (outs), (ins GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12),
                                   "cv.beqimm", "$rs1, $imm5, $imm12", []>,
                   Sched<[]>;
-  def CV_BNEIMM : RVInstImmBranch<0b011, (outs), (ins GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12),
+  def CV_BNEIMM : RVInstImmBranch<0b111, (outs), (ins GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12),
                                   "cv.bneimm", "$rs1, $imm5, $imm12", []>,
                   Sched<[]>;
 
@@ -824,12 +824,13 @@ let Predicates = [HasExtXCoreVAlu] in {
             (CV_SUBRNR  GPR:$rd, GPR:$rs1, GPR:$rs2)>;
   def : Pat<(srl (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
             (CV_SUBURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-
+}
 
 //===----------------------------------------------------------------------===//
 // Patterns for immediate branching operations
 //===----------------------------------------------------------------------===//
 
+let Predicates = [HasExtXcvbi] in {
   def : Pat<(riscv_brcc GPR:$rs1, simm5:$imm5, SETEQ, bb:$imm12),
             (CV_BEQIMM GPR:$rs1, simm5:$imm5, simm13_lsb0:$imm12)>;
   def : Pat<(riscv_brcc GPR:$rs1, simm5:$imm5, SETNE, bb:$imm12),

@@ -190,7 +190,7 @@ class RVInstImmBranch<bits<3> funct3, dag outs, dag ins,
   let Inst{14-12} = funct3;
   let Inst{11-8} = imm12{3-0};
   let Inst{7} = imm12{10};
-  let Opcode = OPC_BRANCH.Value;
+  let Opcode = OPC_CUSTOM0.Value;
 }
 
 class RVInstLoad_ri_inc<bits<3> funct3, dag outs, dag ins,

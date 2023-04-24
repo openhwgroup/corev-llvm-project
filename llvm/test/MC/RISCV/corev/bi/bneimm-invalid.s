@@ -1,4 +1,4 @@
-# RUN: not llvm-mc -triple=riscv32 --mattr=+xcorevalu %s 2>&1 \
+# RUN: not llvm-mc -triple=riscv32 --mattr=+xcvbi %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ERROR
 
 cv.bneimm 0, 0, 0
