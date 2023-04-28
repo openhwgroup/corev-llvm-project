@@ -158,5 +158,17 @@ TARGET_BUILTIN(simd_cplxmul_i, "UZiUZiUZiUZiIUc", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_cplxconj, "UZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_subrotmj, "UZiUZiUZiIUc", "nc", "xcvsimd")
 
+TARGET_BUILTIN(bitmanip_extract, "UZiUZiUs", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_extractu, "UZiUZiUs", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_insert, "UZiUZiUsUZi", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_bclr, "UZiUZiUs", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_bset, "UZiUZiUs", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_ff1, "UZiUZi", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_fl1, "UZiUZi", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_clb, "UZiUZi", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_cnt, "UZiUZi", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_ror, "UZiUZiUZi", "nc", "xcvbitmanip")
+TARGET_BUILTIN(bitmanip_bitrev, "UZiUZiIUcIUc", "nc", "xcvbitmanip")
+
 #undef BUILTIN
 #undef TARGET_BUILTIN
