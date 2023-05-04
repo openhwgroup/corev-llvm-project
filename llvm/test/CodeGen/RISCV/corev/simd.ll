@@ -1422,25 +1422,25 @@ define i32 @test.cv.shuffle2.b(i32 %a, i32 %b, i32 %c) {
   ret i32 %1
 }
 
-declare i32 @llvm.riscv.cv.simd.pack(i32, i32)
+declare i32 @llvm.riscv.cv.simd.packlo.h(i32, i32)
 
-define i32 @test.cv.pack(i32 %a, i32 %b) {
-; CHECK-LABEL: test.cv.pack:
+define i32 @test.cv.packlo.h(i32 %a, i32 %b) {
+; CHECK-LABEL: test.cv.packlo.h:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    cv.pack a0, a0, a1
 ; CHECK-NEXT:    ret
-  %1 = call i32 @llvm.riscv.cv.simd.pack(i32 %a, i32 %b)
+  %1 = call i32 @llvm.riscv.cv.simd.packlo.h(i32 %a, i32 %b)
   ret i32 %1
 }
 
-declare i32 @llvm.riscv.cv.simd.pack.h(i32, i32)
+declare i32 @llvm.riscv.cv.simd.packhi.h(i32, i32)
 
-define i32 @test.cv.pack.h(i32 %a, i32 %b) {
-; CHECK-LABEL: test.cv.pack.h:
+define i32 @test.cv.packhi.h(i32 %a, i32 %b) {
+; CHECK-LABEL: test.cv.packhi.h:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    cv.pack.h a0, a0, a1
 ; CHECK-NEXT:    ret
-  %1 = call i32 @llvm.riscv.cv.simd.pack.h(i32 %a, i32 %b)
+  %1 = call i32 @llvm.riscv.cv.simd.packhi.h(i32 %a, i32 %b)
   ret i32 %1
 }
 
