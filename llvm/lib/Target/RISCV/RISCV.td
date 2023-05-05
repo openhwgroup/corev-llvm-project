@@ -456,6 +456,14 @@ def HasExtXcvbitmanip
                AssemblerPredicate<(any_of FeatureExtXcvbitmanip),
                "'Xcvbitmanip' (bit manipulation)">;
 
+def FeatureExtXcvbi
+    : SubtargetFeature<"xcvbi", "HasExtXcvbi", "true",
+                       "'Xcvbi' (immediate branch)">;
+def HasExtXcvbi
+    : Predicate<"Subtarget->hasExtXcvbi()">,
+               AssemblerPredicate<(any_of FeatureExtXcvbi),
+               "'Xcvbi' (immediate branch)">;
+
 // CORE-V Load-Store Extension
 def FeatureExtXCoreVMem
     : SubtargetFeature<"xcorevmem", "HasExtXCoreVMem", "true",
@@ -470,7 +478,8 @@ def FeatureExtXCoreV
                        "'Xcorev' (CORE-V extensions)",
                        [FeatureExtXCoreVHwlp, FeatureExtXCoreVMac,
                         FeatureExtXCoreVAlu, FeatureExtXcvsimd, 
-                        FeatureExtXcvbitmanip, FeatureExtXCoreVMem]>;
+                        FeatureExtXcvbitmanip, FeatureExtXCoreVMem,
+                        FeatureExtXcvbi]>;
 def HasExtXCoreV : Predicate<"Subtarget->hasExtXCoreV()">,
                               AssemblerPredicate<(all_of FeatureExtXCoreV),
                               "'Xcorev' (CORE-V extensions)">;

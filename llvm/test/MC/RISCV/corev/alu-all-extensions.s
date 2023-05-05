@@ -128,12 +128,3 @@ cv.subrnr t0, t1, t2
 cv.suburnr t0, t1, t2
 # CHECK-INSTR: cv.suburnr t0, t1, t2
 # CHECK-ENCODING: [0xab,0x32,0x73,0x8e]
-
-
-cv.beqimm t0, 0, 0
-# CHECK-INSTR: cv.beqimm t0, 0, 0
-# CHECK-ENCODING: [0x63,0xa0,0x02,0x00]
-
-cv.bneimm t0, 0, 0
-# CHECK-INSTR: cv.bneimm t0, 0, 0
-# CHECK-ENCODING: [0x63,0xb0,0x02,0x00]
