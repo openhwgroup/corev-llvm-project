@@ -1043,8 +1043,8 @@ let Predicates = [HasExtXcvsimd, IsRV32] in {
   def : Pat<(int_riscv_cv_simd_shuffle2_b GPR:$rs1, GPR:$rs2, GPR:$rd),
             (CV_SHUFFLE2_B GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
-  def : PatCorevGprGpr<"pack", "PACK">;
-  def : PatCorevGprGpr<"pack_h", "PACK_H">;
+  def : PatCorevGprGpr<"packhi_h", "PACK_H">;
+  def : PatCorevGprGpr<"packlo_h", "PACK">;
   def : Pat<(int_riscv_cv_simd_packhi_b GPR:$rd, GPR:$rs1, GPR:$rs2), 
             (CV_PACKHI_B GPR:$rd, GPR:$rs1, GPR:$rs2)>;
   def : Pat<(int_riscv_cv_simd_packlo_b GPR:$rd, GPR:$rs1, GPR:$rs2), 

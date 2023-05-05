@@ -12,7 +12,12 @@
 //===----------------------------------------------------------------------===//
 
 #if defined(BUILTIN) && !defined(TARGET_BUILTIN)
-#   define TARGET_BUILTIN(ID, TYPE, ATTRS, FEATURE) BUILTIN(ID, TYPE, ATTRS)
+#define TARGET_BUILTIN(ID, TYPE, ATTRS, FEATURE) BUILTIN(ID, TYPE, ATTRS)
+#endif
+
+#if defined(TARGET_BUILTIN) && !defined(PSEUDO_BUILTIN)
+#define PSEUDO_BUILTIN(ID, TYPE, ATTRS, FEATURE)                               \
+  TARGET_BUILTIN(ID, TYPE, ATTRS, FEATURE)
 #endif
 
 TARGET_BUILTIN(simd_add_h, "UZiUZiUZiIUc", "nc", "xcvsimd")
@@ -73,6 +78,8 @@ TARGET_BUILTIN(simd_and_sc_h, "UZiUZiSs", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_and_sc_b, "UZiUZiSc", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_abs_h, "UZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_abs_b, "UZiUZi", "nc", "xcvsimd")
+PSEUDO_BUILTIN(simd_neg_h, "UZiUZi", "nc", "xcvsimd")
+PSEUDO_BUILTIN(simd_neg_b, "UZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_dotup_h, "UZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_dotup_b, "UZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_dotup_sc_h, "UZiUZiUs", "nc", "xcvsimd")
@@ -109,8 +116,8 @@ TARGET_BUILTIN(simd_shuffle_sci_h, "UZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_shuffle_sci_b, "UZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_shuffle2_h, "UZiUZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_shuffle2_b, "UZiUZiUZiUZi", "nc", "xcvsimd")
-TARGET_BUILTIN(simd_pack, "UZiUZiUZi", "nc", "xcvsimd")
-TARGET_BUILTIN(simd_pack_h, "UZiUZiUZi", "nc", "xcvsimd")
+TARGET_BUILTIN(simd_packhi_h, "UZiUZiUZi", "nc", "xcvsimd")
+TARGET_BUILTIN(simd_packlo_h, "UZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_packhi_b, "UZiUZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_packlo_b, "UZiUZiUZiUZi", "nc", "xcvsimd")
 TARGET_BUILTIN(simd_cmpeq_h, "UZiUZiUZi", "nc", "xcvsimd")
@@ -172,3 +179,4 @@ TARGET_BUILTIN(bitmanip_bitrev, "UZiUZiIUcIUc", "nc", "xcvbitmanip")
 
 #undef BUILTIN
 #undef TARGET_BUILTIN
+#undef PSEUDO_BUILTIN

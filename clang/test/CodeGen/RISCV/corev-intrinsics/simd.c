@@ -1538,6 +1538,30 @@ uint32_t test_abs_b(uint32_t a) {
 	return __builtin_riscv_cv_simd_abs_b(a);
 }
 
+// CHECK-LABEL: @test_neg_h(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.sub.h(i32 0, i32 [[TMP0]], i32 0)
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_neg_h(uint32_t a) {
+	return __builtin_riscv_cv_simd_neg_h(a);
+}
+
+// CHECK-LABEL: @test_neg_b(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.sub.b(i32 0, i32 [[TMP0]])
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_neg_b(uint32_t a) {
+	return __builtin_riscv_cv_simd_neg_b(a);
+}
+
 // CHECK-LABEL: @test_dotup_h(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
@@ -2482,7 +2506,7 @@ uint32_t test_shuffle2_b(uint32_t a, uint32_t b, uint32_t c) {
 	return __builtin_riscv_cv_simd_shuffle2_b(a, b, c);
 }
 
-// CHECK-LABEL: @test_pack(
+// CHECK-LABEL: @test_packhi_h(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    [[B_ADDR:%.*]] = alloca i32, align 4
@@ -2490,14 +2514,14 @@ uint32_t test_shuffle2_b(uint32_t a, uint32_t b, uint32_t c) {
 // CHECK-NEXT:    store i32 [[B:%.*]], ptr [[B_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i32, ptr [[B_ADDR]], align 4
-// CHECK-NEXT:    [[TMP2:%.*]] = call i32 @llvm.riscv.cv.simd.pack(i32 [[TMP0]], i32 [[TMP1]])
+// CHECK-NEXT:    [[TMP2:%.*]] = call i32 @llvm.riscv.cv.simd.packhi.h(i32 [[TMP0]], i32 [[TMP1]])
 // CHECK-NEXT:    ret i32 [[TMP2]]
 //
-uint32_t test_pack(uint32_t a, uint32_t b) {
-	return __builtin_riscv_cv_simd_pack(a, b);
+uint32_t test_packhi_h(uint32_t a, uint32_t b) {
+	return __builtin_riscv_cv_simd_packhi_h(a, b);
 }
 
-// CHECK-LABEL: @test_pack_h(
+// CHECK-LABEL: @test_packlo_h(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    [[B_ADDR:%.*]] = alloca i32, align 4
@@ -2505,11 +2529,11 @@ uint32_t test_pack(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i32 [[B:%.*]], ptr [[B_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i32, ptr [[B_ADDR]], align 4
-// CHECK-NEXT:    [[TMP2:%.*]] = call i32 @llvm.riscv.cv.simd.pack.h(i32 [[TMP0]], i32 [[TMP1]])
+// CHECK-NEXT:    [[TMP2:%.*]] = call i32 @llvm.riscv.cv.simd.packlo.h(i32 [[TMP0]], i32 [[TMP1]])
 // CHECK-NEXT:    ret i32 [[TMP2]]
 //
-uint32_t test_pack_h(uint32_t a, uint32_t b) {
-	return __builtin_riscv_cv_simd_pack_h(a, b);
+uint32_t test_packlo_h(uint32_t a, uint32_t b) {
+	return __builtin_riscv_cv_simd_packlo_h(a, b);
 }
 
 // CHECK-LABEL: @test_cmpeq_h(

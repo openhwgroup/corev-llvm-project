@@ -19354,7 +19354,8 @@ Value *CodeGenFunction::EmitHexagonBuiltinExpr(unsigned BuiltinID,
   return nullptr;
 }
 
-static Value *EmitCoreVIntrinsic(CodeGenFunction &CGF, unsigned IntrinsicID,
+static Value *EmitCoreVIntrinsic(CodeGenFunction &CGF, unsigned BuiltinID,
+                                 unsigned IntrinsicID,
                                  MutableArrayRef<Value *> Ops,
                                  const CallExpr *E) {
   llvm::Type *MachineType =
@@ -19372,8 +19373,18 @@ static Value *EmitCoreVIntrinsic(CodeGenFunction &CGF, unsigned IntrinsicID,
       }
     }
   }
+
   llvm::Function *F = CGF.CGM.getIntrinsic(IntrinsicID);
-  return CGF.Builder.CreateCall(F, Ops);
+  if (BuiltinID == RISCVCOREV::BI__builtin_riscv_cv_simd_neg_h) {
+    return CGF.Builder.CreateCall(F, {llvm::ConstantInt::get(MachineType, 0),
+                                      Ops[0],
+                                      llvm::ConstantInt::get(MachineType, 0)});
+  } else if (BuiltinID == RISCVCOREV::BI__builtin_riscv_cv_simd_neg_b) {
+    return CGF.Builder.CreateCall(
+        F, {llvm::ConstantInt::get(MachineType, 0), Ops[0]});
+  } else {
+    return CGF.Builder.CreateCall(F, Ops);
+  }
 }
 
 Value *CodeGenFunction::EmitRISCVBuiltinExpr(unsigned BuiltinID,
@@ -19602,8 +19613,16 @@ Value *CodeGenFunction::EmitRISCVBuiltinExpr(unsigned BuiltinID,
 #define BUILTIN(NAME, TYPE, ATTRS)              \
   case RISCVCOREV::BI__builtin_riscv_cv_##NAME: \
     ID = Intrinsic::riscv_cv_##NAME;            \
-    return EmitCoreVIntrinsic(*this, ID, Ops, E);
+    return EmitCoreVIntrinsic(*this, BuiltinID, ID, Ops, E);
+#define PSEUDO_BUILTIN(ID, TYPE, ATTRS, FEATURE) 
 #include "clang/Basic/BuiltinsRISCVCOREV.def"
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_neg_h:
+    ID = Intrinsic::riscv_cv_simd_sub_h;
+    return EmitCoreVIntrinsic(*this, BuiltinID, ID, Ops, E);
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_neg_b:
+    ID = Intrinsic::riscv_cv_simd_sub_b;
+    return EmitCoreVIntrinsic(*this, BuiltinID, ID, Ops, E);
+  
 
   // Vector builtins are handled from here.
 #include "clang/Basic/riscv_vector_builtin_cg.inc"

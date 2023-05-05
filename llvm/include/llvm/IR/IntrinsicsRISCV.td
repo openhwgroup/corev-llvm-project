@@ -1693,8 +1693,8 @@ def int_riscv_cv_simd_shuffle_sci_h : ScalarCoreVSimdGprImmIntrinsic;
 def int_riscv_cv_simd_shuffle_sci_b : ScalarCoreVSimdGprImmIntrinsic;
 defm shuffle2 : ScalarCoreVSimdGprGprGprIntrinsicHB;
 
-def int_riscv_cv_simd_pack : ScalarCoreVSimdGprGprIntrinsic;
-def int_riscv_cv_simd_pack_h : ScalarCoreVSimdGprGprIntrinsic;
+def int_riscv_cv_simd_packhi_h : ScalarCoreVSimdGprGprIntrinsic;
+def int_riscv_cv_simd_packlo_h : ScalarCoreVSimdGprGprIntrinsic;
 def int_riscv_cv_simd_packhi_b : ScalarCoreVSimdGprGprGprIntrinsic;
 def int_riscv_cv_simd_packlo_b : ScalarCoreVSimdGprGprGprIntrinsic;
 
