@@ -277,14 +277,14 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
 
   def CV_SHUFFLE_H :    CVSIMDALURR<0b11000, 0, 0, 0b000, "cv.shuffle.h">;
   def CV_SHUFFLE_B :    CVSIMDALURR<0b11000, 0, 0, 0b001, "cv.shuffle.b">;
-  def CV_SHUFFLE_SCI_H : CVSIMDALURI<0b11000, 0, 0b110, "cv.shuffle.sci.h">;
-  def CV_SHUFFLEI0_SCI_B : CVSIMDALURI<0b11000, 0, 0b111, "cv.shufflei0.sci.b">;
+  def CV_SHUFFLE_SCI_H : CVSIMDALURU<0b11000, 0, 0b110, "cv.shuffle.sci.h">;
+  def CV_SHUFFLEI0_SCI_B : CVSIMDALURU<0b11000, 0, 0b111, "cv.shufflei0.sci.b">;
 
-  def CV_SHUFFLEI1_SCI_B : CVSIMDALURI<0b11001, 0, 0b111, "cv.shufflei1.sci.b">;
+  def CV_SHUFFLEI1_SCI_B : CVSIMDALURU<0b11001, 0, 0b111, "cv.shufflei1.sci.b">;
 
-  def CV_SHUFFLEI2_SCI_B : CVSIMDALURI<0b11010, 0, 0b111, "cv.shufflei2.sci.b">;
+  def CV_SHUFFLEI2_SCI_B : CVSIMDALURU<0b11010, 0, 0b111, "cv.shufflei2.sci.b">;
 
-  def CV_SHUFFLEI3_SCI_B : CVSIMDALURI<0b11011, 0, 0b111, "cv.shufflei3.sci.b">;
+  def CV_SHUFFLEI3_SCI_B : CVSIMDALURU<0b11011, 0, 0b111, "cv.shufflei3.sci.b">;
 
   def CV_SHUFFLE2_H :    CVSIMDALURRWb<0b11100, 0, 0, 0b000, "cv.shuffle2.h">;
   def CV_SHUFFLE2_B :    CVSIMDALURRWb<0b11100, 0, 0, 0b001, "cv.shuffle2.b">;

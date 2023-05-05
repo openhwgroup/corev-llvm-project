@@ -37,15 +37,15 @@ cv.shuffle.b s0, s1, s2
 // cv.shuffle.sci.h
 //===----------------------------------------------------------------------===//
 
-cv.shuffle.sci.h t0, t1, -32
-# CHECK-INSTR: cv.shuffle.sci.h t0, t1, -32
+cv.shuffle.sci.h t0, t1, 32
+# CHECK-INSTR: cv.shuffle.sci.h t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x62,0x03,0xc1]
 
 cv.shuffle.sci.h a0, a1, 7
 # CHECK-INSTR: cv.shuffle.sci.h a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xe5,0x35,0xc2]
 
-cv.shuffle.sci.h s0, s1, -1
-# CHECK-INSTR: cv.shuffle.sci.h s0, s1, -1
+cv.shuffle.sci.h s0, s1, 63
+# CHECK-INSTR: cv.shuffle.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0xc3]
 

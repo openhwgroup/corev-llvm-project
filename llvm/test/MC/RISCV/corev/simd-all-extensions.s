@@ -2348,8 +2348,8 @@ cv.shuffle.b s0, s1, s2
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b 94 24 c1 <unknown>
 
-cv.shuffle.sci.h t0, t1, -32
-# CHECK-INSTR: cv.shuffle.sci.h t0, t1, -32
+cv.shuffle.sci.h t0, t1, 32
+# CHECK-INSTR: cv.shuffle.sci.h t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x62,0x03,0xc1] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: fb 62 03 c1 <unknown>
@@ -2360,14 +2360,14 @@ cv.shuffle.sci.h a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e5 35 c2 <unknown>
 
-cv.shuffle.sci.h s0, s1, -1
-# CHECK-INSTR: cv.shuffle.sci.h s0, s1, -1
+cv.shuffle.sci.h s0, s1, 63
+# CHECK-INSTR: cv.shuffle.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0xc3] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e4 f4 c3 <unknown>
 
-cv.shufflei0.sci.b t0, t1, -32
-# CHECK-INSTR: cv.shufflei0.sci.b t0, t1, -32
+cv.shufflei0.sci.b t0, t1, 32
+# CHECK-INSTR: cv.shufflei0.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0xc1] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: fb 72 03 c1 <unknown>
@@ -2378,14 +2378,14 @@ cv.shufflei0.sci.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f5 35 c2 <unknown>
 
-cv.shufflei0.sci.b s0, s1, -1
-# CHECK-INSTR: cv.shufflei0.sci.b s0, s1, -1
+cv.shufflei0.sci.b s0, s1, 63
+# CHECK-INSTR: cv.shufflei0.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0xc3] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 c3 <unknown>
 
-cv.shufflei1.sci.b t0, t1, -32
-# CHECK-INSTR: cv.shufflei1.sci.b t0, t1, -32
+cv.shufflei1.sci.b t0, t1, 32
+# CHECK-INSTR: cv.shufflei1.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0xc9] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: fb 72 03 c9 <unknown>
@@ -2396,14 +2396,14 @@ cv.shufflei1.sci.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f5 35 ca <unknown>
 
-cv.shufflei1.sci.b s0, s1, -1
-# CHECK-INSTR: cv.shufflei1.sci.b s0, s1, -1
+cv.shufflei1.sci.b s0, s1, 63
+# CHECK-INSTR: cv.shufflei1.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0xcb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 cb <unknown>
 
-cv.shufflei2.sci.b t0, t1, -32
-# CHECK-INSTR: cv.shufflei2.sci.b t0, t1, -32
+cv.shufflei2.sci.b t0, t1, 32
+# CHECK-INSTR: cv.shufflei2.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0xd1] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: fb 72 03 d1 <unknown>
@@ -2414,14 +2414,14 @@ cv.shufflei2.sci.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f5 35 d2 <unknown>
 
-cv.shufflei2.sci.b s0, s1, -1
-# CHECK-INSTR: cv.shufflei2.sci.b s0, s1, -1
+cv.shufflei2.sci.b s0, s1, 63
+# CHECK-INSTR: cv.shufflei2.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0xd3] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 d3 <unknown>
 
-cv.shufflei3.sci.b t0, t1, -32
-# CHECK-INSTR: cv.shufflei3.sci.b t0, t1, -32
+cv.shufflei3.sci.b t0, t1, 32
+# CHECK-INSTR: cv.shufflei3.sci.b t0, t1, 32
 # CHECK-ENCODING: [0xfb,0x72,0x03,0xd9] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: fb 72 03 d9 <unknown>
@@ -2432,8 +2432,8 @@ cv.shufflei3.sci.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f5 35 da <unknown>
 
-cv.shufflei3.sci.b s0, s1, -1
-# CHECK-INSTR: cv.shufflei3.sci.b s0, s1, -1
+cv.shufflei3.sci.b s0, s1, 63
+# CHECK-INSTR: cv.shufflei3.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0xdb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 db <unknown>
