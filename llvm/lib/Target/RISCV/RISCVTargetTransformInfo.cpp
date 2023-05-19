@@ -1009,14 +1009,14 @@ unsigned RISCVTTIImpl::getMaximumVF(unsigned ElemWidth, unsigned Opcode) const {
 }
 
 bool RISCVTTIImpl::shouldFavorPostInc() const {
-  return ST->hasExtXCoreVMem();
+  return ST->hasExtXcvmem();
 }
 
 bool RISCVTTIImpl::isHardwareLoopProfitable(Loop *L, ScalarEvolution &SE,
                                             AssumptionCache &AC,
                                             TargetLibraryInfo *LibInfo,
                                             HardwareLoopInfo &HWLoopInfo) {
-  if (!ST->hasExtXcvHwlp())
+  if (!ST->hasExtXcvhwlp())
     return false;
 
   // Hardware loops need exactly one latch and exiting block and they need to be

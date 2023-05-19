@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 //
 // This file contains a pass that expands hardware loop pseudo instructions into
-// the instructions of the xcorevhwlp extension.
+// the instructions of the xcvhwlp extension.
 //
 //===----------------------------------------------------------------------===//
 
@@ -51,7 +51,7 @@ namespace {
 char RISCVExpandCoreVHwlpPseudo::ID = 0;
 
 bool RISCVExpandCoreVHwlpPseudo::runOnMachineFunction(MachineFunction &MF) {
-  if (!MF.getSubtarget<RISCVSubtarget>().hasExtXcvHwlp()) {
+  if (!MF.getSubtarget<RISCVSubtarget>().hasExtXcvhwlp()) {
     return false;
   }
 

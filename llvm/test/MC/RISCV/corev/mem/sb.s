@@ -1,4 +1,4 @@
-# RUN: llvm-mc -triple=riscv32 --mattr=+xcorevmem -show-encoding %s \
+# RUN: llvm-mc -triple=riscv32 --mattr=+xcvmem -show-encoding %s \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ENCODING,CHECK-INSTR
 
 cv.sb t0, 0(t1!)

@@ -204,13 +204,13 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
   setOperationAction(ISD::BRCOND, MVT::Other, Custom);
   setOperationAction(ISD::SELECT_CC, XLenVT, Expand);
 
-  if (!Subtarget.hasExtXCoreVAlu())
+  if (!Subtarget.hasExtXcvalu())
     setCondCodeAction(ISD::SETLE, XLenVT, Expand);
 
   setCondCodeAction(ISD::SETGT, XLenVT, Custom);
   setCondCodeAction(ISD::SETGE, XLenVT, Expand);
 
-  if (!Subtarget.hasExtXCoreVAlu())
+  if (!Subtarget.hasExtXcvalu())
     setCondCodeAction(ISD::SETULE, XLenVT, Expand);
   
   setCondCodeAction(ISD::SETUGT, XLenVT, Custom);
@@ -420,7 +420,7 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
   if (Subtarget.is64Bit())
     setOperationAction(ISD::INTRINSIC_WO_CHAIN, MVT::i32, Custom);
 
-  if (Subtarget.hasExtXCoreVAlu()) {
+  if (Subtarget.hasExtXcvalu()) {
     setOperationAction(ISD::ABS, XLenVT, Legal);
     setOperationAction(ISD::SMIN, XLenVT, Legal);
     setOperationAction(ISD::UMIN, XLenVT, Legal);
@@ -430,7 +430,7 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
     setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i16, Legal);
   }
 
-  if (Subtarget.hasExtXCoreVMem()) {
+  if (Subtarget.hasExtXcvmem()) {
     setIndexedLoadAction(ISD::POST_INC, MVT::i8, Legal);
     setIndexedLoadAction(ISD::POST_INC, MVT::i16, Legal);
     setIndexedLoadAction(ISD::POST_INC, MVT::i32, Legal);
@@ -440,7 +440,7 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
     setIndexedStoreAction(ISD::POST_INC, MVT::i32, Legal);
   }
 
-  if (Subtarget.hasExtXcvHwlp()) {
+  if (Subtarget.hasExtXcvhwlp()) {
     setTargetDAGCombine(ISD::BR);
     // The default legalizer can't promote this to i32, so we do it manually
     setOperationAction(ISD::INTRINSIC_W_CHAIN, MVT::i1, Custom);
@@ -13199,7 +13199,7 @@ bool RISCVTargetLowering::getPostIndexedAddressParts(SDNode *N, SDNode *Op,
                                                      SDValue &Offset,
                                                      ISD::MemIndexedMode &AM,
                                                      SelectionDAG &DAG) const {
-  if (!Subtarget.hasExtXCoreVMem())
+  if (!Subtarget.hasExtXcvmem())
     return false;
 
   if (Op->getOpcode() != ISD::ADD)

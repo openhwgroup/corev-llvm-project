@@ -104,7 +104,7 @@ def cv_tuimm10: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<10>(Imm);}]>;
 // CORE-V specific instructions
 //===----------------------------------------------------------------------===//
 
-let Predicates = [HasExtXcvHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0 in {
+let Predicates = [HasExtXcvhwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0 in {
   def CV_STARTI  : RVInstHwlp_i<0b0000, (ins cv_uimm1:$imm1, cv_uimm12:$imm12),
                                 "cv.starti", "$imm1, $imm12">,
                    Sched<[]>;
@@ -129,9 +129,9 @@ let Predicates = [HasExtXcvHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0 
   def CV_SETUP   : RVInstHwlp_ri<0b0111, (ins cv_uimm1:$imm1, GPR:$rs1, cv_uimm12:$imm12),
                                  "cv.setup", "$imm1, $rs1, $imm12">,
                    Sched<[]>;
-} // Predicates = [HasExtXcvHwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0
+} // Predicates = [HasExtXcvhwlp], hasSideEffects = 1, mayLoad = 0, mayStore = 0
 
-let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb" in {
+let Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb" in {
   // 32x32 bit macs
   def CV_MAC      : RVInstMac<0b1001000, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
                               "cv.mac", "$rd, $rs1, $rs2", []>,
@@ -167,7 +167,7 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
   def CV_MACHHURN : RVInstMac16I<0b11, 0b111, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.machhurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-} // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb"
+} // Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Constraints = "$rd = $rd_wb"
 
 
 class CVSIMDALURR<bits<5> funct5, bit F, bit funct1, bits<3> funct3, string opcodestr>
@@ -335,7 +335,7 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
   def CV_SUB_DIV8 :    CVSIMDALURR<0b01110, 1, 0, 0b110, "cv.sub.div8">; 
 }
 
-let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
+let Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
   // Signed 16x16 bit muls
   def CV_MULS     : RVInstMac16<0b10, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                 "cv.muls", "$rd, $rs1, $rs2", []>,
@@ -379,9 +379,9 @@ let Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 
   def CV_MULHHURN : RVInstMac16I<0b11, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulhhurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
-} // Predicates = [HasExtXCoreVMac], hasSideEffects = 0, mayLoad = 0, mayStore = 0
+} // Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0
 
-let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
+let Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
   // General ALU Operations
   def CV_ABS    : RVInstAlu_r<0b0101000, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
                               "cv.abs", "$rd, $rs1", []>,
@@ -454,9 +454,9 @@ let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 
   def CV_SUBURN : RVInstAlu_rri<0b11, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                 "cv.suburn", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
-} // Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0
+} // Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0
 
-let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb" in {
+let Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb" in {
   def CV_ADDNR   : RVInstAlu_rr<0b1000000, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
                                 "cv.addnr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
@@ -482,7 +482,7 @@ let Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 
                                 "cv.suburnr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
 
-} // Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb"
+} // Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb"
 
 let Predicates = [HasExtXcvbi], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1 in {
   // Immediate branching operations
@@ -493,9 +493,9 @@ let Predicates = [HasExtXcvbi], hasSideEffects = 0, mayLoad = 0, mayStore = 0, i
                                   "cv.bneimm", "$rs1, $imm5, $imm12", []>,
                   Sched<[]>;
 
-} // Predicates = [HasExtXCoreVAlu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1
+} // Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1
 
-let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 0, Constraints = "$rs1_wb = $rs1" in {
+let Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 1, mayStore = 0, Constraints = "$rs1_wb = $rs1" in {
   // Register-Immediate load with post-increment
   def CV_LB_ri_inc  : RVInstLoad_ri_inc<0b000, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, simm12:$imm12),
                                         "cv.lb", "$rd, ${imm12}(${rs1}!)", []>,
@@ -529,9 +529,9 @@ let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 
   def CV_LW_rr_inc  : RVInstLoad_rr_inc<0b0000010, (outs GPR:$rd, GPR:$rs1_wb), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lw", "$rd, ${rs2}(${rs1}!)", []>,
                       Sched<[]>;
-} // Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 0, Constraints = "$rs1_wb = $rs1"
+} // Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 1, mayStore = 0, Constraints = "$rs1_wb = $rs1"
 
-let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 0 in {
+let Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 1, mayStore = 0 in {
   // Register-Register load
   def CV_LB_rr  : RVInstLoad_rr<0b0000100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                         "cv.lb", "$rd, ${rs2}(${rs1})", []>,
@@ -549,9 +549,9 @@ let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 
                                         "cv.lw", "$rd, ${rs2}(${rs1})", []>,
                       Sched<[]>;
 
-} // Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 1, mayStore = 0
+} // Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 1, mayStore = 0
 
-let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 1, Constraints = "$rs1_wb = $rs1" in {
+let Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 0, mayStore = 1, Constraints = "$rs1_wb = $rs1" in {
   // Register-Immediate store with post-increment
   def CV_SB_ri_inc : RVInstStore_ri_inc<0b000, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, simm12:$imm12),
                                         "cv.sb", "$rs2, ${imm12}(${rs1}!)", []>,
@@ -573,9 +573,9 @@ let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 
   def CV_SW_rr_inc : RVInstStore_rr_inc<0b011, 0b0010010, (outs GPR:$rs1_wb), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                         "cv.sw", "$rs2, ${rs3}(${rs1}!)", []>,
                      Sched<[]>;
-} // Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 1, Constraints = "$rs1_wb = $rs1"
+} // Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 0, mayStore = 1, Constraints = "$rs1_wb = $rs1"
 
-let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 1 in {
+let Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 0, mayStore = 1 in {
   // Register-Register store
   def CV_SB_rr : RVInstStore_rr<0b011, 0b0010100, (outs), (ins GPR:$rs2, GPR:$rs1, GPR:$rs3),
                                 "cv.sb", "$rs2, ${rs3}(${rs1})", []>,
@@ -587,7 +587,7 @@ let Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 
                                 "cv.sw", "$rs2, ${rs3}(${rs1})", []>,
                  Sched<[]>;
 
-} // Predicates = [HasExtXCoreVMem], hasSideEffects = 0, mayLoad = 0, mayStore = 1
+} // Predicates = [HasExtXcvmem], hasSideEffects = 0, mayLoad = 0, mayStore = 1
 
 class CVBitManipRII<bits<2> funct2, bits<3> funct3, string opcodestr>
   : RVInstBitManip<funct2, funct3, (outs GPR:$rd), (ins GPR:$rs1, uimm5:$is3, uimm5:$is2), 
@@ -708,7 +708,7 @@ def trailing1sPlus1 : SDNodeXForm<imm, [{
 //===----------------------------------------------------------------------===//
 
 
-let Predicates = [HasExtXCoreVMac] in {
+let Predicates = [HasExtXcvmac] in {
 
   def : Pat<(add GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
             (CV_MAC GPR:$rd, GPR:$rs1, GPR:$rs2)>;
@@ -765,7 +765,7 @@ let Predicates = [HasExtXCoreVMac] in {
 // Patterns for general ALU operations
 //===----------------------------------------------------------------------===//
 
-let Predicates = [HasExtXCoreVAlu] in {
+let Predicates = [HasExtXcvalu] in {
 
   def : Pat<(abs GPR:$rs1), (CV_ABS GPR:$rs1)>;
   def : PatGprGpr<setle, CV_SLET>;
@@ -842,7 +842,7 @@ let Predicates = [HasExtXcvbi] in {
 // Patterns for load & store operations
 //===----------------------------------------------------------------------===//
 
-let Predicates = [HasExtXCoreVMem] in {
+let Predicates = [HasExtXcvmem] in {
 
   def : Pat<(sextloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
             (CV_LB_rr GPR:$base, GPR:$offset)>;
@@ -1109,7 +1109,7 @@ let Predicates = [HasExtXcvbitmanip, IsRV32] in {
 // Pseudo instructions and patterns for hardware loop generation
 //===----------------------------------------------------------------------===//
 
-let Predicates = [HasExtXcvHwlp], isNotDuplicable = 1,
+let Predicates = [HasExtXcvhwlp], isNotDuplicable = 1,
     hasSideEffects = 1, mayLoad = 1, mayStore = 1 in {
 
   // RISCVInstrInfo assumes 3 operands for conditional branch instructions,

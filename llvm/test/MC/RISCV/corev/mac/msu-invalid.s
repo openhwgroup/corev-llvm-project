@@ -1,4 +1,4 @@
-# RUN: not llvm-mc -triple=riscv32 --mattr=+xcorevmac %s 2>&1 \
+# RUN: not llvm-mc -triple=riscv32 --mattr=+xcvmac %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ERROR
 
 cv.msu t0, t1, 0

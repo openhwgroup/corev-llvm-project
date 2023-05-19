@@ -1,4 +1,4 @@
-# RUN: not llvm-mc -triple=riscv32 --mattr=+xcorevhwlp %s 2>&1 \
+# RUN: not llvm-mc -triple=riscv32 --mattr=+xcvhwlp %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ERROR
 
 cv.setup 1, 10, 0

@@ -413,32 +413,32 @@ def Feature32Bit
 
 // CORE-V extensions
 // These extensions can either be enabled individually with their extension
-// name or all together with `+xcorev`
+// name or all together with `+xcv`
 //
 // CORE-V Hardware Loop Extension
-def FeatureExtXCoreVHwlp
-    : SubtargetFeature<"xcorevhwlp", "HasExtXcvHwlp", "true",
-                       "'Xcorevhwlp' (Hardware Loop)">;
-def HasExtXcvHwlp
-    : Predicate<"Subtarget->hasExtXcvHwlp()">,
-               AssemblerPredicate<(any_of FeatureExtXCoreVHwlp),
-               "'Xcorevhwlp' (Hardware Loop)">;
+def FeatureExtXcvhwlp
+    : SubtargetFeature<"xcvhwlp", "HasExtXcvhwlp", "true",
+                       "'Xcvhwlp' (Hardware Loop)">;
+def HasExtXcvhwlp
+    : Predicate<"Subtarget->hasExtXcvhwlp()">,
+               AssemblerPredicate<(any_of FeatureExtXcvhwlp),
+               "'Xcvhwlp' (Hardware Loop)">;
 // CORE-V Multiply-Accumulate Extension
-def FeatureExtXCoreVMac
-    : SubtargetFeature<"xcorevmac", "HasExtXCoreVMac", "true",
-                       "'Xcorevmac' (Multiply-Accumulate)">;
-def HasExtXCoreVMac
-    : Predicate<"Subtarget->hasExtXCoreVMac()">,
-               AssemblerPredicate<(any_of FeatureExtXCoreVMac),
-               "'Xcorevmac' (Multiply-Accumulate)">;
+def FeatureExtXcvmac
+    : SubtargetFeature<"xcvmac", "HasExtXcvmac", "true",
+                       "'Xcvmac' (Multiply-Accumulate)">;
+def HasExtXcvmac
+    : Predicate<"Subtarget->hasExtXcvmac()">,
+               AssemblerPredicate<(any_of FeatureExtXcvmac),
+               "'Xcvmac' (Multiply-Accumulate)">;
 // CORE-V ALU Extension
-def FeatureExtXCoreVAlu
-    : SubtargetFeature<"xcorevalu", "HasExtXCoreVAlu", "true",
-                       "'Xcorevalu' (ALU Operations)">;
-def HasExtXCoreVAlu
-    : Predicate<"Subtarget->hasExtXCoreVAlu()">,
-               AssemblerPredicate<(any_of FeatureExtXCoreVAlu),
-               "'Xcorevalu' (ALU Operations)">;
+def FeatureExtXcvalu
+    : SubtargetFeature<"xcvalu", "HasExtXcvalu", "true",
+                       "'Xcvalu' (ALU Operations)">;
+def HasExtXcvalu
+    : Predicate<"Subtarget->hasExtXcvalu()">,
+               AssemblerPredicate<(any_of FeatureExtXcvalu),
+               "'Xcvalu' (ALU Operations)">;
 
 def FeatureExtXcvsimd
     : SubtargetFeature<"xcvsimd", "HasExtXcvsimd", "true",
@@ -465,24 +465,24 @@ def HasExtXcvbi
                "'Xcvbi' (immediate branch)">;
 
 // CORE-V Load-Store Extension
-def FeatureExtXCoreVMem
-    : SubtargetFeature<"xcorevmem", "HasExtXCoreVMem", "true",
-                       "'Xcorevmem' (Post-incrementing Load & Store)">;
-def HasExtXCoreVMem
-    : Predicate<"Subtarget->hasExtXCoreVMem()">,
-               AssemblerPredicate<(any_of FeatureExtXCoreVMem),
-               "'Xcorevmem' (Post-incrementing Load & Store)">;
+def FeatureExtXcvmem
+    : SubtargetFeature<"xcvmem", "HasExtXcvmem", "true",
+                       "'Xcvmem' (Post-incrementing Load & Store)">;
+def HasExtXcvmem
+    : Predicate<"Subtarget->hasExtXcvmem()">,
+               AssemblerPredicate<(any_of FeatureExtXcvmem),
+               "'Xcvmem' (Post-incrementing Load & Store)">;
 // All CORE-V extensions
-def FeatureExtXCoreV
-    : SubtargetFeature<"xcorev", "HasExtXCoreV", "true",
-                       "'Xcorev' (CORE-V extensions)",
-                       [FeatureExtXCoreVHwlp, FeatureExtXCoreVMac,
-                        FeatureExtXCoreVAlu, FeatureExtXcvsimd, 
-                        FeatureExtXcvbitmanip, FeatureExtXCoreVMem,
+def FeatureExtXcv
+    : SubtargetFeature<"xcv", "HasExtXcv", "true",
+                       "'Xcv' (CORE-V extensions)",
+                       [FeatureExtXcvhwlp, FeatureExtXcvmac,
+                        FeatureExtXcvalu, FeatureExtXcvsimd, 
+                        FeatureExtXcvbitmanip, FeatureExtXcvmem,
                         FeatureExtXcvbi]>;
-def HasExtXCoreV : Predicate<"Subtarget->hasExtXCoreV()">,
-                              AssemblerPredicate<(all_of FeatureExtXCoreV),
-                              "'Xcorev' (CORE-V extensions)">;
+def HasExtXCoreV : Predicate<"Subtarget->hasExtXcv()">,
+                              AssemblerPredicate<(all_of FeatureExtXcv),
+                              "'Xcv' (CORE-V extensions)">;
 
 def Feature64Bit
     : SubtargetFeature<"64bit", "HasRV64", "true", "Implements RV64">;
