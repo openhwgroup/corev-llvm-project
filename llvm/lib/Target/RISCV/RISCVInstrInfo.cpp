@@ -745,6 +745,10 @@ static RISCVCC::CondCode getCondFromBranchOpc(unsigned Opc) {
     return RISCVCC::COND_INVALID;
   case RISCV::HwlpBranch:
     return RISCVCC::COND_HWLP;
+  case RISCV::CV_BEQIMM:
+    return RISCVCC::COND_EQ;
+  case RISCV::CV_BNEIMM:
+    return RISCVCC::COND_NE;
   case RISCV::BEQ:
     return RISCVCC::COND_EQ;
   case RISCV::BNE:
