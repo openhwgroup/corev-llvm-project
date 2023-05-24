@@ -1768,4 +1768,7 @@ def int_riscv_cv_mac_macurn   : ScalarCoreVMacGprGprGprImmIntrinsic;
 def int_riscv_cv_mac_machhurn : ScalarCoreVMacGprGprGprImmIntrinsic;
 def int_riscv_cv_mac_macsrn   : ScalarCoreVMacGprGprGprImmIntrinsic;
 def int_riscv_cv_mac_machhsrn : ScalarCoreVMacGprGprGprImmIntrinsic;
+
+def int_riscv_cv_elw_elw
+  : Intrinsic<[llvm_i32_ty], [llvm_ptr_ty], [IntrReadMem, IntrArgMemOnly]>;
 } // TargetPrefix = "riscv"

@@ -2800,6 +2800,9 @@ bool RISCVAsmParser::processInstruction(MCInst &Inst, SMLoc IDLoc,
   case RISCV::PseudoFSD:
     emitLoadStoreSymbol(Inst, RISCV::FSD, IDLoc, Out, /*HasTmpReg=*/true);
     return false;
+  case RISCV::PseudoCV_ELW:
+    emitLoadStoreSymbol(Inst, RISCV::CV_ELW, IDLoc, Out, /*HasTmpReg=*/true);
+    return false;
   case RISCV::PseudoAddTPRel:
     if (checkPseudoAddTPRel(Inst, Operands))
       return true;
