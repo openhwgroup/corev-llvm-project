@@ -629,6 +629,7 @@ let Predicates = [HasExtXcvbitmanip, IsRV32], hasSideEffects = 0, mayLoad = 0, m
 }
 
 let Predicates = [HasExtXcvelw], hasSideEffects = 0, mayLoad = 1, mayStore = 0 in {
+  def PseudoCV_ELW : PseudoLoad<"cv.elw">;
   def CV_ELW : RVInstLoad_ri_inc<0b011, (outs GPR:$rd), (ins GPR:$rs1, simm12:$imm12),
                                  "cv.elw", "$rd, ${imm12}(${rs1})", []>,
                Sched<[]>;
@@ -1134,6 +1135,12 @@ let Predicates = [HasExtXcvbitmanip, IsRV32] in {
 
   def : Pat<(int_riscv_cv_bitmanip_bitrev GPR:$rs1, cv_tuimm5:$pts, cv_tuimm2:$radix),
             (CV_BITREV GPR:$rs1, cv_tuimm5:$pts, cv_tuimm2:$radix)>;
+}
+
+let Predicates = [HasExtXcvelw, IsRV32] in {
+  def : Pat<(int_riscv_cv_elw_elw GPR:$rs1), (PseudoCV_ELW GPR:$rs1)>;
+  def : Pat<(int_riscv_cv_elw_elw (AddrRegImm GPR:$rs1, simm12:$imm12)),
+            (CV_ELW GPR:$rs1, simm12:$imm12)>;
 }
 
 //===----------------------------------------------------------------------===//
