@@ -100,6 +100,10 @@ def cv_tuimm5: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<5>(Imm);}]>;
 def cv_uimm10: Operand<XLenVT>, ImmLeaf<XLenVT, [{return isUInt<10>(Imm);}]>;
 def cv_tuimm10: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<10>(Imm);}]>;
 
+def cv_uimm32: Operand<XLenVT>,
+               ImmLeaf<XLenVT, [{return isPowerOf2_32(Imm + 1);}]>;
+
+
 //===----------------------------------------------------------------------===//
 // CORE-V specific instructions
 //===----------------------------------------------------------------------===//
@@ -797,6 +801,27 @@ let Predicates = [HasExtXcvmac] in {
 // Patterns for general ALU operations
 //===----------------------------------------------------------------------===//
 
+class PatCoreVAluGpr <string intr, string asm> :
+  PatGpr<!cast<Intrinsic>("int_riscv_cv_alu_" # intr),
+            !cast<RVInst>("CV_" # asm)>;
+class PatCoreVAluGprGpr <string intr, string asm> :
+  PatGprGpr<!cast<Intrinsic>("int_riscv_cv_alu_" # intr),
+               !cast<RVInst>("CV_" # asm)>;
+multiclass PatCoreVAluGprImm <Intrinsic intr> {
+  def "CV_" # NAME # "_PSEUDO" :
+    Pseudo<(outs GPR:$rd), (ins GPR:$rs, cv_uimm32:$imm), []>;
+  def : PatGprGpr<intr, !cast<RVInst>("CV_" # NAME # "R")>;
+  def : PatGprImm<intr, !cast<RVInst>("CV_" # NAME # "_PSEUDO"), cv_uimm32>;
+}
+multiclass PatCoreVAluGprGprImm <Intrinsic intr> {
+  def "CV_" # NAME # "_PSEUDO" :
+    Pseudo<(outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm), []>;
+  def : Pat<(intr GPR:$rs1, GPR:$rs2, GPR:$rs3),
+            (!cast<RVInst>("CV_" # NAME # "R") GPR:$rs1, GPR:$rs2, GPR:$rs3)>;
+  def : Pat<(intr GPR:$rs1, GPR:$rs2, uimm5:$imm),
+            (!cast<RVInst>("CV_" # NAME # "_PSEUDO") GPR:$rs1, GPR:$rs2, uimm5:$imm)>;
+}
+
 let Predicates = [HasExtXcvalu] in {
 
   def : Pat<(abs GPR:$rs1), (CV_ABS GPR:$rs1)>;
@@ -856,6 +881,29 @@ let Predicates = [HasExtXcvalu] in {
             (CV_SUBRNR  GPR:$rd, GPR:$rs1, GPR:$rs2)>;
   def : Pat<(srl (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
             (CV_SUBURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+
+  def : PatCoreVAluGpr<"abs", "ABS">;
+  def : PatCoreVAluGprGpr<"slet", "SLET">;
+  def : PatCoreVAluGprGpr<"sletu", "SLETU">;
+  def : PatCoreVAluGprGpr<"min", "MIN">;
+  def : PatCoreVAluGprGpr<"minu", "MINU">;
+  def : PatCoreVAluGprGpr<"max", "MAX">;
+  def : PatCoreVAluGprGpr<"maxu", "MAXU">;
+  def : PatCoreVAluGpr<"exths", "EXTHS">;
+  def : PatCoreVAluGpr<"exthz", "EXTHZ">;
+  def : PatCoreVAluGpr<"extbs", "EXTBS">;
+  def : PatCoreVAluGpr<"extbz", "EXTBZ">;
+
+  defm CLIP   : PatCoreVAluGprImm<int_riscv_cv_alu_clip>;
+  defm CLIPU  : PatCoreVAluGprImm<int_riscv_cv_alu_clipu>;
+  defm ADDN   : PatCoreVAluGprGprImm<int_riscv_cv_alu_addn>;
+  defm ADDUN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_addun>;
+  defm ADDRN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_addrn>;
+  defm ADDURN : PatCoreVAluGprGprImm<int_riscv_cv_alu_addurn>;
+  defm SUBN   : PatCoreVAluGprGprImm<int_riscv_cv_alu_subn>;
+  defm SUBUN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_subun>;
+  defm SUBRN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_subrn>;
+  defm SUBURN : PatCoreVAluGprGprImm<int_riscv_cv_alu_suburn>;
 }
 
 //===----------------------------------------------------------------------===//
