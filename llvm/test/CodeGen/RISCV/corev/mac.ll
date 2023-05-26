@@ -31,7 +31,7 @@ define i32 @muls(i32 %a, i32 %b) {
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    slli a0, a0, 16
 ; CHECK-NEXT:    slli a1, a1, 16
-; CHECK-NEXT:    cv.mulhhs a0, a0, a1
+; CHECK-NEXT:    cv.mulhhsn a0, a0, a1, 0
 ; CHECK-NEXT:    ret
   %1 = shl i32 %a, 16
   %2 = ashr i32 %1, 16
@@ -44,7 +44,7 @@ define i32 @muls(i32 %a, i32 %b) {
 define i32 @mulhhs(i32 %a, i32 %b) {
 ; CHECK-LABEL: mulhhs:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.mulhhs a0, a0, a1
+; CHECK-NEXT:    cv.mulhhsn a0, a0, a1, 0
 ; CHECK-NEXT:    ret
   %1 = ashr i32 %a, 16
   %2 = ashr i32 %b, 16
@@ -113,7 +113,7 @@ define i32 @mulhhsRN(i32 %a, i32 %b) {
 define i32 @mulu(i32 %a, i32 %b) {
 ; CHECK-LABEL: mulu:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.mulu a0, a0, a1
+; CHECK-NEXT:    cv.mulun a0, a0, a1, 0
 ; CHECK-NEXT:    ret
   %1 = and i32 %a, 65535
   %2 = and i32 %b, 65535
@@ -124,7 +124,7 @@ define i32 @mulu(i32 %a, i32 %b) {
 define i32 @mulhhu(i32 %a, i32 %b) {
 ; CHECK-LABEL: mulhhu:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.mulhhu a0, a0, a1
+; CHECK-NEXT:    cv.mulhhun a0, a0, a1, 0
 ; CHECK-NEXT:    ret
   %1 = lshr i32 %a, 16
   %2 = lshr i32 %b, 16
@@ -135,7 +135,7 @@ define i32 @mulhhu(i32 %a, i32 %b) {
 define i32 @muluN(i32 %a, i32 %b) {
 ; CHECK-LABEL: muluN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.mulu a0, a0, a1
+; CHECK-NEXT:    cv.mulun a0, a0, a1, 0
 ; CHECK-NEXT:    srai a0, a0, 5
 ; CHECK-NEXT:    ret
   %1 = and i32 %a, 65535
