@@ -778,23 +778,23 @@ let Predicates = [HasExtXcvmac] in {
   def : PatCoreVMacGprGprGpr<"mac", "MAC">;
   def : PatCoreVMacGprGprGpr<"msu", "MSU">;
 
-  def : PatCoreVMacGprGprUimm5<"mulun", "MULUN">;
-  def : PatCoreVMacGprGprUimm5<"mulhhun", "MULHHUN">;
-  def : PatCoreVMacGprGprUimm5<"mulsn", "MULSN">;
-  def : PatCoreVMacGprGprUimm5<"mulhhsn", "MULHHSN">;
-  def : PatCoreVMacGprGprUimm5<"mulurn", "MULURN">;
-  def : PatCoreVMacGprGprUimm5<"mulhhurn", "MULHHURN">;
-  def : PatCoreVMacGprGprUimm5<"mulsrn", "MULSRN">;
-  def : PatCoreVMacGprGprUimm5<"mulhhsrn", "MULHHSRN">;
+  def : PatCoreVMacGprGprUimm5<"muluN", "MULUN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhuN", "MULHHUN">;
+  def : PatCoreVMacGprGprUimm5<"mulsN", "MULSN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhsN", "MULHHSN">;
+  def : PatCoreVMacGprGprUimm5<"muluRN", "MULURN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhuRN", "MULHHURN">;
+  def : PatCoreVMacGprGprUimm5<"mulsRN", "MULSRN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhsRN", "MULHHSRN">;
 
-  def : PatCoreVMacGprGprGprUimm5<"macun", "MACUN">;
-  def : PatCoreVMacGprGprGprUimm5<"machhun", "MACHHUN">;
-  def : PatCoreVMacGprGprGprUimm5<"macsn", "MACSN">;
-  def : PatCoreVMacGprGprGprUimm5<"machhsn", "MACHHSN">;
-  def : PatCoreVMacGprGprGprUimm5<"macurn", "MACURN">;
-  def : PatCoreVMacGprGprGprUimm5<"machhurn", "MACHHURN">;
-  def : PatCoreVMacGprGprGprUimm5<"macsrn", "MACSRN">;
-  def : PatCoreVMacGprGprGprUimm5<"machhsrn", "MACHHSRN">;
+  def : PatCoreVMacGprGprGprUimm5<"macuN", "MACUN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhuN", "MACHHUN">;
+  def : PatCoreVMacGprGprGprUimm5<"macsN", "MACSN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhsN", "MACHHSN">;
+  def : PatCoreVMacGprGprGprUimm5<"macuRN", "MACURN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhuRN", "MACHHURN">;
+  def : PatCoreVMacGprGprGprUimm5<"macsRN", "MACSRN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhsRN", "MACHHSRN">;
 }
 
 //===----------------------------------------------------------------------===//

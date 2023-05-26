@@ -1751,23 +1751,23 @@ class ScalarCoreVMacGprGprGprImmIntrinsic
 def int_riscv_cv_mac_mac : ScalarCoreVMacGprGprGprIntrinsic;
 def int_riscv_cv_mac_msu : ScalarCoreVMacGprGprGprIntrinsic;
 
-def int_riscv_cv_mac_mulun    : ScalarCoreVMacGprGPRImmIntrinsic;
-def int_riscv_cv_mac_mulhhun  : ScalarCoreVMacGprGPRImmIntrinsic;
-def int_riscv_cv_mac_mulsn    : ScalarCoreVMacGprGPRImmIntrinsic;
-def int_riscv_cv_mac_mulhhsn  : ScalarCoreVMacGprGPRImmIntrinsic;
-def int_riscv_cv_mac_mulurn   : ScalarCoreVMacGprGPRImmIntrinsic;
-def int_riscv_cv_mac_mulhhurn : ScalarCoreVMacGprGPRImmIntrinsic;
-def int_riscv_cv_mac_mulsrn   : ScalarCoreVMacGprGPRImmIntrinsic;
-def int_riscv_cv_mac_mulhhsrn : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_muluN    : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhuN  : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulsN    : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhsN  : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_muluRN   : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhuRN : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulsRN   : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhsRN : ScalarCoreVMacGprGPRImmIntrinsic;
 
-def int_riscv_cv_mac_macun    : ScalarCoreVMacGprGprGprImmIntrinsic;
-def int_riscv_cv_mac_machhun  : ScalarCoreVMacGprGprGprImmIntrinsic;
-def int_riscv_cv_mac_macsn    : ScalarCoreVMacGprGprGprImmIntrinsic;
-def int_riscv_cv_mac_machhsn  : ScalarCoreVMacGprGprGprImmIntrinsic;
-def int_riscv_cv_mac_macurn   : ScalarCoreVMacGprGprGprImmIntrinsic;
-def int_riscv_cv_mac_machhurn : ScalarCoreVMacGprGprGprImmIntrinsic;
-def int_riscv_cv_mac_macsrn   : ScalarCoreVMacGprGprGprImmIntrinsic;
-def int_riscv_cv_mac_machhsrn : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_macuN    : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhuN  : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_macsN    : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhsN  : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_macuRN   : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhuRN : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_macsRN   : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhsRN : ScalarCoreVMacGprGprGprImmIntrinsic;
 
 def int_riscv_cv_elw_elw
   : Intrinsic<[llvm_i32_ty], [llvm_ptr_ty], [IntrReadMem, IntrArgMemOnly]>;
