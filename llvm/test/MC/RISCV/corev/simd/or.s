@@ -9,6 +9,10 @@ cv.or.h t0, t1, t2
 # CHECK-INSTR: cv.or.h t0, t1, t2
 # CHECK-ENCODING: [0xfb,0x02,0x73,0x58]
 
+cv.or.h t3, t4, t5
+# CHECK-INSTR: cv.or.h t3, t4, t5
+# CHECK-ENCODING: [0x7b,0x8e,0xee,0x59]
+
 cv.or.h a0, a1, a2
 # CHECK-INSTR: cv.or.h a0, a1, a2
 # CHECK-ENCODING: [0x7b,0x85,0xc5,0x58]
@@ -24,6 +28,10 @@ cv.or.h s0, s1, s2
 cv.or.b t0, t1, t2
 # CHECK-INSTR: cv.or.b t0, t1, t2
 # CHECK-ENCODING: [0xfb,0x12,0x73,0x58]
+
+cv.or.b t3, t4, t5
+# CHECK-INSTR: cv.or.b t3, t4, t5
+# CHECK-ENCODING: [0x7b,0x9e,0xee,0x59]
 
 cv.or.b a0, a1, a2
 # CHECK-INSTR: cv.or.b a0, a1, a2
@@ -41,6 +49,10 @@ cv.or.sc.h t0, t1, t2
 # CHECK-INSTR: cv.or.sc.h t0, t1, t2
 # CHECK-ENCODING: [0xfb,0x42,0x73,0x58]
 
+cv.or.sc.h t3, t4, t5
+# CHECK-INSTR: cv.or.sc.h t3, t4, t5
+# CHECK-ENCODING: [0x7b,0xce,0xee,0x59]
+
 cv.or.sc.h a0, a1, a2
 # CHECK-INSTR: cv.or.sc.h a0, a1, a2
 # CHECK-ENCODING: [0x7b,0xc5,0xc5,0x58]
@@ -57,6 +69,10 @@ cv.or.sc.b t0, t1, t2
 # CHECK-INSTR: cv.or.sc.b t0, t1, t2
 # CHECK-ENCODING: [0xfb,0x52,0x73,0x58]
 
+cv.or.sc.b t3, t4, t5
+# CHECK-INSTR: cv.or.sc.b t3, t4, t5
+# CHECK-ENCODING: [0x7b,0xde,0xee,0x59]
+
 cv.or.sc.b a0, a1, a2
 # CHECK-INSTR: cv.or.sc.b a0, a1, a2
 # CHECK-ENCODING: [0x7b,0xd5,0xc5,0x58]
@@ -69,31 +85,39 @@ cv.or.sc.b s0, s1, s2
 // cv.or.sci.h
 //===----------------------------------------------------------------------===//
 
-cv.or.sci.h t0, t1, -32
-# CHECK-INSTR: cv.or.sci.h t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x62,0x03,0x59]
+cv.or.sci.h t0, t1, 0
+# CHECK-INSTR: cv.or.sci.h t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x62,0x03,0x58]
+
+cv.or.sci.h t3, t4, 32
+# CHECK-INSTR: cv.or.sci.h t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xee,0x0e,0x59]
 
 cv.or.sci.h a0, a1, 7
 # CHECK-INSTR: cv.or.sci.h a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xe5,0x35,0x5a]
 
-cv.or.sci.h s0, s1, -1
-# CHECK-INSTR: cv.or.sci.h s0, s1, -1
+cv.or.sci.h s0, s1, 63
+# CHECK-INSTR: cv.or.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x5b]
 
 //===----------------------------------------------------------------------===//
 // cv.or.sci.b
 //===----------------------------------------------------------------------===//
 
-cv.or.sci.b t0, t1, -32
-# CHECK-INSTR: cv.or.sci.b t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x72,0x03,0x59]
+cv.or.sci.b t0, t1, 0
+# CHECK-INSTR: cv.or.sci.b t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x72,0x03,0x58]
+
+cv.or.sci.b t3, t4, 32
+# CHECK-INSTR: cv.or.sci.b t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xfe,0x0e,0x59]
 
 cv.or.sci.b a0, a1, 7
 # CHECK-INSTR: cv.or.sci.b a0, a1, 7
 # CHECK-ENCODING: [0x7b,0xf5,0x35,0x5a]
 
-cv.or.sci.b s0, s1, -1
-# CHECK-INSTR: cv.or.sci.b s0, s1, -1
+cv.or.sci.b s0, s1, 63
+# CHECK-INSTR: cv.or.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x5b]
 

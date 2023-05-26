@@ -250,9 +250,9 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
   defm SRL :  CVSIMDBinaryUnsigned<0b01000, 0, 0, "srl">;
   defm SRA :  CVSIMDBinaryUnsigned<0b01001, 0, 0, "sra">;
   defm SLL :  CVSIMDBinaryUnsigned<0b01010, 0, 0, "sll">;
-  defm OR :     CVSIMDBinarySigned<0b01011, 0, 0, "or">;
-  defm XOR :    CVSIMDBinarySigned<0b01100, 0, 0, "xor">;
-  defm AND :    CVSIMDBinarySigned<0b01101, 0, 0, "and">;
+  defm OR :     CVSIMDBinaryUnsigned<0b01011, 0, 0, "or">;
+  defm XOR :    CVSIMDBinaryUnsigned<0b01100, 0, 0, "xor">;
+  defm AND :    CVSIMDBinaryUnsigned<0b01101, 0, 0, "and">;
 
   def CV_ABS_H :    CVSIMDALUR<0b01110, 0, 0, 0b000, "cv.abs.h">;
   def CV_ABS_B :    CVSIMDALUR<0b01110, 0, 0, 0b001, "cv.abs.b">;
@@ -268,12 +268,12 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
 
   // 0b10110xx: UNDEF
 
-  def CV_EXTRACT_H :    CVSIMDALURI<0b10111, 0, 0b000, "cv.extract.h">;
-  def CV_EXTRACT_B :    CVSIMDALURI<0b10111, 0, 0b001, "cv.extract.b">;
-  def CV_EXTRACTU_H :   CVSIMDALURI<0b10111, 0, 0b010, "cv.extractu.h">;
-  def CV_EXTRACTU_B :   CVSIMDALURI<0b10111, 0, 0b011, "cv.extractu.b">;
-  def CV_INSERT_H :     CVSIMDALURIWb<0b10111, 0, 0b100, "cv.insert.h">;
-  def CV_INSERT_B :     CVSIMDALURIWb<0b10111, 0, 0b101, "cv.insert.b">;
+  def CV_EXTRACT_H :    CVSIMDALURU<0b10111, 0, 0b000, "cv.extract.h">;
+  def CV_EXTRACT_B :    CVSIMDALURU<0b10111, 0, 0b001, "cv.extract.b">;
+  def CV_EXTRACTU_H :   CVSIMDALURU<0b10111, 0, 0b010, "cv.extractu.h">;
+  def CV_EXTRACTU_B :   CVSIMDALURU<0b10111, 0, 0b011, "cv.extractu.b">;
+  def CV_INSERT_H :     CVSIMDALURUWb<0b10111, 0, 0b100, "cv.insert.h">;
+  def CV_INSERT_B :     CVSIMDALURUWb<0b10111, 0, 0b101, "cv.insert.b">;
 
   def CV_SHUFFLE_H :    CVSIMDALURR<0b11000, 0, 0, 0b000, "cv.shuffle.h">;
   def CV_SHUFFLE_B :    CVSIMDALURR<0b11000, 0, 0, 0b001, "cv.shuffle.b">;
