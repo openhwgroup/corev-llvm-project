@@ -177,6 +177,25 @@ TARGET_BUILTIN(bitmanip_cnt, "UZiUZi", "nc", "xcvbitmanip")
 TARGET_BUILTIN(bitmanip_ror, "UZiUZiUZi", "nc", "xcvbitmanip")
 TARGET_BUILTIN(bitmanip_bitrev, "UZiUZiIUcIUc", "nc", "xcvbitmanip")
 
+TARGET_BUILTIN(mac_mac, "UZiUZiUZiUZi", "nc", "xcvmac")
+TARGET_BUILTIN(mac_msu, "UZiUZiUZiUZi", "nc", "xcvmac")
+TARGET_BUILTIN(mac_muluN, "UZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_mulhhuN, "UZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_mulsN, "SZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_mulhhsN, "SZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_muluRN, "UZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_mulhhuRN, "UZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_mulsRN, "SZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_mulhhsRN, "SZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_macuN, "UZiUZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_machhuN, "UZiUZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_macsN, "SZiUZiUZiSZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_machhsN, "SZiUZiUZiSZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_macuRN, "UZiUZiUZiSZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_machhuRN, "UZiUZiUZiUZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_macsRN, "SZiUZiUZiSZiUc", "nc", "xcvmac")
+TARGET_BUILTIN(mac_machhsRN, "SZiUZiUZiSZiUc", "nc", "xcvmac")
+
 #undef BUILTIN
 #undef TARGET_BUILTIN
 #undef PSEUDO_BUILTIN
