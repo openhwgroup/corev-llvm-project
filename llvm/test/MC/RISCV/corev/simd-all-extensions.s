@@ -1268,11 +1268,17 @@ cv.or.sc.b s0, s1, s2
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b d4 24 59 <unknown>
 
-cv.or.sci.h t0, t1, -32
-# CHECK-INSTR: cv.or.sci.h t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x62,0x03,0x59] 
+cv.or.sci.h t0, t1, 0
+# CHECK-INSTR: cv.or.sci.h t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x62,0x03,0x58] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 62 03 59 <unknown>
+# CHECK-UNKNOWN: fb 62 03 58 <unknown>
+
+cv.or.sci.h t3, t4, 32
+# CHECK-INSTR: cv.or.sci.h t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xee,0x0e,0x59] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b ee 0e 59 <unknown>
 
 cv.or.sci.h a0, a1, 7
 # CHECK-INSTR: cv.or.sci.h a0, a1, 7
@@ -1280,17 +1286,23 @@ cv.or.sci.h a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e5 35 5a <unknown>
 
-cv.or.sci.h s0, s1, -1
-# CHECK-INSTR: cv.or.sci.h s0, s1, -1
+cv.or.sci.h s0, s1, 63
+# CHECK-INSTR: cv.or.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x5b] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e4 f4 5b <unknown>
 
-cv.or.sci.b t0, t1, -32
-# CHECK-INSTR: cv.or.sci.b t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x72,0x03,0x59] 
+cv.or.sci.b t0, t1, 0
+# CHECK-INSTR: cv.or.sci.b t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x72,0x03,0x58] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 72 03 59 <unknown>
+# CHECK-UNKNOWN: fb 72 03 58 <unknown>
+
+cv.or.sci.b t3, t4, 32
+# CHECK-INSTR: cv.or.sci.b t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xfe,0x0e,0x59] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b fe 0e 59 <unknown>
 
 cv.or.sci.b a0, a1, 7
 # CHECK-INSTR: cv.or.sci.b a0, a1, 7
@@ -1298,8 +1310,8 @@ cv.or.sci.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f5 35 5a <unknown>
 
-cv.or.sci.b s0, s1, -1
-# CHECK-INSTR: cv.or.sci.b s0, s1, -1
+cv.or.sci.b s0, s1, 63
+# CHECK-INSTR: cv.or.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x5b] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 5b <unknown>
@@ -1376,11 +1388,17 @@ cv.xor.sc.b s0, s1, s2
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b d4 24 61 <unknown>
 
-cv.xor.sci.h t0, t1, -32
-# CHECK-INSTR: cv.xor.sci.h t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x62,0x03,0x61] 
+cv.xor.sci.h t0, t1, 0
+# CHECK-INSTR: cv.xor.sci.h t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x62,0x03,0x60] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 62 03 61 <unknown>
+# CHECK-UNKNOWN: fb 62 03 60 <unknown>
+
+cv.xor.sci.h t3, t4, 32
+# CHECK-INSTR: cv.xor.sci.h t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xee,0x0e,0x61] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b ee 0e 61 <unknown>
 
 cv.xor.sci.h a0, a1, 7
 # CHECK-INSTR: cv.xor.sci.h a0, a1, 7
@@ -1388,17 +1406,23 @@ cv.xor.sci.h a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e5 35 62 <unknown>
 
-cv.xor.sci.h s0, s1, -1
-# CHECK-INSTR: cv.xor.sci.h s0, s1, -1
+cv.xor.sci.h s0, s1, 63
+# CHECK-INSTR: cv.xor.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x63] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e4 f4 63 <unknown>
 
-cv.xor.sci.b t0, t1, -32
-# CHECK-INSTR: cv.xor.sci.b t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x72,0x03,0x61] 
+cv.xor.sci.b t0, t1, 0
+# CHECK-INSTR: cv.xor.sci.b t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x72,0x03,0x60] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 72 03 61 <unknown>
+# CHECK-UNKNOWN: fb 72 03 60 <unknown>
+
+cv.xor.sci.b t3, t4, 32
+# CHECK-INSTR: cv.xor.sci.b t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xfe,0x0e,0x61] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b fe 0e 61 <unknown>
 
 cv.xor.sci.b a0, a1, 7
 # CHECK-INSTR: cv.xor.sci.b a0, a1, 7
@@ -1406,8 +1430,8 @@ cv.xor.sci.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f5 35 62 <unknown>
 
-cv.xor.sci.b s0, s1, -1
-# CHECK-INSTR: cv.xor.sci.b s0, s1, -1
+cv.xor.sci.b s0, s1, 63
+# CHECK-INSTR: cv.xor.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x63] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 63 <unknown>
@@ -1484,11 +1508,17 @@ cv.and.sc.b s0, s1, s2
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b d4 24 69 <unknown>
 
-cv.and.sci.h t0, t1, -32
-# CHECK-INSTR: cv.and.sci.h t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x62,0x03,0x69] 
+cv.and.sci.h t0, t1, 0
+# CHECK-INSTR: cv.and.sci.h t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x62,0x03,0x68] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 62 03 69 <unknown>
+# CHECK-UNKNOWN: fb 62 03 68 <unknown>
+
+cv.and.sci.h t3, t4, 32
+# CHECK-INSTR: cv.and.sci.h t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xee,0x0e,0x69] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b ee 0e 69 <unknown>
 
 cv.and.sci.h a0, a1, 7
 # CHECK-INSTR: cv.and.sci.h a0, a1, 7
@@ -1496,17 +1526,23 @@ cv.and.sci.h a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e5 35 6a <unknown>
 
-cv.and.sci.h s0, s1, -1
-# CHECK-INSTR: cv.and.sci.h s0, s1, -1
+cv.and.sci.h s0, s1, 63
+# CHECK-INSTR: cv.and.sci.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xe4,0xf4,0x6b] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b e4 f4 6b <unknown>
 
-cv.and.sci.b t0, t1, -32
-# CHECK-INSTR: cv.and.sci.b t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x72,0x03,0x69] 
+cv.and.sci.b t0, t1, 0
+# CHECK-INSTR: cv.and.sci.b t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x72,0x03,0x68] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 72 03 69 <unknown>
+# CHECK-UNKNOWN: fb 72 03 68 <unknown>
+
+cv.and.sci.b t3, t4, 32
+# CHECK-INSTR: cv.and.sci.b t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xfe,0x0e,0x69] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b fe 0e 69 <unknown>
 
 cv.and.sci.b a0, a1, 7
 # CHECK-INSTR: cv.and.sci.b a0, a1, 7
@@ -1514,8 +1550,8 @@ cv.and.sci.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f5 35 6a <unknown>
 
-cv.and.sci.b s0, s1, -1
-# CHECK-INSTR: cv.and.sci.b s0, s1, -1
+cv.and.sci.b s0, s1, 63
+# CHECK-INSTR: cv.and.sci.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xf4,0xf4,0x6b] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 6b <unknown>
@@ -2204,11 +2240,17 @@ cv.sdotsp.sci.b s0, s1, -1
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b f4 f4 ab <unknown>
 
-cv.extract.h t0, t1, -32
-# CHECK-INSTR: cv.extract.h t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x02,0x03,0xb9] 
+cv.extract.h t0, t1, 0
+# CHECK-INSTR: cv.extract.h t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x02,0x03,0xb8] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 02 03 b9 <unknown>
+# CHECK-UNKNOWN: fb 02 03 b8 <unknown>
+
+cv.extract.h t3, t4, 32
+# CHECK-INSTR: cv.extract.h t3, t4, 32
+# CHECK-ENCODING: [0x7b,0x8e,0x0e,0xb9] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b 8e 0e b9 <unknown>
 
 cv.extract.h a0, a1, 7
 # CHECK-INSTR: cv.extract.h a0, a1, 7
@@ -2216,17 +2258,23 @@ cv.extract.h a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b 85 35 ba <unknown>
 
-cv.extract.h s0, s1, -1
-# CHECK-INSTR: cv.extract.h s0, s1, -1
+cv.extract.h s0, s1, 63
+# CHECK-INSTR: cv.extract.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0x84,0xf4,0xbb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b 84 f4 bb <unknown>
 
-cv.extract.b t0, t1, -32
-# CHECK-INSTR: cv.extract.b t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x12,0x03,0xb9] 
+cv.extract.b t0, t1, 0
+# CHECK-INSTR: cv.extract.b t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x12,0x03,0xb8] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 12 03 b9 <unknown>
+# CHECK-UNKNOWN: fb 12 03 b8 <unknown>
+
+cv.extract.b t3, t4, 32
+# CHECK-INSTR: cv.extract.b t3, t4, 32
+# CHECK-ENCODING: [0x7b,0x9e,0x0e,0xb9] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b 9e 0e b9 <unknown>
 
 cv.extract.b a0, a1, 7
 # CHECK-INSTR: cv.extract.b a0, a1, 7
@@ -2234,17 +2282,23 @@ cv.extract.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b 95 35 ba <unknown>
 
-cv.extract.b s0, s1, -1
-# CHECK-INSTR: cv.extract.b s0, s1, -1
+cv.extract.b s0, s1, 63
+# CHECK-INSTR: cv.extract.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0x94,0xf4,0xbb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b 94 f4 bb <unknown>
 
-cv.extractu.h t0, t1, -32
-# CHECK-INSTR: cv.extractu.h t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x22,0x03,0xb9] 
+cv.extractu.h t0, t1, 0
+# CHECK-INSTR: cv.extractu.h t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x22,0x03,0xb8] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 22 03 b9 <unknown>
+# CHECK-UNKNOWN: fb 22 03 b8 <unknown>
+
+cv.extractu.h t3, t4, 32
+# CHECK-INSTR: cv.extractu.h t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xae,0x0e,0xb9] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b ae 0e b9 <unknown>
 
 cv.extractu.h a0, a1, 7
 # CHECK-INSTR: cv.extractu.h a0, a1, 7
@@ -2252,17 +2306,23 @@ cv.extractu.h a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b a5 35 ba <unknown>
 
-cv.extractu.h s0, s1, -1
-# CHECK-INSTR: cv.extractu.h s0, s1, -1
+cv.extractu.h s0, s1, 63
+# CHECK-INSTR: cv.extractu.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xa4,0xf4,0xbb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b a4 f4 bb <unknown>
 
-cv.extractu.b t0, t1, -32
-# CHECK-INSTR: cv.extractu.b t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x32,0x03,0xb9] 
+cv.extractu.b t0, t1, 0
+# CHECK-INSTR: cv.extractu.b t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x32,0x03,0xb8] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 32 03 b9 <unknown>
+# CHECK-UNKNOWN: fb 32 03 b8 <unknown>
+
+cv.extractu.b t3, t4, 32
+# CHECK-INSTR: cv.extractu.b t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xbe,0x0e,0xb9] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b be 0e b9 <unknown>
 
 cv.extractu.b a0, a1, 7
 # CHECK-INSTR: cv.extractu.b a0, a1, 7
@@ -2270,17 +2330,23 @@ cv.extractu.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b b5 35 ba <unknown>
 
-cv.extractu.b s0, s1, -1
-# CHECK-INSTR: cv.extractu.b s0, s1, -1
+cv.extractu.b s0, s1, 63
+# CHECK-INSTR: cv.extractu.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xb4,0xf4,0xbb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b b4 f4 bb <unknown>
 
-cv.insert.h t0, t1, -32
-# CHECK-INSTR: cv.insert.h t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x42,0x03,0xb9] 
+cv.insert.h t0, t1, 0
+# CHECK-INSTR: cv.insert.h t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x42,0x03,0xb8] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 42 03 b9 <unknown>
+# CHECK-UNKNOWN: fb 42 03 b8 <unknown>
+
+cv.insert.h t3, t4, 32
+# CHECK-INSTR: cv.insert.h t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xce,0x0e,0xb9] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b ce 0e b9 <unknown>
 
 cv.insert.h a0, a1, 7
 # CHECK-INSTR: cv.insert.h a0, a1, 7
@@ -2288,17 +2354,23 @@ cv.insert.h a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b c5 35 ba <unknown>
 
-cv.insert.h s0, s1, -1
-# CHECK-INSTR: cv.insert.h s0, s1, -1
+cv.insert.h s0, s1, 63
+# CHECK-INSTR: cv.insert.h s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xc4,0xf4,0xbb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b c4 f4 bb <unknown>
 
-cv.insert.b t0, t1, -32
-# CHECK-INSTR: cv.insert.b t0, t1, -32
-# CHECK-ENCODING: [0xfb,0x52,0x03,0xb9] 
+cv.insert.b t0, t1, 0
+# CHECK-INSTR: cv.insert.b t0, t1, 0
+# CHECK-ENCODING: [0xfb,0x52,0x03,0xb8] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
-# CHECK-UNKNOWN: fb 52 03 b9 <unknown>
+# CHECK-UNKNOWN: fb 52 03 b8 <unknown>
+
+cv.insert.b t3, t4, 32
+# CHECK-INSTR: cv.insert.b t3, t4, 32
+# CHECK-ENCODING: [0x7b,0xde,0x0e,0xb9] 
+# CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
+# CHECK-UNKNOWN: 7b de 0e b9 <unknown>
 
 cv.insert.b a0, a1, 7
 # CHECK-INSTR: cv.insert.b a0, a1, 7
@@ -2306,8 +2378,8 @@ cv.insert.b a0, a1, 7
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b d5 35 ba <unknown>
 
-cv.insert.b s0, s1, -1
-# CHECK-INSTR: cv.insert.b s0, s1, -1
+cv.insert.b s0, s1, 63
+# CHECK-INSTR: cv.insert.b s0, s1, 63
 # CHECK-ENCODING: [0x7b,0xd4,0xf4,0xbb] 
 # CHECK-ERROR: error: instruction requires the following: 'Xcvsimd' (SIMD ALU)
 # CHECK-UNKNOWN: 7b d4 f4 bb <unknown>
