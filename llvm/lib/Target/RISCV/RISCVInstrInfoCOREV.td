@@ -707,6 +707,15 @@ def trailing1sPlus1 : SDNodeXForm<imm, [{
 // Patterns for MAC operations
 //===----------------------------------------------------------------------===//
 
+class PatCoreVMacGprGprGpr <string intr, string asm>
+  : Pat<(!cast<Intrinsic>("int_riscv_cv_mac_" # intr) GPR:$rs1, GPR:$rs2, GPR:$rd),
+        (!cast<RVInst>("CV_" # asm) GPR:$rd, GPR:$rs1, GPR:$rs2)>;
+class PatCoreVMacGprGprGprUimm5 <string intr, string asm>
+  : Pat<(!cast<Intrinsic>("int_riscv_cv_mac_" # intr) GPR:$rs1, GPR:$rs2, GPR:$rd, cv_tuimm5:$imm5),
+        (!cast<RVInst>("CV_" # asm) GPR:$rd, GPR:$rs1, GPR:$rs2, cv_tuimm5:$imm5)>;
+class PatCoreVMacGprGprUimm5 <string intr, string asm>
+  : Pat<(!cast<Intrinsic>("int_riscv_cv_mac_" # intr) GPR:$rs1, GPR:$rs2, cv_tuimm5:$imm5),
+        (!cast<RVInst>("CV_" # asm) GPR:$rs1, GPR:$rs2, cv_tuimm5:$imm5)>;
 
 let Predicates = [HasExtXcvmac] in {
 
@@ -759,6 +768,26 @@ let Predicates = [HasExtXcvmac] in {
   def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
             (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
+  def : PatCoreVMacGprGprGpr<"mac", "MAC">;
+  def : PatCoreVMacGprGprGpr<"msu", "MSU">;
+
+  def : PatCoreVMacGprGprUimm5<"mulun", "MULUN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhun", "MULHHUN">;
+  def : PatCoreVMacGprGprUimm5<"mulsn", "MULSN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhsn", "MULHHSN">;
+  def : PatCoreVMacGprGprUimm5<"mulurn", "MULURN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhurn", "MULHHURN">;
+  def : PatCoreVMacGprGprUimm5<"mulsrn", "MULSRN">;
+  def : PatCoreVMacGprGprUimm5<"mulhhsrn", "MULHHSRN">;
+
+  def : PatCoreVMacGprGprGprUimm5<"macun", "MACUN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhun", "MACHHUN">;
+  def : PatCoreVMacGprGprGprUimm5<"macsn", "MACSN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhsn", "MACHHSN">;
+  def : PatCoreVMacGprGprGprUimm5<"macurn", "MACURN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhurn", "MACHHURN">;
+  def : PatCoreVMacGprGprGprUimm5<"macsrn", "MACSRN">;
+  def : PatCoreVMacGprGprGprUimm5<"machhsrn", "MACHHSRN">;
 }
 
 //===----------------------------------------------------------------------===//
@@ -887,7 +916,7 @@ let Predicates = [HasExtXcvmem] in {
 //===----------------------------------------------------------------------===//
 
 class PatCorevGprGpr <string intr, string asm> :
-  PatGprGpr<!cast<Intrinsic>("int_riscv_cv_simd_" # intr), 
+  PatGprGpr<!cast<Intrinsic>("int_riscv_cv_simd_" # intr),
             !cast<RVInst>("CV_" # asm)>;
 
 // Note that rd is the last argument

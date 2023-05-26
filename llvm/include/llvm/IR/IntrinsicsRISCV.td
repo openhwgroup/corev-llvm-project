@@ -1735,4 +1735,37 @@ def int_riscv_cv_bitmanip_ror : ScalarCoreVBitManipGprGprIntrinsic;
 def int_riscv_cv_bitmanip_bitrev
   : Intrinsic<[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
               [IntrNoMem, IntrWillReturn, IntrSpeculatable, ImmArg<ArgIndex<1>>, ImmArg<ArgIndex<2>>]>;
+
+class ScalarCoreVMacGprGprGprIntrinsic
+  : Intrinsic<[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+              [IntrNoMem, IntrWillReturn, IntrSpeculatable]>;
+
+class ScalarCoreVMacGprGPRImmIntrinsic
+    : Intrinsic<[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+                [IntrNoMem, IntrWillReturn, IntrSpeculatable, ImmArg<ArgIndex<2>>]>;
+
+class ScalarCoreVMacGprGprGprImmIntrinsic
+  : Intrinsic<[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
+              [IntrNoMem, IntrWillReturn, IntrSpeculatable, ImmArg<ArgIndex<3>>]>;
+
+def int_riscv_cv_mac_mac : ScalarCoreVMacGprGprGprIntrinsic;
+def int_riscv_cv_mac_msu : ScalarCoreVMacGprGprGprIntrinsic;
+
+def int_riscv_cv_mac_mulun    : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhun  : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulsn    : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhsn  : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulurn   : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhurn : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulsrn   : ScalarCoreVMacGprGPRImmIntrinsic;
+def int_riscv_cv_mac_mulhhsrn : ScalarCoreVMacGprGPRImmIntrinsic;
+
+def int_riscv_cv_mac_macun    : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhun  : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_macsn    : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhsn  : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_macurn   : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhurn : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_macsrn   : ScalarCoreVMacGprGprGprImmIntrinsic;
+def int_riscv_cv_mac_machhsrn : ScalarCoreVMacGprGprGprImmIntrinsic;
 } // TargetPrefix = "riscv"
