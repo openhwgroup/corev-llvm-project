@@ -16,12 +16,12 @@ cv.msu t0, t1, t2
 # 16x16 bit MUL instructions
 
 cv.muls t0, t1, t2
-# CHECK-INSTR: cv.muls t0, t1, t2
-# CHECK-ENCODING: [0xdb,0x02,0x73,0x80]
+# CHECK-INSTR: cv.mulsn t0, t1, t2, 0
+# CHECK-ENCODING: [0xdb,0x42,0x73,0x00]
 
 cv.mulhhs t0, t1, t2
-# CHECK-INSTR: cv.mulhhs t0, t1, t2
-# CHECK-ENCODING: [0xdb,0x02,0x73,0xc0]
+# CHECK-INSTR: cv.mulhhsn t0, t1, t2, 0
+# CHECK-ENCODING: [0xdb,0x42,0x73,0x40]
 
 cv.mulsn t0, t1, t2, 0
 # CHECK-INSTR: cv.mulsn t0, t1, t2, 0
@@ -40,12 +40,12 @@ cv.mulhhsrn t0, t1, t2, 0
 # CHECK-ENCODING: [0xdb,0x42,0x73,0xc0]
 
 cv.mulu t0, t1, t2
-# CHECK-INSTR: cv.mulu t0, t1, t2
-# CHECK-ENCODING: [0xdb,0x02,0x73,0x00]
+# CHECK-INSTR: cv.mulun t0, t1, t2, 0
+# CHECK-ENCODING: [0xdb,0x52,0x73,0x00]
 
 cv.mulhhu t0, t1, t2
-# CHECK-INSTR: cv.mulhhu t0, t1, t2
-# CHECK-ENCODING: [0xdb,0x02,0x73,0x40]
+# CHECK-INSTR: cv.mulhhun t0, t1, t2, 0
+# CHECK-ENCODING: [0xdb,0x52,0x73,0x40]
 
 cv.mulun t0, t1, t2, 0
 # CHECK-INSTR: cv.mulun t0, t1, t2, 0

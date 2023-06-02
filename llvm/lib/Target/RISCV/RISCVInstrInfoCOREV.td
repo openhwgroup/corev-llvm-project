@@ -336,14 +336,6 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
 }
 
 let Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
-  // Signed 16x16 bit muls
-  def CV_MULS     : RVInstMac16<0b10, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                                "cv.muls", "$rd, $rs1, $rs2", []>,
-                    Sched<[]>;
-  def CV_MULHHS   : RVInstMac16<0b11, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                                "cv.mulhhs", "$rd, $rs1, $rs2", []>,
-                    Sched<[]>;
-
   // Signed 16x16 bit muls with imm
   def CV_MULSN    : RVInstMac16I<0b00, 0b100, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
                                  "cv.mulsn", "$rd, $rs1, $rs2, $imm5", []>,
@@ -358,13 +350,6 @@ let Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0 i
                                  "cv.mulhhsrn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
 
-  // Unsigned 16x16 bit muls
-  def CV_MULU     : RVInstMac16<0b00, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                                "cv.mulu", "$rd, $rs1, $rs2", []>,
-                    Sched<[]>;
-  def CV_MULHHU   : RVInstMac16<0b01, 0b000, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                                "cv.mulhhu", "$rd, $rs1, $rs2", []>,
-                    Sched<[]>;
 
   // Unsigned 16x16 bit muls with imm
   def CV_MULUN    : RVInstMac16I<0b00, 0b101, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
@@ -380,6 +365,17 @@ let Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0 i
                                  "cv.mulhhurn", "$rd, $rs1, $rs2, $imm5", []>,
                     Sched<[]>;
 } // Predicates = [HasExtXcvmac], hasSideEffects = 0, mayLoad = 0, mayStore = 0
+
+let Predicates = [HasExtXcvmac] in {
+  // Xcvmac Pseudo Instructions
+  // Signed 16x16 bit muls
+  def : InstAlias<"cv.muls $rd1, $rs1, $rs2", (CV_MULSN GPR:$rd1, GPR:$rs1, GPR:$rs2, 0), 0>;
+  def : InstAlias<"cv.mulhhs $rd1, $rs1, $rs2", (CV_MULHHSN GPR:$rd1, GPR:$rs1, GPR:$rs2, 0), 0>;
+
+  // Unsigned 16x16 bit muls
+  def : InstAlias<"cv.mulu $rd1, $rs1, $rs2", (CV_MULUN GPR:$rd1, GPR:$rs1, GPR:$rs2, 0), 0>;
+  def : InstAlias<"cv.mulhhu $rd1, $rs1, $rs2", (CV_MULHHUN GPR:$rd1, GPR:$rs1, GPR:$rs2, 0), 0>;
+} // Predicates = [HasExtXcvmac]
 
 let Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
   // General ALU Operations
@@ -731,9 +727,9 @@ let Predicates = [HasExtXcvmac] in {
             (CV_MSU GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
   def : Pat<(muls GPR:$rs1, GPR:$rs2),
-            (CV_MULS GPR:$rs1, GPR:$rs2)>;
+            (CV_MULSN GPR:$rs1, GPR:$rs2, 0)>;
   def : Pat<(mulhhs GPR:$rs1, GPR:$rs2),
-            (CV_MULHHS GPR:$rs1, GPR:$rs2)>;
+            (CV_MULHHSN GPR:$rs1, GPR:$rs2, 0)>;
   def : Pat<(sra (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
             (CV_MULSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
   def : Pat<(sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
@@ -744,9 +740,9 @@ let Predicates = [HasExtXcvmac] in {
             (CV_MULHHSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
   def : Pat<(mulu GPR:$rs1, GPR:$rs2),
-            (CV_MULU GPR:$rs1, GPR:$rs2)>;
+            (CV_MULUN GPR:$rs1, GPR:$rs2, 0)>;
   def : Pat<(mulhhu GPR:$rs1, GPR:$rs2),
-            (CV_MULHHU GPR:$rs1, GPR:$rs2)>;
+            (CV_MULHHUN GPR:$rs1, GPR:$rs2, 0)>;
   def : Pat<(srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
             (CV_MULUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
   def : Pat<(srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),

@@ -2,9 +2,9 @@
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ENCODING,CHECK-INSTR
 
 cv.mulu t0, t1, t2
-# CHECK-INSTR: cv.mulu t0, t1, t2
-# CHECK-ENCODING: [0xdb,0x02,0x73,0x00]
+# CHECK-INSTR: cv.mulun t0, t1, t2, 0
+# CHECK-ENCODING: [0xdb,0x52,0x73,0x00]
 
 cv.mulu t0, t1, zero
-# CHECK-INSTR: cv.mulu t0, t1, zero
-# CHECK-ENCODING: [0xdb,0x02,0x03,0x00]
+# CHECK-INSTR: cv.mulun t0, t1, zero, 0
+# CHECK-ENCODING: [0xdb,0x52,0x03,0x00]
