@@ -94,7 +94,6 @@ private:
   bool HasRV32 = false;
   bool HasStdExtZvlsseg = false;
   bool HasStdExtZvamo = false;
-  bool HasExtXcv = false;
   bool HasExtXcvhwlp = false;
   bool HasExtXcvmac = false;
   bool HasExtXcvalu = false;
@@ -204,7 +203,6 @@ public:
   bool hasStdExtZbproposedc() const { return HasStdExtZbproposedc; }
   bool hasStdExtZvlsseg() const { return HasStdExtZvlsseg; }
   bool hasStdExtZvamo() const { return HasStdExtZvamo; }
-  bool hasExtXcv() const { return HasExtXcv; }
   bool hasExtXcvhwlp() const { return HasExtXcvhwlp; }
   bool hasExtXcvmac() const { return HasExtXcvmac; }
   bool hasExtXcvalu() const { return HasExtXcvalu; }
