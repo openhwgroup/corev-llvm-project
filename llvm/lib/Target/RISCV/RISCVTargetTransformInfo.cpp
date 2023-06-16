@@ -1008,10 +1008,6 @@ unsigned RISCVTTIImpl::getMaximumVF(unsigned ElemWidth, unsigned Opcode) const {
   return SLPMaxVF;
 }
 
-bool RISCVTTIImpl::shouldFavorPostInc() const {
-  return ST->hasExtXcvmem();
-}
-
 TTI::AddressingModeKind
 RISCVTTIImpl::getPreferredAddressingMode(const Loop *L,
                                        ScalarEvolution *SE) const {
