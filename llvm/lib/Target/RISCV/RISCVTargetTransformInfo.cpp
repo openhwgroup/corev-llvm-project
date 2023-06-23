@@ -1010,7 +1010,7 @@ unsigned RISCVTTIImpl::getMaximumVF(unsigned ElemWidth, unsigned Opcode) const {
 
 TTI::AddressingModeKind
 RISCVTTIImpl::getPreferredAddressingMode(const Loop *L,
-                                       ScalarEvolution *SE) const {
+                                         ScalarEvolution *SE) const {
   if (ST->hasExtXcvmem())
     return TTI::AMK_PostIndexed;
 
