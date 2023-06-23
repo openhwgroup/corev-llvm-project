@@ -26,8 +26,8 @@
 // RUN: %clang --target=riscv64 -### -c %s 2>&1 -mtune=rocket | FileCheck -check-prefix=MTUNE-ROCKET-64 %s
 // MTUNE-ROCKET-64: "-tune-cpu" "rocket"
 
-// RUN: %clang --target=riscv32 -### -c %s 2>&1 -mcpu=CV32E40P | FileCheck -check-prefix=MCPU-CV32E40P %s
-// MCPU-CV32E40P: "-target-cpu" "CV32E40P"
+// RUN: %clang --target=riscv32 -### -c %s 2>&1 -mcpu=cv32e40p | FileCheck -check-prefix=MCPU-CV32E40P %s
+// MCPU-CV32E40P: "-target-cpu" "cv32e40p"
 // MCPU-CV32E40P: "-target-feature" "+m" "-target-feature" "+f" "-target-feature" "+c" "-target-feature" "-64bit"
 // MCPU-CV32E40P: "-target-abi" "ilp32"
 
