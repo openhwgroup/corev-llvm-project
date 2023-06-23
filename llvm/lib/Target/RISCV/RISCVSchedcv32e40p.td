@@ -1,7 +1,7 @@
 // ===---------------------------------------------------------------------===//
 
-def CV32E40PModel : SchedMachineModel {
-  let MicroOpBufferSize = 0; // CV32E40P is in-order.
+def cv32e40pModel : SchedMachineModel {
+  let MicroOpBufferSize = 0; // cv32e40p is in-order.
   let IssueWidth = 1;        
   let LoadLatency = 1;          
   let MispredictPenalty = 3;
@@ -17,81 +17,81 @@ def CV32E40PModel : SchedMachineModel {
 // ===---------------------------------------------------------------------===//
 
 let BufferSize = 0 in {     
-def CV32E40PUnitLSU         : ProcResource<1>; // Load/Store
-def CV32E40PUnitBranch      : ProcResource<1>; // Branch/JumpDecoder
-def CV32E40PUnitALU         : ProcResource<1>; // ALU
-def CV32E40PUnitMul         : ProcResource<1>; // Multiply
-def CV32E40PUnitDiv         : ProcResource<1>; // Division
-def CV32E40PUnitFPU         : ProcResource<1>; // Optional FPU 
-def CV32E40PUnitCSR         : ProcResource<1>; // CSR
+def cv32e40pUnitLSU         : ProcResource<1>; // Load/Store
+def cv32e40pUnitBranch      : ProcResource<1>; // Branch/JumpDecoder
+def cv32e40pUnitALU         : ProcResource<1>; // ALU
+def cv32e40pUnitMul         : ProcResource<1>; // Multiply
+def cv32e40pUnitDiv         : ProcResource<1>; // Division
+def cv32e40pUnitFPU         : ProcResource<1>; // Optional FPU 
+def cv32e40pUnitCSR         : ProcResource<1>; // CSR
 } 
 
 
 //===----------------------------------------------------------------------===//
 
-let SchedModel = CV32E40PModel in {
+let SchedModel = cv32e40pModel in {
 
 // ALU
-def : WriteRes<WriteIALU, [CV32E40PUnitALU]>;
-def : WriteRes<WriteShiftImm, [CV32E40PUnitALU]>;
-def : WriteRes<WriteShiftReg, [CV32E40PUnitALU]>;
+def : WriteRes<WriteIALU, [cv32e40pUnitALU]>;
+def : WriteRes<WriteShiftImm, [cv32e40pUnitALU]>;
+def : WriteRes<WriteShiftReg, [cv32e40pUnitALU]>;
 
 // Store (sb, sh, sw), assuming they are word aligned
-def : WriteRes<WriteSTB, [CV32E40PUnitLSU]>; // sb
-def : WriteRes<WriteSTH, [CV32E40PUnitLSU]>; // sh
-def : WriteRes<WriteSTW, [CV32E40PUnitLSU]>; // sw
+def : WriteRes<WriteSTB, [cv32e40pUnitLSU]>; // sb
+def : WriteRes<WriteSTH, [cv32e40pUnitLSU]>; // sh
+def : WriteRes<WriteSTW, [cv32e40pUnitLSU]>; // sw
 
 // Load (lh, lw, lbu, lhu), assuming they are word aligned
-def : WriteRes<WriteLDH, [CV32E40PUnitLSU]>; // lh, lhu
-def : WriteRes<WriteLDW, [CV32E40PUnitLSU]>; // lw
-def : WriteRes<WriteLDWU, [CV32E40PUnitLSU]>;
-def : WriteRes<WriteLDB, [CV32E40PUnitLSU]>; // lbu
+def : WriteRes<WriteLDH, [cv32e40pUnitLSU]>; // lh, lhu
+def : WriteRes<WriteLDW, [cv32e40pUnitLSU]>; // lw
+def : WriteRes<WriteLDWU, [cv32e40pUnitLSU]>;
+def : WriteRes<WriteLDB, [cv32e40pUnitLSU]>; // lbu
 
 // Jump instructions, assuming jumps are word alligned
 let Latency = 2 in {
-  def : WriteRes<WriteJmp, [CV32E40PUnitBranch]>;
-  def : WriteRes<WriteJal, [CV32E40PUnitBranch]>;
-  def : WriteRes<WriteJalr, [CV32E40PUnitBranch]>;
-  def : WriteRes<WriteJmpReg, [CV32E40PUnitBranch]>;
+  def : WriteRes<WriteJmp, [cv32e40pUnitBranch]>;
+  def : WriteRes<WriteJal, [cv32e40pUnitBranch]>;
+  def : WriteRes<WriteJalr, [cv32e40pUnitBranch]>;
+  def : WriteRes<WriteJmpReg, [cv32e40pUnitBranch]>;
 }
 
 // mul has a latency of 1 cycle, 
 // mulh, mulhsu, mulhu take 5 cycles but RISCVSchedule.td
 // does not provide a seperate scheduler resource for those instructions
 // assuming that the majority of multiplications take 1 cycle
-def : WriteRes<WriteIMul, [CV32E40PUnitMul]>;
+def : WriteRes<WriteIMul, [cv32e40pUnitMul]>;
 
 // Division and remainder, assuming worst case latency
-def : WriteRes<WriteIDiv, [CV32E40PUnitDiv]> {
+def : WriteRes<WriteIDiv, [cv32e40pUnitDiv]> {
   let Latency = 35;
   let ResourceCycles = [35];
 }
 
 // 32 bit floating point operations
 // assuming worst case latency
-def : WriteRes<WriteFST32, [CV32E40PUnitLSU]>;
-def : WriteRes<WriteFLD32, [CV32E40PUnitLSU]>;
+def : WriteRes<WriteFST32, [cv32e40pUnitLSU]>;
+def : WriteRes<WriteFLD32, [cv32e40pUnitLSU]>;
 let Latency = 11 in {
-  def : WriteRes<WriteFAdd32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFSGNJ32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFMinMax32, [CV32E40PUnitFPU]>;
+  def : WriteRes<WriteFAdd32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFSGNJ32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFMinMax32, [cv32e40pUnitFPU]>;
   // conversions
-  def : WriteRes<WriteFCvtI32ToF32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFCvtI64ToF32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFCvtF32ToI32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFCvtF32ToI64, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFMovF32ToI32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFMovI32ToF32, [CV32E40PUnitFPU]>;
+  def : WriteRes<WriteFCvtI32ToF32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFCvtI64ToF32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFCvtF32ToI32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFCvtF32ToI64, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFMovF32ToI32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFMovI32ToF32, [cv32e40pUnitFPU]>;
 
-  def : WriteRes<WriteFCmp32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFClass32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFMul32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFMA32, [CV32E40PUnitFPU]>;
+  def : WriteRes<WriteFCmp32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFClass32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFMul32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFMA32, [cv32e40pUnitFPU]>;
 }
 // Single Precision Floating-Point Division and Square-Root
 let Latency = 12 in {
-  def : WriteRes<WriteFDiv32, [CV32E40PUnitFPU]>;
-  def : WriteRes<WriteFSqrt32, [CV32E40PUnitFPU]>;
+  def : WriteRes<WriteFDiv32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFSqrt32, [cv32e40pUnitFPU]>;
 }
 
 
@@ -108,16 +108,16 @@ let Unsupported = true in {
   def : WriteRes<WriteSTD, []>;
 
   // Atomic memory
-  def : WriteRes<WriteAtomicW, [CV32E40PUnitLSU]>;
-  def : WriteRes<WriteAtomicD, [CV32E40PUnitLSU]>;
-  def : WriteRes<WriteAtomicLDW, [CV32E40PUnitLSU]>;
-  def : WriteRes<WriteAtomicLDD, [CV32E40PUnitLSU]>;
-  def : WriteRes<WriteAtomicSTW, [CV32E40PUnitLSU]>;
-  def : WriteRes<WriteAtomicSTD, [CV32E40PUnitLSU]>;
+  def : WriteRes<WriteAtomicW, [cv32e40pUnitLSU]>;
+  def : WriteRes<WriteAtomicD, [cv32e40pUnitLSU]>;
+  def : WriteRes<WriteAtomicLDW, [cv32e40pUnitLSU]>;
+  def : WriteRes<WriteAtomicLDD, [cv32e40pUnitLSU]>;
+  def : WriteRes<WriteAtomicSTW, [cv32e40pUnitLSU]>;
+  def : WriteRes<WriteAtomicSTD, [cv32e40pUnitLSU]>;
 
   // 64 bit FP load/store
-  def : WriteRes<WriteFST64, [CV32E40PUnitLSU]>;
-  def : WriteRes<WriteFLD64, [CV32E40PUnitLSU]>;
+  def : WriteRes<WriteFST64, [cv32e40pUnitLSU]>;
+  def : WriteRes<WriteFLD64, [cv32e40pUnitLSU]>;
 
   // 64 bit FP instructions 
   def : WriteRes<WriteFAdd64, []>;
@@ -142,14 +142,14 @@ let Unsupported = true in {
 // Others
 // assuming the worst case latency for CSR access
 // as there are no scheduler resources to differentiate them
-def : WriteRes<WriteCSR, [CV32E40PUnitCSR]> {
+def : WriteRes<WriteCSR, [cv32e40pUnitCSR]> {
   let Latency = 4;
 }
 def : WriteRes<WriteNop, []>;
 
 //===----------------------------------------------------------------------===//
 // Bypass and advance
-// CV32E40P has no forwarding 
+// cv32e40p has no forwarding 
 def : ReadAdvance<ReadJmp, 0>;
 def : ReadAdvance<ReadJalr, 0>;
 def : ReadAdvance<ReadCSR, 0>;
