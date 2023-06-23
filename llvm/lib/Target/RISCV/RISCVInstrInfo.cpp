@@ -779,16 +779,17 @@ static void parseCondBranch(MachineInstr &LastInst, MachineBasicBlock *&Target,
   Cond.push_back(LastInst.getOperand(1));
 }
 
-const MCInstrDesc &RISCVInstrInfo::getBrCond(RISCVCC::CondCode CC) const {
+const MCInstrDesc &RISCVInstrInfo::getBrCond(RISCVCC::CondCode CC,
+                                             bool imm) const {
   switch (CC) {
   default:
     llvm_unreachable("Unknown condition code!");
   case RISCVCC::COND_HWLP:
     return get(RISCV::HwlpBranch);
   case RISCVCC::COND_EQ:
-    return get(RISCV::BEQ);
+    return get(imm ? RISCV::CV_BEQIMM : RISCV::BEQ);
   case RISCVCC::COND_NE:
-    return get(RISCV::BNE);
+    return get(imm ? RISCV::CV_BNEIMM : RISCV::BNE);
   case RISCVCC::COND_LT:
     return get(RISCV::BLT);
   case RISCVCC::COND_GE:
@@ -947,8 +948,10 @@ unsigned RISCVInstrInfo::insertBranch(
 
   // Either a one or two-way conditional branch.
   auto CC = static_cast<RISCVCC::CondCode>(Cond[0].getImm());
-  MachineInstr &CondMI =
-      *BuildMI(&MBB, DL, getBrCond(CC)).add(Cond[1]).add(Cond[2]).addMBB(TBB);
+  MachineInstr &CondMI = *BuildMI(&MBB, DL, getBrCond(CC, !Cond[2].isReg()))
+                              .add(Cond[1])
+                              .add(Cond[2])
+                              .addMBB(TBB);
   if (BytesAdded)
     *BytesAdded += getInstSizeInBytes(CondMI);
 

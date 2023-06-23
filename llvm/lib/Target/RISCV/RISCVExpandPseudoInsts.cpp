@@ -183,7 +183,7 @@ bool RISCVExpandPseudo::expandCCOp(MachineBasicBlock &MBB,
   CC = RISCVCC::getOppositeBranchCondition(CC);
 
   // Insert branch instruction.
-  BuildMI(MBB, MBBI, DL, TII->getBrCond(CC))
+  BuildMI(MBB, MBBI, DL, TII->getBrCond(CC, false))
       .addReg(MI.getOperand(1).getReg())
       .addReg(MI.getOperand(2).getReg())
       .addMBB(MergeBB);
