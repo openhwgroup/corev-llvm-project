@@ -47,7 +47,7 @@ def : WriteRes<WriteLDW, [cv32e40pUnitLSU]>; // lw
 def : WriteRes<WriteLDWU, [cv32e40pUnitLSU]>;
 def : WriteRes<WriteLDB, [cv32e40pUnitLSU]>; // lbu
 
-// Jump instructions, assuming jumps are word alligned
+// Jump instructions, assuming jumps are word aligned
 let Latency = 2 in {
   def : WriteRes<WriteJmp, [cv32e40pUnitBranch]>;
   def : WriteRes<WriteJal, [cv32e40pUnitBranch]>;
@@ -69,10 +69,13 @@ def : WriteRes<WriteIDiv, [cv32e40pUnitDiv]> {
 
 // 32 bit floating point operations
 // assuming worst case latency
+// load/store
 def : WriteRes<WriteFST32, [cv32e40pUnitLSU]>;
 def : WriteRes<WriteFLD32, [cv32e40pUnitLSU]>;
 let Latency = 11 in {
   def : WriteRes<WriteFAdd32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFMul32, [cv32e40pUnitFPU]>;
+  def : WriteRes<WriteFMA32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFSGNJ32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFMinMax32, [cv32e40pUnitFPU]>;
   // conversions
@@ -82,20 +85,15 @@ let Latency = 11 in {
   def : WriteRes<WriteFCvtF32ToI64, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFMovF32ToI32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFMovI32ToF32, [cv32e40pUnitFPU]>;
-
+  // compare and classify
   def : WriteRes<WriteFCmp32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFClass32, [cv32e40pUnitFPU]>;
-  def : WriteRes<WriteFMul32, [cv32e40pUnitFPU]>;
-  def : WriteRes<WriteFMA32, [cv32e40pUnitFPU]>;
 }
 // Single Precision Floating-Point Division and Square-Root
 let Latency = 12 in {
   def : WriteRes<WriteFDiv32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFSqrt32, [cv32e40pUnitFPU]>;
 }
-
-
-
 
 let Unsupported = true in {
   // RV64I
@@ -106,7 +104,6 @@ let Unsupported = true in {
   def : WriteRes<WriteIMul32, []>;
   def : WriteRes<WriteLDD, []>;
   def : WriteRes<WriteSTD, []>;
-
   // Atomic memory
   def : WriteRes<WriteAtomicW, [cv32e40pUnitLSU]>;
   def : WriteRes<WriteAtomicD, [cv32e40pUnitLSU]>;
@@ -114,11 +111,9 @@ let Unsupported = true in {
   def : WriteRes<WriteAtomicLDD, [cv32e40pUnitLSU]>;
   def : WriteRes<WriteAtomicSTW, [cv32e40pUnitLSU]>;
   def : WriteRes<WriteAtomicSTD, [cv32e40pUnitLSU]>;
-
   // 64 bit FP load/store
   def : WriteRes<WriteFST64, [cv32e40pUnitLSU]>;
   def : WriteRes<WriteFLD64, [cv32e40pUnitLSU]>;
-
   // 64 bit FP instructions 
   def : WriteRes<WriteFAdd64, []>;
   def : WriteRes<WriteFSGNJ64, []>;
@@ -139,9 +134,7 @@ let Unsupported = true in {
   def : WriteRes<WriteFSqrt64, []>;
 } // Unsupported
 
-// Others
 // assuming the worst case latency for CSR access
-// as there are no scheduler resources to differentiate them
 def : WriteRes<WriteCSR, [cv32e40pUnitCSR]> {
   let Latency = 4;
 }
