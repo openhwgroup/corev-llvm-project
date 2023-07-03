@@ -386,8 +386,8 @@ bool RISCVExpandPseudo::expandCoreVBitManip(MachineBasicBlock &MBB,
   const MCInstrDesc &Desc = TII->get(Opcode);
   auto MBI = BuildMI(MBB, MBBI, DL, Desc, DstReg)
       .addReg(SrcReg)
-      .addImm(Imm & 0x1f)
-      .addImm((Imm >> 5) & 0x1f);
+      .addImm((Imm >> 5) & 0x1f)
+      .addImm(Imm & 0x1f);
   if (MBBI->getOpcode() == RISCV::CV_INSERT_PSEUDO) {
     MBI.addReg(MBBI->getOperand(3).getReg());
   }
