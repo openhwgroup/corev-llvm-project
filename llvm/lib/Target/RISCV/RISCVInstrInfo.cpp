@@ -948,7 +948,7 @@ unsigned RISCVInstrInfo::insertBranch(
 
   // Either a one or two-way conditional branch.
   auto CC = static_cast<RISCVCC::CondCode>(Cond[0].getImm());
-  MachineInstr &CondMI = *BuildMI(&MBB, DL, getBrCond(CC, !Cond[2].isReg()))
+  MachineInstr &CondMI = *BuildMI(&MBB, DL, getBrCond(CC, Cond[2].isImm()))
                               .add(Cond[1])
                               .add(Cond[2])
                               .addMBB(TBB);
