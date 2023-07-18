@@ -5,6 +5,7 @@ def cv32e40pModel : SchedMachineModel {
   let IssueWidth = 1;
   let LoadLatency = 3; // see Load SchedWriteRes defs for more detail
   let MispredictPenalty = 3;
+  let PostRAScheduler = true;
   let CompleteModel = false;
   let UnsupportedFeatures = [HasStdExtA, HasAtomicLdSt,
                              HasStdExtZfinx, HasStdExtCOrZca,
@@ -16,7 +17,7 @@ def cv32e40pModel : SchedMachineModel {
 
 // ===---------------------------------------------------------------------===//
 
-let BufferSize = 0 in {     
+let BufferSize = 0 in {
 def cv32e40pUnitLSU         : ProcResource<1>; // Load/Store
 def cv32e40pUnitBranch      : ProcResource<1>; // Branch/JumpDecoder
 def cv32e40pUnitALU         : ProcResource<1>; // ALU
@@ -42,10 +43,10 @@ def : WriteRes<WriteSTH, [cv32e40pUnitLSU]>; // sh
 def : WriteRes<WriteSTW, [cv32e40pUnitLSU]>; // sw
 
 // Load (lh, lw, lbu, lhu), assuming they are word aligned
-// Loads/Stores are pipelined across the EX and WB stage so ResourceCycle = 1
+// Loads/Stores are pipelined across the EX and WB stage, so ResourceCycle = 1 (is the default)
 // A data-hazard occurs when the result of a load is used in the next instruction
 // This could be modeled with a latency of 2, but a Latency = 3 provided better results in benchmarks
-let Latency = 3, let ResourceCycles = [1] in {
+let Latency = 3 in {
   def : WriteRes<WriteLDH, [cv32e40pUnitLSU]>; // lh, lhu
   def : WriteRes<WriteLDW, [cv32e40pUnitLSU]>; // lw
   def : WriteRes<WriteLDWU, [cv32e40pUnitLSU]>;
@@ -77,7 +78,7 @@ def : WriteRes<WriteIDiv, [cv32e40pUnitDiv]> {
 // load/store
 def : WriteRes<WriteFST32, [cv32e40pUnitLSU]>;
 def : WriteRes<WriteFLD32, [cv32e40pUnitLSU]>;
-let Latency = 11 in {
+let Latency = 11, let ResourceCycles = [11] in {
   def : WriteRes<WriteFAdd32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFMul32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFMA32, [cv32e40pUnitFPU]>;
@@ -95,7 +96,7 @@ let Latency = 11 in {
   def : WriteRes<WriteFClass32, [cv32e40pUnitFPU]>;
 }
 // Single Precision Floating-Point Division and Square-Root
-let Latency = 12 in {
+let Latency = 12, let ResourceCycles = [12] in {
   def : WriteRes<WriteFDiv32, [cv32e40pUnitFPU]>;
   def : WriteRes<WriteFSqrt32, [cv32e40pUnitFPU]>;
 }
@@ -142,6 +143,7 @@ let Unsupported = true in {
 // assuming the worst case latency for CSR access
 def : WriteRes<WriteCSR, [cv32e40pUnitCSR]> {
   let Latency = 4;
+  let ResourceCycles = [4];
 }
 def : WriteRes<WriteNop, []>;
 
