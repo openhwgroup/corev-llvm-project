@@ -61,10 +61,10 @@ let Latency = 2 in {
 }
 
 // mul has a latency of 1 cycle, 
-// mulh, mulhsu, mulhu take 5 cycles but RISCVSchedule.td
-// does not provide a seperate scheduler resource for those instructions
-// assuming that the majority of multiplications take 1 cycle
 def : WriteRes<WriteIMul, [cv32e40pUnitMul]>;
+// mulh, mulhsu and mulhu take 5 cycles
+def cv32e40pUnit_wr : SchedWriteRes<[cv32e40pUnitMul]> {let Latency = 5; let ResourceCycles = [5]; }
+def : InstRW<[cv32e40pUnit_wr], (instregex "MULHS?U?")>;
 
 // Division and remainder, assuming worst case latency
 def : WriteRes<WriteIDiv, [cv32e40pUnitDiv]> {
