@@ -2,8 +2,8 @@
 
 def cv32e40pModel : SchedMachineModel {
   let MicroOpBufferSize = 0; // cv32e40p is in-order.
-  let IssueWidth = 1;        
-  let LoadLatency = 1;          
+  let IssueWidth = 1;
+  let LoadLatency = 3; // see Load SchedWriteRes defs for more detail
   let MispredictPenalty = 3;
   let CompleteModel = false;
   let UnsupportedFeatures = [HasStdExtA, HasAtomicLdSt,
@@ -36,16 +36,21 @@ def : WriteRes<WriteIALU, [cv32e40pUnitALU]>;
 def : WriteRes<WriteShiftImm, [cv32e40pUnitALU]>;
 def : WriteRes<WriteShiftReg, [cv32e40pUnitALU]>;
 
-// Store (sb, sh, sw), assuming they are word aligned
+// Store, assuming they are word aligned
 def : WriteRes<WriteSTB, [cv32e40pUnitLSU]>; // sb
 def : WriteRes<WriteSTH, [cv32e40pUnitLSU]>; // sh
 def : WriteRes<WriteSTW, [cv32e40pUnitLSU]>; // sw
 
 // Load (lh, lw, lbu, lhu), assuming they are word aligned
-def : WriteRes<WriteLDH, [cv32e40pUnitLSU]>; // lh, lhu
-def : WriteRes<WriteLDW, [cv32e40pUnitLSU]>; // lw
-def : WriteRes<WriteLDWU, [cv32e40pUnitLSU]>;
-def : WriteRes<WriteLDB, [cv32e40pUnitLSU]>; // lbu
+// Loads/Stores are pipelined across the EX and WB stage so ResourceCycle = 1
+// A data-hazard occurs when the result of a load is used in the next instruction
+// This could be modeled with a latency of 2, but a Latency = 3 provided better results in benchmarks
+let Latency = 3, let ResourceCycles = [1] in {
+  def : WriteRes<WriteLDH, [cv32e40pUnitLSU]>; // lh, lhu
+  def : WriteRes<WriteLDW, [cv32e40pUnitLSU]>; // lw
+  def : WriteRes<WriteLDWU, [cv32e40pUnitLSU]>;
+  def : WriteRes<WriteLDB, [cv32e40pUnitLSU]>; // lbu
+}
 
 // Jump instructions, assuming jumps are word aligned
 let Latency = 2 in {
@@ -141,10 +146,10 @@ def : WriteRes<WriteCSR, [cv32e40pUnitCSR]> {
 def : WriteRes<WriteNop, []>;
 
 //===----------------------------------------------------------------------===//
-// Bypass and advance
-// cv32e40p has no forwarding 
+// ReadAdvance definitions
 def : ReadAdvance<ReadJmp, 0>;
-def : ReadAdvance<ReadJalr, 0>;
+// There is a 1-cycle data hazard if jalr depends on a immediatly preceding instrucion
+def : ReadAdvance<ReadJalr, -1>;
 def : ReadAdvance<ReadCSR, 0>;
 def : ReadAdvance<ReadStoreData, 0>;
 def : ReadAdvance<ReadMemBase, 0>;
