@@ -16,7 +16,7 @@ define i32 @test.cv.extractr(i32 %a, i32 %b) {
 define i32 @test.cv.extract(i32 %a) {
 ; CHECK-LABEL: test.cv.extract:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.extract a0, a0, 1, 2
+; CHECK-NEXT:    cv.extract a0, a0, 2, 1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.bitmanip.extract(i32 %a, i32 65)
   ret i32 %1
@@ -45,7 +45,7 @@ define i32 @test.cv.extractur(i32 %a, i32 %b) {
 define i32 @test.cv.extractu(i32 %a) {
 ; CHECK-LABEL: test.cv.extractu:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.extractu a0, a0, 1, 2
+; CHECK-NEXT:    cv.extractu a0, a0, 2, 1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.bitmanip.extractu(i32 %a, i32 65)
   ret i32 %1
@@ -56,7 +56,7 @@ declare i32 @llvm.riscv.cv.bitmanip.insert(i32, i32, i32)
 define i32 @test.cv.insert(i32 %c, i32 %a) {
 ; CHECK-LABEL: test.cv.insert:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.insert a0, a1, 1, 2
+; CHECK-NEXT:    cv.insert a0, a1, 2, 1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.bitmanip.insert(i32 %a, i32 65, i32 %c)
   ret i32 %1
@@ -85,7 +85,7 @@ define i32 @test.cv.bclrr(i32 %a, i32 %b) {
 define i32 @test.cv.bclr(i32 %a) {
 ; CHECK-LABEL: test.cv.bclr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.bclr a0, a0, 1, 2
+; CHECK-NEXT:    cv.bclr a0, a0, 2, 1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.bitmanip.bclr(i32 %a, i32 65)
   ret i32 %1
@@ -105,7 +105,7 @@ define i32 @test.cv.bsetr(i32 %a, i32 %b) {
 define i32 @test.cv.bset(i32 %a) {
 ; CHECK-LABEL: test.cv.bset:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.bset a0, a0, 1, 2
+; CHECK-NEXT:    cv.bset a0, a0, 2, 1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.bitmanip.bset(i32 %a, i32 65)
   ret i32 %1
@@ -171,7 +171,7 @@ declare i32 @llvm.riscv.cv.bitmanip.bitrev(i32, i32, i32)
 define i32 @test.cv.bitrev(i32 %a) {
 ; CHECK-LABEL: test.cv.bitrev:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.bitrev a0, a0, 1, 2
+; CHECK-NEXT:    cv.bitrev a0, a0, 2, 1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.bitmanip.bitrev(i32 %a, i32 1, i32 2)
   ret i32 %1
