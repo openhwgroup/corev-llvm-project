@@ -5,7 +5,7 @@
 define <2 x i32> @lb_ri_inc(i8* %a) {
 ; CHECK-LABEL: lb_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.lb a1, 42(a0!)
+; CHECK-NEXT:    cv.lb a1, (a0), 42
 ; CHECK-NEXT:    ret
   %1 = load i8, i8* %a
   %2 = sext i8 %1 to i32
@@ -19,7 +19,7 @@ define <2 x i32> @lb_ri_inc(i8* %a) {
 define <2 x i32> @lb_rr_inc(i8* %a, i32 %b) {
 ; CHECK-LABEL: lb_rr_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.lb a1, a1(a0!)
+; CHECK-NEXT:    cv.lb a1, (a0), a1
 ; CHECK-NEXT:    ret
   %1 = load i8, i8* %a
   %2 = sext i8 %1 to i32
@@ -44,7 +44,7 @@ define i32 @lb_rr(i8* %a, i32 %b) {
 define <2 x i32> @lbu_ri_inc(i8* %a) {
 ; CHECK-LABEL: lbu_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.lbu a1, 42(a0!)
+; CHECK-NEXT:    cv.lbu a1, (a0), 42
 ; CHECK-NEXT:    ret
   %1 = load i8, i8* %a
   %2 = zext i8 %1 to i32
@@ -58,7 +58,7 @@ define <2 x i32> @lbu_ri_inc(i8* %a) {
 define <2 x i32> @lbu_rr_inc(i8* %a, i32 %b) {
 ; CHECK-LABEL: lbu_rr_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.lbu a1, a1(a0!)
+; CHECK-NEXT:    cv.lbu a1, (a0), a1
 ; CHECK-NEXT:    ret
   %1 = load i8, i8* %a
   %2 = zext i8 %1 to i32
@@ -83,7 +83,7 @@ define i32 @lbu_rr(i8* %a, i32 %b) {
 define <2 x i32> @lh_ri_inc(i16* %a) {
 ; CHECK-LABEL: lh_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.lh a1, 84(a0!)
+; CHECK-NEXT:    cv.lh a1, (a0), 84
 ; CHECK-NEXT:    ret
   %1 = load i16, i16* %a
   %2 = sext i16 %1 to i32
@@ -98,7 +98,7 @@ define <2 x i32> @lh_rr_inc(i16* %a, i32 %b) {
 ; CHECK-LABEL: lh_rr_inc:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    slli a1, a1, 1
-; CHECK-NEXT:    cv.lh a1, a1(a0!)
+; CHECK-NEXT:    cv.lh a1, (a0), a1
 ; CHECK-NEXT:    ret
   %1 = load i16, i16* %a
   %2 = sext i16 %1 to i32
@@ -124,7 +124,7 @@ define i32 @lh_rr(i16* %a, i32 %b) {
 define <2 x i32> @lhu_ri_inc(i16* %a) {
 ; CHECK-LABEL: lhu_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.lhu a1, 84(a0!)
+; CHECK-NEXT:    cv.lhu a1, (a0), 84
 ; CHECK-NEXT:    ret
   %1 = load i16, i16* %a
   %2 = zext i16 %1 to i32
@@ -139,7 +139,7 @@ define <2 x i32> @lhu_rr_inc(i16* %a, i32 %b) {
 ; CHECK-LABEL: lhu_rr_inc:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    slli a1, a1, 1
-; CHECK-NEXT:    cv.lhu a1, a1(a0!)
+; CHECK-NEXT:    cv.lhu a1, (a0), a1
 ; CHECK-NEXT:    ret
   %1 = load i16, i16* %a
   %2 = zext i16 %1 to i32
@@ -165,7 +165,7 @@ define i32 @lhu_rr(i16* %a, i32 %b) {
 define <2 x i32> @lw_ri_inc(i32* %a) {
 ; CHECK-LABEL: lw_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.lw a1, 168(a0!)
+; CHECK-NEXT:    cv.lw a1, (a0), 168
 ; CHECK-NEXT:    ret
   %1 = load i32, i32* %a
   %2 = getelementptr i32, i32* %a, i32 42
@@ -179,7 +179,7 @@ define <2 x i32> @lw_rr_inc(i32* %a, i32 %b) {
 ; CHECK-LABEL: lw_rr_inc:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    slli a1, a1, 2
-; CHECK-NEXT:    cv.lw a1, a1(a0!)
+; CHECK-NEXT:    cv.lw a1, (a0), a1
 ; CHECK-NEXT:    ret
   %1 = load i32, i32* %a
   %2 = getelementptr i32, i32* %a, i32 %b
@@ -203,7 +203,7 @@ define i32 @lw_rr(i32* %a, i32 %b) {
 define i8* @sb_ri_inc(i8* %a, i8 %b) {
 ; CHECK-LABEL: sb_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.sb a1, 42(a0!)
+; CHECK-NEXT:    cv.sb a1, (a0), 42
 ; CHECK-NEXT:    ret
   store i8 %b, i8* %a
   %1 = getelementptr i8, i8* %a, i32 42
@@ -213,7 +213,7 @@ define i8* @sb_ri_inc(i8* %a, i8 %b) {
 define i8* @sb_rr_inc(i8* %a, i8 %b, i32 %c) {
 ; CHECK-LABEL: sb_rr_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.sb a1, a2(a0!)
+; CHECK-NEXT:    cv.sb a1, (a0), a2
 ; CHECK-NEXT:    ret
   store i8 %b, i8* %a
   %1 = getelementptr i8, i8* %a, i32 %c
@@ -233,7 +233,7 @@ define void @sb_rr(i8* %a, i8 %b, i32 %c) {
 define i16* @sh_ri_inc(i16* %a, i16 %b) {
 ; CHECK-LABEL: sh_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.sh a1, 84(a0!)
+; CHECK-NEXT:    cv.sh a1, (a0), 84
 ; CHECK-NEXT:    ret
   store i16 %b, i16* %a
   %1 = getelementptr i16, i16* %a, i32 42
@@ -244,7 +244,7 @@ define i16* @sh_rr_inc(i16* %a, i16 %b, i32 %c) {
 ; CHECK-LABEL: sh_rr_inc:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    slli a2, a2, 1
-; CHECK-NEXT:    cv.sh a1, a2(a0!)
+; CHECK-NEXT:    cv.sh a1, (a0), a2
 ; CHECK-NEXT:    ret
   store i16 %b, i16* %a
   %1 = getelementptr i16, i16* %a, i32 %c
@@ -265,7 +265,7 @@ define void @sh_rr(i16* %a, i16 %b, i32 %c) {
 define i32* @sw_ri_inc(i32* %a, i32 %b) {
 ; CHECK-LABEL: sw_ri_inc:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.sw a1, 168(a0!)
+; CHECK-NEXT:    cv.sw a1, (a0), 168
 ; CHECK-NEXT:    ret
   store i32 %b, i32* %a
   %1 = getelementptr i32, i32* %a, i32 42
@@ -276,7 +276,7 @@ define i32* @sw_rr_inc(i32* %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: sw_rr_inc:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    slli a2, a2, 2
-; CHECK-NEXT:    cv.sw a1, a2(a0!)
+; CHECK-NEXT:    cv.sw a1, (a0), a2
 ; CHECK-NEXT:    ret
   store i32 %b, i32* %a
   %1 = getelementptr i32, i32* %a, i32 %c
