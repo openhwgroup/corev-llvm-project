@@ -196,6 +196,28 @@ TARGET_BUILTIN(mac_machhuRN, "UZiUZiUZiUZiUc", "nc", "xcvmac")
 TARGET_BUILTIN(mac_macsRN, "SZiUZiUZiSZiUc", "nc", "xcvmac")
 TARGET_BUILTIN(mac_machhsRN, "SZiUZiUZiSZiUc", "nc", "xcvmac")
 
+TARGET_BUILTIN(alu_slet, "ZiZiZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_sletu, "ZiUZiUZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_min, "ZiZiZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_minu, "UZiUZiUZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_max, "ZiZiZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_maxu, "UZiUZiUZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_exths, "Zis", "nc", "xcvalu")
+TARGET_BUILTIN(alu_exthz, "UZiUs", "nc", "xcvalu")
+TARGET_BUILTIN(alu_extbs, "Zic", "nc", "xcvalu")
+TARGET_BUILTIN(alu_extbz, "UZiUc", "nc", "xcvalu")
+
+TARGET_BUILTIN(alu_clip, "ZiZiUZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_clipu, "UZiUZiUZi", "nc", "xcvalu")
+TARGET_BUILTIN(alu_addN, "ZiZiUZiUc", "nc", "xcvalu")
+TARGET_BUILTIN(alu_adduN, "UZiUZiUZiUc", "nc", "xcvalu")
+TARGET_BUILTIN(alu_addRN, "ZiZiZiUc", "nc", "xcvalu")
+TARGET_BUILTIN(alu_adduRN, "UZiUZiUZiUc", "nc", "xcvalu")
+TARGET_BUILTIN(alu_subN, "ZiZiUZiUc", "nc", "xcvalu")
+TARGET_BUILTIN(alu_subuN, "UZiUZiUZiUc", "nc", "xcvalu")
+TARGET_BUILTIN(alu_subRN, "ZiZiZiUc", "nc", "xcvalu")
+TARGET_BUILTIN(alu_subuRN, "UZiUZiUZiUc", "nc", "xcvalu")
+
 #undef BUILTIN
 #undef TARGET_BUILTIN
 #undef PSEUDO_BUILTIN
