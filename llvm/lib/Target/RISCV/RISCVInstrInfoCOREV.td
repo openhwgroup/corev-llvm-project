@@ -888,7 +888,6 @@ let Predicates = [HasExtXcvalu] in {
   def : Pat<(srl (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
             (CV_SUBURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
-  def : PatCoreVAluGpr<"abs", "ABS">;
   def : PatCoreVAluGprGpr<"slet", "SLE">;
   def : PatCoreVAluGprGpr<"sletu", "SLEU">;
   def : PatCoreVAluGprGpr<"min", "MIN">;
@@ -902,14 +901,14 @@ let Predicates = [HasExtXcvalu] in {
 
   defm CLIP   : PatCoreVAluGprImm<int_riscv_cv_alu_clip>;
   defm CLIPU  : PatCoreVAluGprImm<int_riscv_cv_alu_clipu>;
-  defm ADDN   : PatCoreVAluGprGprImm<int_riscv_cv_alu_addn>;
-  defm ADDUN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_addun>;
-  defm ADDRN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_addrn>;
-  defm ADDURN : PatCoreVAluGprGprImm<int_riscv_cv_alu_addurn>;
-  defm SUBN   : PatCoreVAluGprGprImm<int_riscv_cv_alu_subn>;
-  defm SUBUN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_subun>;
-  defm SUBRN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_subrn>;
-  defm SUBURN : PatCoreVAluGprGprImm<int_riscv_cv_alu_suburn>;
+  defm ADDN   : PatCoreVAluGprGprImm<int_riscv_cv_alu_addN>;
+  defm ADDUN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_adduN>;
+  defm ADDRN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_addRN>;
+  defm ADDURN : PatCoreVAluGprGprImm<int_riscv_cv_alu_adduRN>;
+  defm SUBN   : PatCoreVAluGprGprImm<int_riscv_cv_alu_subN>;
+  defm SUBUN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_subuN>;
+  defm SUBRN  : PatCoreVAluGprGprImm<int_riscv_cv_alu_subRN>;
+  defm SUBURN : PatCoreVAluGprGprImm<int_riscv_cv_alu_subuRN>;
 }
 
 //===----------------------------------------------------------------------===//

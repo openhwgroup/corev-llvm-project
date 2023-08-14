@@ -1781,7 +1781,7 @@ class ScalarCoreVAluGprGprIntrinsic
 class ScalarCoreVAluGprGprGprIntrinsic
   : Intrinsic<[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty, llvm_i32_ty],
               [IntrNoMem, IntrWillReturn, IntrSpeculatable]>;
-def int_riscv_cv_alu_abs   : ScalarCoreVAluGprIntrinsic;
+
 def int_riscv_cv_alu_slet  : ScalarCoreVAluGprGprIntrinsic;
 def int_riscv_cv_alu_sletu : ScalarCoreVAluGprGprIntrinsic;
 def int_riscv_cv_alu_min   : ScalarCoreVAluGprGprIntrinsic;
@@ -1795,12 +1795,12 @@ def int_riscv_cv_alu_extbz : ScalarCoreVAluGprIntrinsic;
 
 def int_riscv_cv_alu_clip   : ScalarCoreVAluGprGprIntrinsic;
 def int_riscv_cv_alu_clipu  : ScalarCoreVAluGprGprIntrinsic;
-def int_riscv_cv_alu_addn   : ScalarCoreVAluGprGprGprIntrinsic;
-def int_riscv_cv_alu_addun  : ScalarCoreVAluGprGprGprIntrinsic;
-def int_riscv_cv_alu_addrn  : ScalarCoreVAluGprGprGprIntrinsic;
-def int_riscv_cv_alu_addurn : ScalarCoreVAluGprGprGprIntrinsic;
-def int_riscv_cv_alu_subn   : ScalarCoreVAluGprGprGprIntrinsic;
-def int_riscv_cv_alu_subun  : ScalarCoreVAluGprGprGprIntrinsic;
-def int_riscv_cv_alu_subrn  : ScalarCoreVAluGprGprGprIntrinsic;
-def int_riscv_cv_alu_suburn : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_addN   : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_adduN  : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_addRN  : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_adduRN : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_subN   : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_subuN  : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_subRN  : ScalarCoreVAluGprGprGprIntrinsic;
+def int_riscv_cv_alu_subuRN : ScalarCoreVAluGprGprGprIntrinsic;
 } // TargetPrefix = "riscv"
