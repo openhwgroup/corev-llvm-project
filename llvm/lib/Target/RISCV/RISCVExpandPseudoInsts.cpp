@@ -54,6 +54,8 @@ private:
   bool expandVRELOAD(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
   bool expandCoreVShuffle(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
   bool expandCoreVBitManip(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
+  bool expandCoreVClip(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
+  bool expandCoreVAddSub(MachineBasicBlock &MBB, MachineBasicBlock::iterator MBBI);
 };
 
 char RISCVExpandPseudo::ID = 0;
@@ -142,6 +144,18 @@ bool RISCVExpandPseudo::expandMI(MachineBasicBlock &MBB,
   case RISCV::CV_BCLR_PSEUDO:
   case RISCV::CV_INSERT_PSEUDO:
     return expandCoreVBitManip(MBB, MBBI);
+  case RISCV::CV_CLIP_PSEUDO:
+  case RISCV::CV_CLIPU_PSEUDO:
+    return expandCoreVClip(MBB, MBBI);
+  case RISCV::CV_ADDN_PSEUDO:
+  case RISCV::CV_ADDUN_PSEUDO:
+  case RISCV::CV_ADDRN_PSEUDO:
+  case RISCV::CV_ADDURN_PSEUDO:
+  case RISCV::CV_SUBN_PSEUDO:
+  case RISCV::CV_SUBUN_PSEUDO:
+  case RISCV::CV_SUBRN_PSEUDO:
+  case RISCV::CV_SUBURN_PSEUDO:
+    return expandCoreVAddSub(MBB, MBBI);
   }
 
   return false;
@@ -390,6 +404,87 @@ bool RISCVExpandPseudo::expandCoreVBitManip(MachineBasicBlock &MBB,
       .addImm(Imm & 0x1f);
   if (MBBI->getOpcode() == RISCV::CV_INSERT_PSEUDO) {
     MBI.addReg(MBBI->getOperand(3).getReg());
+  }
+  MBBI->eraseFromParent();
+  return true;
+}
+
+bool RISCVExpandPseudo::expandCoreVClip(llvm::MachineBasicBlock &MBB,
+                                        MachineBasicBlock::iterator MBBI) {
+  DebugLoc DL = MBBI->getDebugLoc();
+  Register DstReg = MBBI->getOperand(0).getReg();
+  Register I = MBBI->getOperand(1).getReg();
+  uint64_t J = MBBI->getOperand(2).getImm();
+
+  unsigned Opcode;
+  switch (MBBI->getOpcode()) {
+  case RISCV::CV_CLIPU_PSEUDO:
+    Opcode = RISCV::CV_CLIPU;
+    break;
+  case RISCV::CV_CLIP_PSEUDO:
+    Opcode = RISCV::CV_CLIP;
+    break;
+  default:
+    llvm_unreachable("unknown instruction");
+  }
+  const MCInstrDesc &Desc = TII->get(Opcode);
+  BuildMI(MBB, MBBI, DL, Desc, DstReg)
+      .addReg(I)
+      .addImm(Log2_32_Ceil(J + 1) + 1);
+  MBBI->eraseFromParent();
+  return true;
+}
+
+bool RISCVExpandPseudo::expandCoreVAddSub(llvm::MachineBasicBlock &MBB,
+                                          MachineBasicBlock::iterator MBBI) {
+  auto *MRI = &MBB.getParent()->getRegInfo();
+  DebugLoc DL = MBBI->getDebugLoc();
+  Register DstReg = MBBI->getOperand(0).getReg();
+  Register X = MBBI->getOperand(1).getReg();
+  Register Y = MBBI->getOperand(2).getReg();
+  uint8_t Shift = MBBI->getOperand(3).getImm();
+
+  bool IsImm = 0 <= Shift && Shift <= 31;
+  unsigned Opcode;
+  switch (MBBI->getOpcode()) {
+    case RISCV::CV_ADDN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_ADDN : RISCV::CV_ADDNR;
+      break;
+    case RISCV::CV_ADDUN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_ADDUN : RISCV::CV_ADDUNR;
+      break;
+    case RISCV::CV_ADDRN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_ADDRN : RISCV::CV_ADDRNR;
+      break;
+    case RISCV::CV_ADDURN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_ADDURN : RISCV::CV_ADDURNR;
+      break;
+    case RISCV::CV_SUBN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_SUBN : RISCV::CV_SUBNR;
+      break;
+    case RISCV::CV_SUBUN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_SUBUN : RISCV::CV_SUBUNR;
+      break;
+    case RISCV::CV_SUBRN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_SUBRN : RISCV::CV_SUBRNR;
+      break;
+    case RISCV::CV_SUBURN_PSEUDO:
+      Opcode = IsImm ? RISCV::CV_SUBURN : RISCV::CV_SUBURNR;
+      break;
+    default:
+      llvm_unreachable("unknown instruction");
+  }
+  const MCInstrDesc &Desc = TII->get(Opcode);
+  if (IsImm) {
+  BuildMI(MBB, MBBI, DL, Desc, DstReg).
+          addReg(X).
+          addReg(Y).
+          addImm(Shift);
+  } else {
+  MRI->replaceRegWith(DstReg, X);
+  BuildMI(MBB, MBBI, DL, Desc, DstReg).
+          addReg(Y).
+          addReg(DstReg);
   }
   MBBI->eraseFromParent();
   return true;
