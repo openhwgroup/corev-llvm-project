@@ -1,17 +1,17 @@
 # RUN: not llvm-mc -triple=riscv32 --mattr=+xcvalu %s 2>&1 \
 # RUN:        | FileCheck %s --check-prefixes=CHECK-ERROR
 
-cv.suburnr t0, t1, 0
+cv.subuRNr t0, t1, 0
 # CHECK-ERROR: invalid operand for instruction
 
-cv.suburnr t0, 0, t2
+cv.subuRNr t0, 0, t2
 # CHECK-ERROR: invalid operand for instruction
 
-cv.suburnr 0, t1, t2
+cv.subuRNr 0, t1, t2
 # CHECK-ERROR: invalid operand for instruction
 
-cv.suburnr t0, t1
+cv.subuRNr t0, t1
 # CHECK-ERROR: too few operands for instruction
 
-cv.suburnr t0, t1, t2, a0
+cv.subuRNr t0, t1, t2, a0
 # CHECK-ERROR: invalid operand for instruction

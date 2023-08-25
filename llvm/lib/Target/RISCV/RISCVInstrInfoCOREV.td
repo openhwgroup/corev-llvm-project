@@ -431,55 +431,55 @@ let Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0 i
                   Sched<[]>;
 
   def CV_ADDN   : RVInstAlu_rri<0b00, 0b010, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.addn", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.addN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
   def CV_ADDUN  : RVInstAlu_rri<0b01, 0b010, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.addun", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.adduN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
   def CV_ADDRN  : RVInstAlu_rri<0b10, 0b010, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.addrn", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.addRN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
   def CV_ADDURN : RVInstAlu_rri<0b11, 0b010, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.addurn", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.adduRN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
   def CV_SUBN   : RVInstAlu_rri<0b00, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.subn", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.subN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
   def CV_SUBUN  : RVInstAlu_rri<0b01, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.subun", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.subuN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
   def CV_SUBRN  : RVInstAlu_rri<0b10, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.subrn", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.subRN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
   def CV_SUBURN : RVInstAlu_rri<0b11, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2, uimm5:$imm5),
-                                "cv.suburn", "$rd, $rs1, $rs2, $imm5", []>,
+                                "cv.subuRN", "$rd, $rs1, $rs2, $imm5", []>,
                   Sched<[]>;
 } // Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0
 
 let Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb" in {
   def CV_ADDNR   : RVInstAlu_rr<0b1000000, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.addnr", "$rd, $rs1, $rs2", []>,
+                                "cv.addNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
   def CV_ADDUNR  : RVInstAlu_rr<0b1000001, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.addunr", "$rd, $rs1, $rs2", []>,
+                                "cv.adduNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
   def CV_ADDRNR  : RVInstAlu_rr<0b1000010, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.addrnr", "$rd, $rs1, $rs2", []>,
+                                "cv.addRNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
   def CV_ADDURNR : RVInstAlu_rr<0b1000011, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.addurnr", "$rd, $rs1, $rs2", []>,
+                                "cv.adduRNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
   def CV_SUBNR   : RVInstAlu_rr<0b1000100, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.subnr", "$rd, $rs1, $rs2", []>,
+                                "cv.subNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
   def CV_SUBUNR  : RVInstAlu_rr<0b1000101, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.subunr", "$rd, $rs1, $rs2", []>,
+                                "cv.subuNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
   def CV_SUBRNR  : RVInstAlu_rr<0b1000110, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.subrnr", "$rd, $rs1, $rs2", []>,
+                                "cv.subRNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
   def CV_SUBURNR : RVInstAlu_rr<0b1000111, 0b011, (outs GPR:$rd_wb), (ins GPR:$rd, GPR:$rs1, GPR:$rs2),
-                                "cv.suburnr", "$rd, $rs1, $rs2", []>,
+                                "cv.subuRNr", "$rd, $rs1, $rs2", []>,
                    Sched<[]>;
 
 } // Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb"
