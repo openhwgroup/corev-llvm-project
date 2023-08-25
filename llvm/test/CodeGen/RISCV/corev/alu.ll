@@ -155,7 +155,7 @@ define i32 @clipur(i32 %a, i32 %b) {
 define i32 @addN(i32 %a, i32 %b) {
 ; CHECK-LABEL: addN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addn a0, a0, a1, 5
+; CHECK-NEXT:    cv.addN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = ashr i32 %1, 5
@@ -165,7 +165,7 @@ define i32 @addN(i32 %a, i32 %b) {
 define i32 @adduN(i32 %a, i32 %b) {
 ; CHECK-LABEL: adduN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addun a0, a0, a1, 5
+; CHECK-NEXT:    cv.adduN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = lshr i32 %1, 5
@@ -175,7 +175,7 @@ define i32 @adduN(i32 %a, i32 %b) {
 define i32 @addRN(i32 %a, i32 %b) {
 ; CHECK-LABEL: addRN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addrn a0, a0, a1, 5
+; CHECK-NEXT:    cv.addRN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = add i32 %1, 16
@@ -186,7 +186,7 @@ define i32 @addRN(i32 %a, i32 %b) {
 define i32 @adduRN(i32 %a, i32 %b) {
 ; CHECK-LABEL: adduRN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addurn a0, a0, a1, 5
+; CHECK-NEXT:    cv.adduRN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = add i32 %1, 16
@@ -197,7 +197,7 @@ define i32 @adduRN(i32 %a, i32 %b) {
 define i32 @addNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: addNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addnr a0, a1, a2
+; CHECK-NEXT:    cv.addNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = ashr i32 %1, %c
@@ -207,7 +207,7 @@ define i32 @addNr(i32 %a, i32 %b, i32 %c) {
 define i32 @adduNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: adduNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addunr a0, a1, a2
+; CHECK-NEXT:    cv.adduNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = lshr i32 %1, %c
@@ -217,7 +217,7 @@ define i32 @adduNr(i32 %a, i32 %b, i32 %c) {
 define i32 @addRNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: addRNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addrnr a0, a1, a2
+; CHECK-NEXT:    cv.addRNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = shl i32 1, %c
@@ -230,7 +230,7 @@ define i32 @addRNr(i32 %a, i32 %b, i32 %c) {
 define i32 @adduRNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: adduRNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addurnr a0, a1, a2
+; CHECK-NEXT:    cv.adduRNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = add i32 %a, %b
   %2 = shl i32 1, %c
@@ -243,7 +243,7 @@ define i32 @adduRNr(i32 %a, i32 %b, i32 %c) {
 define i32 @subN(i32 %a, i32 %b) {
 ; CHECK-LABEL: subN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subn a0, a0, a1, 5
+; CHECK-NEXT:    cv.subN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = ashr i32 %1, 5
@@ -253,7 +253,7 @@ define i32 @subN(i32 %a, i32 %b) {
 define i32 @subuN(i32 %a, i32 %b) {
 ; CHECK-LABEL: subuN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subun a0, a0, a1, 5
+; CHECK-NEXT:    cv.subuN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = lshr i32 %1, 5
@@ -263,7 +263,7 @@ define i32 @subuN(i32 %a, i32 %b) {
 define i32 @subRN(i32 %a, i32 %b) {
 ; CHECK-LABEL: subRN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subrn a0, a0, a1, 5
+; CHECK-NEXT:    cv.subRN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = add i32 %1, 16
@@ -274,7 +274,7 @@ define i32 @subRN(i32 %a, i32 %b) {
 define i32 @subuRN(i32 %a, i32 %b) {
 ; CHECK-LABEL: subuRN:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.suburn a0, a0, a1, 5
+; CHECK-NEXT:    cv.subuRN a0, a0, a1, 5
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = add i32 %1, 16
@@ -285,7 +285,7 @@ define i32 @subuRN(i32 %a, i32 %b) {
 define i32 @subNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: subNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subnr a0, a1, a2
+; CHECK-NEXT:    cv.subNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = ashr i32 %1, %c
@@ -295,7 +295,7 @@ define i32 @subNr(i32 %a, i32 %b, i32 %c) {
 define i32 @subuNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: subuNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subunr a0, a1, a2
+; CHECK-NEXT:    cv.subuNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = lshr i32 %1, %c
@@ -305,7 +305,7 @@ define i32 @subuNr(i32 %a, i32 %b, i32 %c) {
 define i32 @subRNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: subRNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subrnr a0, a1, a2
+; CHECK-NEXT:    cv.subRNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = shl i32 1, %c
@@ -318,7 +318,7 @@ define i32 @subRNr(i32 %a, i32 %b, i32 %c) {
 define i32 @subuRNr(i32 %a, i32 %b, i32 %c) {
 ; CHECK-LABEL: subuRNr:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.suburnr a0, a1, a2
+; CHECK-NEXT:    cv.subuRNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = sub i32 %a, %b
   %2 = shl i32 1, %c
@@ -496,7 +496,7 @@ declare i32 @llvm.riscv.cv.alu.addn(i32, i32, i32)
 define i32 @test.cv.alu.addn.case.a(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.addn.case.a:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addn a0, a0, a1, 15
+; CHECK-NEXT:    cv.addN a0, a0, a1, 15
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.addn(i32 %a, i32 %b, i32 15)
   ret i32 %1
@@ -506,7 +506,7 @@ define i32 @test.cv.alu.addn.case.b(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.addn.case.b:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    li a2, 32
-; CHECK-NEXT:    cv.addnr a0, a1, a2
+; CHECK-NEXT:    cv.addNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.addn(i32 %a, i32 %b, i32 32)
   ret i32 %1
@@ -517,7 +517,7 @@ declare i32 @llvm.riscv.cv.alu.addun(i32, i32, i32)
 define i32 @test.cv.alu.addun.case.a(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.addun.case.a:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addun a0, a0, a1, 15
+; CHECK-NEXT:    cv.adduN a0, a0, a1, 15
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.addun(i32 %a, i32 %b, i32 15)
   ret i32 %1
@@ -527,7 +527,7 @@ define i32 @test.cv.alu.addun.case.b(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.addun.case.b:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    li a2, 32
-; CHECK-NEXT:    cv.addunr a0, a1, a2
+; CHECK-NEXT:    cv.adduNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.addun(i32 %a, i32 %b, i32 32)
   ret i32 %1
@@ -538,7 +538,7 @@ declare i32 @llvm.riscv.cv.alu.addrn(i32, i32, i32)
 define i32 @test.cv.alu.addrn.case.a(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.addrn.case.a:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.addrn a0, a0, a1, 15
+; CHECK-NEXT:    cv.addRN a0, a0, a1, 15
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.addrn(i32 %a, i32 %b, i32 15)
   ret i32 %1
@@ -548,7 +548,7 @@ define i32 @test.cv.alu.addrn.case.b(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.addrn.case.b:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    li a2, 32
-; CHECK-NEXT:    cv.addrnr a0, a1, a2
+; CHECK-NEXT:    cv.addRNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.addrn(i32 %a, i32 %b, i32 32)
   ret i32 %1
@@ -593,7 +593,7 @@ declare i32 @llvm.riscv.cv.alu.subn(i32, i32, i32)
 define i32 @test.cv.alu.subn.case.a(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.subn.case.a:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subn a0, a0, a1, 15
+; CHECK-NEXT:    cv.subN a0, a0, a1, 15
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.subn(i32 %a, i32 %b, i32 15)
   ret i32 %1
@@ -603,7 +603,7 @@ define i32 @test.cv.alu.subn.case.b(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.subn.case.b:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    li a2, 32
-; CHECK-NEXT:    cv.subnr a0, a1, a2
+; CHECK-NEXT:    cv.subNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.subn(i32 %a, i32 %b, i32 32)
   ret i32 %1
@@ -614,7 +614,7 @@ declare i32 @llvm.riscv.cv.alu.subun(i32, i32, i32)
 define i32 @test.cv.alu.subun.case.a(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.subun.case.a:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subun a0, a0, a1, 15
+; CHECK-NEXT:    cv.subuN a0, a0, a1, 15
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.subun(i32 %a, i32 %b, i32 15)
   ret i32 %1
@@ -624,7 +624,7 @@ define i32 @test.cv.alu.subun.case.b(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.subun.case.b:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    li a2, 32
-; CHECK-NEXT:    cv.subunr a0, a1, a2
+; CHECK-NEXT:    cv.subuNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.subun(i32 %a, i32 %b, i32 32)
   ret i32 %1
@@ -635,7 +635,7 @@ declare i32 @llvm.riscv.cv.alu.subrn(i32, i32, i32)
 define i32 @test.cv.alu.subrn.case.a(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.subrn.case.a:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.subrn a0, a0, a1, 15
+; CHECK-NEXT:    cv.subRN a0, a0, a1, 15
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.subrn(i32 %a, i32 %b, i32 15)
   ret i32 %1
@@ -645,7 +645,7 @@ define i32 @test.cv.alu.subrn.case.b(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.subrn.case.b:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    li a2, 32
-; CHECK-NEXT:    cv.subrnr a0, a1, a2
+; CHECK-NEXT:    cv.subRNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.subrn(i32 %a, i32 %b, i32 32)
   ret i32 %1
@@ -656,7 +656,7 @@ declare i32 @llvm.riscv.cv.alu.suburn(i32, i32, i32)
 define i32 @test.cv.alu.suburn.case.a(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.suburn.case.a:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.suburn a0, a0, a1, 15
+; CHECK-NEXT:    cv.subuRN a0, a0, a1, 15
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.suburn(i32 %a, i32 %b, i32 15)
   ret i32 %1
@@ -666,7 +666,7 @@ define i32 @test.cv.alu.suburn.case.b(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.suburn.case.b:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    li a2, 32
-; CHECK-NEXT:    cv.suburnr a0, a1, a2
+; CHECK-NEXT:    cv.subuRNr a0, a1, a2
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.suburn(i32 %a, i32 %b, i32 32)
   ret i32 %1

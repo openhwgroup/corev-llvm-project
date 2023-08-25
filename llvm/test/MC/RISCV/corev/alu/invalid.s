@@ -56,50 +56,50 @@ cv.clipur t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
 
-cv.addn t0, t1, t2, 5
+cv.addN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.addun t0, t1, t2, 5
+cv.adduN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.addrn t0, t1, t2, 5
+cv.addRN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.addurn t0, t1, t2, 5
+cv.adduRN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.subn t0, t1, t2, 5
+cv.subN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.subun t0, t1, t2, 5
+cv.subuN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.subrn t0, t1, t2, 5
+cv.subRN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.suburn t0, t1, t2, 5
+cv.subuRN t0, t1, t2, 5
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.addnr t0, t1, t2
+cv.addNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.addunr t0, t1, t2
+cv.adduNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.addrnr t0, t1, t2
+cv.addRNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.addurnr t0, t1, t2
+cv.adduRNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.subnr t0, t1, t2
+cv.subNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.subunr t0, t1, t2
+cv.subuNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.subrnr t0, t1, t2
+cv.subRNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
-cv.suburnr t0, t1, t2
+cv.subuRNr t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
