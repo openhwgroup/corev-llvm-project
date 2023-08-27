@@ -26,6 +26,8 @@
 // CHECK-NOT: __riscv_zfh
 // CHECK-NOT: __riscv_v
 // CHECK-NOT: __riscv_vector
+// CHECK-NOT: __riscv_xcvbi
+// CHECK-NOT: __riscv_xcvsimd
 // CHECK-NOT: __riscv_zbkc
 // CHECK-NOT: __riscv_zbkx
 // CHECK-NOT: __riscv_zbkb
@@ -425,3 +427,20 @@
 // RUN: %clang -target riscv64 -march=rv64isvnapot -x c -E -dM %s \
 // RUN: -o - | FileCheck --check-prefix=CHECK-SVNAPOT-EXT %s
 // CHECK-SVNAPOT-EXT: __riscv_svnapot 1000000{{$}}
+
+
+// RUN: %clang -target riscv32-unknown-linux-gnu \
+// RUN: -march=rv32ixcvbi -x c -E -dM %s \
+// RUN: -o - | FileCheck --check-prefix=CHECK-XCVBI-EXT %s
+// RUN: %clang -target riscv64-unknown-linux-gnu \
+// RUN: -march=rv64ixcvbi -x c -E -dM %s \
+// RUN: -o - | FileCheck --check-prefix=CHECK-XCVBI-EXT %s
+// CHECK-XCVBI-EXT: __riscv_xcvbi 1000000{{$}}
+
+// RUN: %clang -target riscv32-unknown-linux-gnu \
+// RUN: -march=rv32ixcvsimd -x c -E -dM %s \
+// RUN: -o - | FileCheck --check-prefix=CHECK-XCVSIMD-EXT %s
+// RUN: %clang -target riscv64-unknown-linux-gnu \
+// RUN: -march=rv64ixcvsimd -x c -E -dM %s \
+// RUN: -o - | FileCheck --check-prefix=CHECK-XCVSIMD-EXT %s
+// CHECK-XCVSIMD-EXT: __riscv_xcvsimd 1000000{{$}}
