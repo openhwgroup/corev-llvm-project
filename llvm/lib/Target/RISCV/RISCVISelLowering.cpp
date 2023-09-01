@@ -10734,9 +10734,9 @@ static MachineBasicBlock *emitSelectPseudo(MachineInstr &MI,
 
   // Insert appropriate branch.
   BuildMI(HeadMBB, DL, TII.getBrCond(CC))
-      .addReg(LHS)
-      .addReg(RHS)
-      .addMBB(TailMBB);
+    .addReg(LHS)
+    .addReg(RHS)
+    .addMBB(TailMBB);
 
   // IfFalseMBB just falls through to TailMBB.
   IfFalseMBB->addSuccessor(TailMBB);
