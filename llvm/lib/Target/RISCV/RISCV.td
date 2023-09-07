@@ -442,11 +442,11 @@ def HasExtXcvalu
 
 def FeatureExtXcvsimd
     : SubtargetFeature<"xcvsimd", "HasExtXcvsimd", "true",
-                       "'Xcvsimd' (SIMD ALU)">;
+                       "'XCVsimd' (CORE-V SIMD ALU)">;
 def HasExtXcvsimd
     : Predicate<"Subtarget->hasExtXcvsimd()">,
                AssemblerPredicate<(any_of FeatureExtXcvsimd),
-               "'Xcvsimd' (SIMD ALU)">;
+               "'XCVsimd' (CORE-V SIMD ALU)">;
 
 def FeatureExtXcvbitmanip
     : SubtargetFeature<"xcvbitmanip", "HasExtXcvbitmanip", "true",

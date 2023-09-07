@@ -223,9 +223,9 @@ define i32 @test.cv.avgu.sc.h(i32 %a, i32 %b) {
 define i32 @test.cv.avgu.sci.h(i32 %a) {
 ; CHECK-LABEL: test.cv.avgu.sci.h:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.avgu.sci.h a0, a0, 5
+; CHECK-NEXT:    cv.avgu.sci.h a0, a0, 63
 ; CHECK-NEXT:    ret
-  %1 = call i32 @llvm.riscv.cv.simd.avgu.sc.h(i32 %a, i32 5)
+  %1 = call i32 @llvm.riscv.cv.simd.avgu.sc.h(i32 %a, i32 63)
   ret i32 %1
 }
 
