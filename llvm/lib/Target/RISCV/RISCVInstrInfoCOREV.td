@@ -81,6 +81,30 @@ def cv_tsimm6 : Operand<XLenVT>, TImmLeaf<XLenVT, [{return isInt<6>(Imm);}]> {
   let OperandNamespace = "RISCVOp";
 }
 
+def cv_uimm3 : Operand<XLenVT>, ImmLeaf<XLenVT, [{return isUInt<3>(Imm);}]> {
+  let ParserMatchClass = CVUImmAsmOperand<3>;
+  let EncoderMethod = "getImmOpValue";
+  let DecoderMethod = "decodeUImmOperand<3>";
+  let OperandType = "OPERAND_UIMM3";
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    return MCOp.evaluateAsConstantImm(Imm) && isUInt<3>(Imm);
+  }];
+  let OperandNamespace = "RISCVOp";
+}
+
+def cv_uimm4 : Operand<XLenVT>, ImmLeaf<XLenVT, [{return isUInt<4>(Imm);}]> {
+  let ParserMatchClass = CVUImmAsmOperand<4>;
+  let EncoderMethod = "getImmOpValue";
+  let DecoderMethod = "decodeUImmOperand<4>";
+  let OperandType = "OPERAND_UIMM4";
+  let MCOperandPredicate = [{
+    int64_t Imm;
+    return MCOp.evaluateAsConstantImm(Imm) && isUInt<4>(Imm);
+  }];
+  let OperandNamespace = "RISCVOp";
+}
+
 def cv_uimm6 : Operand<XLenVT>, ImmLeaf<XLenVT, [{return isUInt<6>(Imm);}]> {
   let ParserMatchClass = CVUImmAsmOperand<6>;
   let EncoderMethod = "getImmOpValue";
@@ -192,9 +216,9 @@ class CVSIMDALURIWb<bits<5> funct5, bit F, bits<3> funct3, string opcodestr>
     : CVInstSIMDRI<funct5, F, funct3, OPC_CUSTOM3, (outs GPR:$rd_wb),
               (ins GPR:$rd, GPR:$rs1, simm6:$imm6), opcodestr, "$rd, $rs1, $imm6">;
 
-class CVSIMDALURU<bits<5> funct5, bit F, bits<3> funct3, string opcodestr>
+class CVSIMDALURU<bits<5> funct5, bit F, bits<3> funct3, string opcodestr, Operand immtype = cv_uimm6>
     : CVInstSIMDRI<funct5, F, funct3, OPC_CUSTOM3, (outs GPR:$rd),
-              (ins GPR:$rs1, cv_uimm6:$imm6), opcodestr, "$rd, $rs1, $imm6">;
+              (ins GPR:$rs1, immtype:$imm6), opcodestr, "$rd, $rs1, $imm6">;
 
 let Constraints = "$rd = $rd_wb" in 
 class CVSIMDALURUWb<bits<5> funct5, bit F, bits<3> funct3, string opcodestr>
@@ -223,6 +247,15 @@ multiclass CVSIMDBinaryUnsigned<bits<5> funct5, bit F, bit funct1, string mnemon
   def CV_ # NAME # _SCI_B : CVSIMDALURU<funct5, F, 0b111, "cv." # mnemonic # ".sci.b">;
 }
 
+multiclass CVSIMDShift<bits<5> funct5, bit F, bit funct1, string mnemonic> {
+  def CV_ # NAME # _H : CVSIMDALURR<funct5, F, funct1, 0b000, "cv." # mnemonic # ".h">;
+  def CV_ # NAME # _B : CVSIMDALURR<funct5, F, funct1, 0b001, "cv." # mnemonic # ".b">;
+  def CV_ # NAME # _SC_H : CVSIMDALURR<funct5, F, funct1, 0b100, "cv." # mnemonic # ".sc.h">;
+  def CV_ # NAME # _SC_B : CVSIMDALURR<funct5, F, funct1, 0b101, "cv." # mnemonic # ".sc.b">;
+  def CV_ # NAME # _SCI_H : CVSIMDALURU<funct5, F, 0b110, "cv." # mnemonic # ".sci.h", cv_uimm4>;
+  def CV_ # NAME # _SCI_B : CVSIMDALURU<funct5, F, 0b111, "cv." # mnemonic # ".sci.b", cv_uimm3>;
+}
+
 multiclass CVSIMDBinarySignedWb<bits<5> funct5, bit F, bit funct1, string mnemonic> {
   def CV_ # NAME # _H : CVSIMDALURRWb<funct5, F, funct1, 0b000, "cv." # mnemonic # ".h">;
   def CV_ # NAME # _B : CVSIMDALURRWb<funct5, F, funct1, 0b001, "cv." # mnemonic # ".b">;
@@ -246,17 +279,17 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
   defm ADD :    CVSIMDBinarySigned<0b00000, 0, 0, "add">;
   defm SUB :    CVSIMDBinarySigned<0b00001, 0, 0, "sub">;
   defm AVG :    CVSIMDBinarySigned<0b00010, 0, 0, "avg">;
-  defm AVGU :   CVSIMDBinarySigned<0b00011, 0, 0, "avgu">;
+  defm AVGU : CVSIMDBinaryUnsigned<0b00011, 0, 0, "avgu">;
   defm MIN :    CVSIMDBinarySigned<0b00100, 0, 0, "min">;
   defm MINU : CVSIMDBinaryUnsigned<0b00101, 0, 0, "minu">;
   defm MAX :    CVSIMDBinarySigned<0b00110, 0, 0, "max">;
   defm MAXU : CVSIMDBinaryUnsigned<0b00111, 0, 0, "maxu">;
-  defm SRL :  CVSIMDBinaryUnsigned<0b01000, 0, 0, "srl">;
-  defm SRA :  CVSIMDBinaryUnsigned<0b01001, 0, 0, "sra">;
-  defm SLL :  CVSIMDBinaryUnsigned<0b01010, 0, 0, "sll">;
-  defm OR :     CVSIMDBinaryUnsigned<0b01011, 0, 0, "or">;
-  defm XOR :    CVSIMDBinaryUnsigned<0b01100, 0, 0, "xor">;
-  defm AND :    CVSIMDBinaryUnsigned<0b01101, 0, 0, "and">;
+  defm SRL :           CVSIMDShift<0b01000, 0, 0, "srl">;
+  defm SRA :           CVSIMDShift<0b01001, 0, 0, "sra">;
+  defm SLL :           CVSIMDShift<0b01010, 0, 0, "sll">;
+  defm OR :     CVSIMDBinarySigned<0b01011, 0, 0, "or">;
+  defm XOR :    CVSIMDBinarySigned<0b01100, 0, 0, "xor">;
+  defm AND :    CVSIMDBinarySigned<0b01101, 0, 0, "and">;
 
   def CV_ABS_H :    CVSIMDALUR<0b01110, 0, 0, 0b000, "cv.abs.h">;
   def CV_ABS_B :    CVSIMDALUR<0b01110, 0, 0, 0b001, "cv.abs.b">;
@@ -297,11 +330,11 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
 
   def CV_PACK :      CVSIMDALURR<0b11110, 0, 0, 0b000, "cv.pack">;
   def CV_PACK_H :    CVSIMDALURR<0b11110, 0, 1, 0b000, "cv.pack.h">;
-  
+
   def CV_PACKHI_B : CVSIMDALURRWb<0b11111, 0, 1, 0b001, "cv.packhi.b">;
   def CV_PACKLO_B : CVSIMDALURRWb<0b11111, 0, 0, 0b001, "cv.packlo.b">;
-  
-  defm CMPEQ : CVSIMDBinarySigned<0b00000, 1, 0, "cmpeq">;
+
+  defm CMPEQ :  CVSIMDBinarySigned<0b00000, 1, 0, "cmpeq">;
   defm CMPNE :  CVSIMDBinarySigned<0b00001, 1, 0, "cmpne">;
   defm CMPGT :  CVSIMDBinarySigned<0b00010, 1, 0, "cmpgt">;
   defm CMPGE :  CVSIMDBinarySigned<0b00011, 1, 0, "cmpge">;
@@ -1090,7 +1123,7 @@ let Predicates = [HasExtXcvsimd, IsRV32] in {
   defm SUB :  PatCorevBinary<"sub", true>;
   def : PatCorevGprGprDiv<int_riscv_cv_simd_sub_h, "SUB_H", 0>;
   defm AVG :  PatCorevBinary<"avg">;
-  defm AVGU : PatCorevBinary<"avgu">;
+  defm AVGU : PatCorevBinaryUnsigned<"avgu">;
   defm MIN :  PatCorevBinary<"min">;
   defm MINU : PatCorevBinaryUnsigned<"minu">;
   defm MAX :  PatCorevBinary<"max">;
