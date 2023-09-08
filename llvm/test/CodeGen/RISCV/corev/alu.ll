@@ -17,19 +17,19 @@ define i32 @abs(i32 %a) {
   ret i32 %1
 }
 
-define i1 @slet(i32 %a, i32 %b) {
-; CHECK-LABEL: slet:
+define i1 @sle(i32 %a, i32 %b) {
+; CHECK-LABEL: sle:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.slet a0, a0, a1
+; CHECK-NEXT:    cv.sle a0, a0, a1
 ; CHECK-NEXT:    ret
   %1 = icmp sle i32 %a, %b
   ret i1 %1
 }
 
-define i1 @sletu(i32 %a, i32 %b) {
-; CHECK-LABEL: sletu:
+define i1 @sleu(i32 %a, i32 %b) {
+; CHECK-LABEL: sleu:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.sletu a0, a0, a1
+; CHECK-NEXT:    cv.sleu a0, a0, a1
 ; CHECK-NEXT:    ret
   %1 = icmp ule i32 %a, %b
   ret i1 %1
@@ -344,7 +344,7 @@ declare i32 @llvm.riscv.cv.alu.slet(i32, i32)
 define i32 @test.cv.alu.slet(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.slet:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.slet a0, a0, a1
+; CHECK-NEXT:    cv.sle a0, a0, a1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.slet(i32 %a, i32 %b)
   ret i32 %1
@@ -355,7 +355,7 @@ declare i32 @llvm.riscv.cv.alu.sletu(i32, i32)
 define i32 @test.cv.alu.sletu(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.alu.sletu:
 ; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.sletu a0, a0, a1
+; CHECK-NEXT:    cv.sleu a0, a0, a1
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.alu.sletu(i32 %a, i32 %b)
   ret i32 %1

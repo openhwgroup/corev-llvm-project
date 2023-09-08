@@ -6,6 +6,12 @@
 cv.abs t0, t1
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 
+cv.sle t0, t1, t2
+# CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
+
+cv.sleu t0, t1, t2
+# CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
+
 cv.slet t0, t1, t2
 # CHECK-ERROR: instruction requires the following: 'Xcvalu' (ALU Operations)
 

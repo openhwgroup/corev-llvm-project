@@ -386,11 +386,11 @@ let Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0 i
   def CV_ABS    : RVInstAlu_r<0b0101000, 0b011, (outs GPR:$rd), (ins GPR:$rs1),
                               "cv.abs", "$rd, $rs1", []>,
                   Sched<[]>;
-  def CV_SLET   : RVInstAlu_rr<0b0101001, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                               "cv.slet", "$rd, $rs1, $rs2", []>,
+  def CV_SLE   : RVInstAlu_rr<0b0101001, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.sle", "$rd, $rs1, $rs2", []>,
                   Sched<[]>;
-  def CV_SLETU  : RVInstAlu_rr<0b0101010, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
-                               "cv.sletu", "$rd, $rs1, $rs2", []>,
+  def CV_SLEU  : RVInstAlu_rr<0b0101010, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
+                               "cv.sleu", "$rd, $rs1, $rs2", []>,
                   Sched<[]>;
   def CV_MIN    : RVInstAlu_rr<0b0101011, 0b011, (outs GPR:$rd), (ins GPR:$rs1, GPR:$rs2),
                                "cv.min", "$rd, $rs1, $rs2", []>,
@@ -483,6 +483,12 @@ let Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, 
                    Sched<[]>;
 
 } // Predicates = [HasExtXcvalu], hasSideEffects = 0, mayLoad = 0, mayStore = 0, Opcode = OPC_CUSTOM1.Value, Constraints = "$rd = $rd_wb"
+
+let Predicates = [HasExtXcvalu] in {
+  // Xcvalu Pseudo Instructions
+  def : InstAlias<"cv.slet $rd, $rs1, $rs2", (CV_SLE GPR:$rd, GPR:$rs1, GPR:$rs2), 0>;
+  def : InstAlias<"cv.sletu $rd, $rs1, $rs2", (CV_SLEU GPR:$rd, GPR:$rs1, GPR:$rs2), 0>;
+} // Predicates = [HasExtXcvalu]
 
 let Predicates = [HasExtXcvbi], hasSideEffects = 0, mayLoad = 0, mayStore = 0, isBranch = 1, isTerminator = 1 in {
   // Immediate branching operations
@@ -825,8 +831,8 @@ multiclass PatCoreVAluGprGprImm <Intrinsic intr> {
 let Predicates = [HasExtXcvalu] in {
 
   def : Pat<(abs GPR:$rs1), (CV_ABS GPR:$rs1)>;
-  def : PatGprGpr<setle, CV_SLET>;
-  def : PatGprGpr<setule, CV_SLETU>;
+  def : PatGprGpr<setle, CV_SLE>;
+  def : PatGprGpr<setule, CV_SLEU>;
   def : PatGprGpr<smin, CV_MIN>;
   def : PatGprGpr<umin, CV_MINU>;
   def : PatGprGpr<smax, CV_MAX>;
@@ -883,8 +889,8 @@ let Predicates = [HasExtXcvalu] in {
             (CV_SUBURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
   def : PatCoreVAluGpr<"abs", "ABS">;
-  def : PatCoreVAluGprGpr<"slet", "SLET">;
-  def : PatCoreVAluGprGpr<"sletu", "SLETU">;
+  def : PatCoreVAluGprGpr<"slet", "SLE">;
+  def : PatCoreVAluGprGpr<"sletu", "SLEU">;
   def : PatCoreVAluGprGpr<"min", "MIN">;
   def : PatCoreVAluGprGpr<"minu", "MINU">;
   def : PatCoreVAluGprGpr<"max", "MAX">;
