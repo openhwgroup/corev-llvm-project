@@ -1,4 +1,10 @@
-// ===---------------------------------------------------------------------===//
+//==- RISCVSchedcv32e40p.td - CV32E40P Scheduling Definitions --*- tablegen -*-=//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
 
 def cv32e40pModel : SchedMachineModel {
   let MicroOpBufferSize = 0; // cv32e40p is in-order.
@@ -15,7 +21,7 @@ def cv32e40pModel : SchedMachineModel {
                              HasStdExtZkr, HasVInstructions, HasVInstructionsI64];
 }
 
-// ===---------------------------------------------------------------------===//
+//===---------------------------------------------------------------------===//
 // The cv32e40p is single-issue
 // so everthing can be modeled as a single resource
 // The arm Cortex M4 is modeled in a similar way
