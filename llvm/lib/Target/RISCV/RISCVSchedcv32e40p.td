@@ -153,7 +153,7 @@ def : WriteRes<WriteNop, []>;
 //===----------------------------------------------------------------------===//
 // ReadAdvance definitions
 def : ReadAdvance<ReadJmp, 0>;
-// There is a 1-cycle data hazard if jalr depends on a immediatly preceding instrucion
+// There is a 1-cycle data hazard if jalr depends on a immediately preceding instrucion
 def : ReadAdvance<ReadJalr, -1>;
 def : ReadAdvance<ReadCSR, 0>;
 def : ReadAdvance<ReadStoreData, 0>;
