@@ -4,6 +4,9 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
+// Source for Latency and Hazard details:
+// https://cv32e40p.readthedocs.io/en/latest/pipeline.html
+//
 //===----------------------------------------------------------------------===//
 
 def cv32e40pModel : SchedMachineModel {
