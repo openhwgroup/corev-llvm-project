@@ -17,7 +17,13 @@ extern "C" {
 #endif
 
 #if defined(__riscv_xcvelw)
-uint32_t __builtin_riscv_cv_elw_elw (void *loc);
+
+#define __DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
+
+unsigned long __riscv_cv_elw_elw(void *loc) {
+  return __builtin_riscv_cv_elw_elw(loc);
+}
+
 #endif // defined(__riscv_xcvelw)
 
 #if defined(__cplusplus)

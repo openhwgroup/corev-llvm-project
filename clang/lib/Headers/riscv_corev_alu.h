@@ -17,27 +17,91 @@ extern "C" {
 #endif
 
 #if defined(__riscv_xcvalu)
-int __builtin_abs (int j);
-int __builtin_riscv_cv_alu_slet (int32_t  i, int32_t  j);
-int __builtin_riscv_cv_alu_sletu (uint32_t i, uint32_t j);
-int32_t __builtin_riscv_cv_alu_min (int32_t i, int32_t j);
-uint32_t __builtin_riscv_cv_alu_minu (uint32_t i, uint32_t j);
-int32_t __builtin_riscv_cv_alu_max (int32_t i, int32_t j);
-uint32_t __builtin_riscv_cv_alu_maxu (uint32_t i, uint32_t j);
-int32_t __builtin_riscv_cv_alu_exths (int16_t i);
-uint32_t __builtin_riscv_cv_alu_exthz (uint16_t i);
-int32_t __builtin_riscv_cv_alu_extbs (int8_t i);
-uint32_t __builtin_riscv_cv_alu_extbz (uint8_t);
-int32_t __builtin_riscv_cv_alu_clip (int32_t i, uint32_t j);
-uint32_t __builtin_riscv_cv_alu_clipu (uint32_t i, uint32_t j);
-int32_t __builtin_riscv_cv_alu_addN (int32_t x, int32_t y, uint8_t shft);
-uint32_t __builtin_riscv_cv_alu_adduN (uint32_t x, uint32_t y, uint8_t shft);
-int32_t __builtin_riscv_cv_alu_addRN (int32_t x, int32_t y, uint8_t shft);
-uint32_t __builtin_riscv_cv_alu_adduRN (uint32_t x, uint32_t y, uint8_t shft);
-int32_t __builtin_riscv_cv_alu_subN (int32_t x, int32_t y, uint8_t shft);
-uint32_t __builtin_riscv_cv_alu_subuN (uint32_t x, uint32_t y, uint8_t shft);
-int32_t __builtin_riscv_cv_alu_subRN (int32_t x, int32_t y, uint8_t shft);
-uint32_t __builtin_riscv_cv_alu_subuRN (uint32_t x, uint32_t y, uint8_t shft);
+
+#define __DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
+
+long __riscv_cv_abs(long a) { return __builtin_abs(a); }
+
+long __riscv_cv_alu_slet(long a, long b) {
+  return __builtin_riscv_cv_alu_slet(a, b);
+}
+
+long __riscv_cv_alu_sletu(unsigned long a, unsigned long b) {
+  return __builtin_riscv_cv_alu_sletu(a, b);
+}
+
+long __riscv_cv_alu_min(long a, long b) {
+  return __builtin_riscv_cv_alu_min(a, b);
+}
+
+unsigned long __riscv_cv_alu_minu(unsigned long a, unsigned long b) {
+  return __builtin_riscv_cv_alu_minu(a, b);
+}
+
+long __riscv_cv_alu_max(long a, long b) {
+  return __builtin_riscv_cv_alu_max(a, b);
+}
+
+unsigned long __riscv_cv_alu_maxu(unsigned long a, unsigned long b) {
+  return __builtin_riscv_cv_alu_maxu(a, b);
+}
+
+long __riscv_cv_alu_exths(int16_t a) { return __builtin_riscv_cv_alu_exths(a); }
+
+unsigned long __riscv_cv_alu_exthz(uint16_t a) {
+  return __builtin_riscv_cv_alu_exthz(a);
+}
+
+long __riscv_cv_alu_extbs(int8_t a) { return __builtin_riscv_cv_alu_extbs(a); }
+
+unsigned long __riscv_cv_alu_extbz(uint8_t a) {
+  return __builtin_riscv_cv_alu_extbz(a);
+}
+
+long __riscv_cv_alu_clip(long a, unsigned long b) {
+  return __builtin_riscv_cv_alu_clip(a, b);
+}
+
+unsigned long __riscv_cv_alu_clipu(unsigned long a, unsigned long b) {
+  return __builtin_riscv_cv_alu_clipu(a, b);
+}
+
+long __riscv_cv_alu_addN(long a, long b, uint8_t shft) {
+  return __builtin_riscv_cv_alu_addN(a, b, shft);
+}
+
+unsigned long __riscv_cv_alu_adduN(unsigned long a, unsigned long b,
+                                   uint8_t shft) {
+  return __builtin_riscv_cv_alu_adduN(a, b, shft);
+}
+
+long __riscv_cv_alu_addRN(long a, long b, uint8_t shft) {
+  return __builtin_riscv_cv_alu_addRN(a, b, shft);
+}
+
+unsigned long __riscv_cv_alu_adduRN(unsigned long a, unsigned long b,
+                                    uint8_t shft) {
+  return __builtin_riscv_cv_alu_adduRN(a, b, shft);
+}
+
+long __riscv_cv_alu_subN(long a, long b, uint8_t shft) {
+  return __builtin_riscv_cv_alu_subN(a, b, shft);
+}
+
+unsigned long __riscv_cv_alu_subuN(unsigned long a, unsigned long b,
+                                   uint8_t shft) {
+  return __builtin_riscv_cv_alu_subuN(a, b, shft);
+}
+
+long __riscv_cv_alu_subRN(long a, long b, uint8_t shft) {
+  return __builtin_riscv_cv_alu_subRN(a, b, shft);
+}
+
+unsigned long __riscv_cv_alu_subuRN(unsigned long a, unsigned long b,
+                                    uint8_t shft) {
+  return __builtin_riscv_cv_alu_subuRN(a, b, shft);
+}
+
 #endif // defined(__riscv_xcvalu)
 
 #if defined(__cplusplus)
