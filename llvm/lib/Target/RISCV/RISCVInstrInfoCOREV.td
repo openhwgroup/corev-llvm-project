@@ -246,7 +246,7 @@ let Predicates = [HasExtXcvsimd], hasSideEffects = 0, mayLoad = 0, mayStore = 0 
   defm ADD :    CVSIMDBinarySigned<0b00000, 0, 0, "add">;
   defm SUB :    CVSIMDBinarySigned<0b00001, 0, 0, "sub">;
   defm AVG :    CVSIMDBinarySigned<0b00010, 0, 0, "avg">;
-  defm AVGU :   CVSIMDBinarySigned<0b00011, 0, 0, "avgu">;
+  defm AVGU :   CVSIMDBinaryUnsigned<0b00011, 0, 0, "avgu">;
   defm MIN :    CVSIMDBinarySigned<0b00100, 0, 0, "min">;
   defm MINU : CVSIMDBinaryUnsigned<0b00101, 0, 0, "minu">;
   defm MAX :    CVSIMDBinarySigned<0b00110, 0, 0, "max">;
@@ -1090,7 +1090,7 @@ let Predicates = [HasExtXcvsimd, IsRV32] in {
   defm SUB :  PatCorevBinary<"sub", true>;
   def : PatCorevGprGprDiv<int_riscv_cv_simd_sub_h, "SUB_H", 0>;
   defm AVG :  PatCorevBinary<"avg">;
-  defm AVGU : PatCorevBinary<"avgu">;
+  defm AVGU : PatCorevBinaryUnsigned<"avgu">;
   defm MIN :  PatCorevBinary<"min">;
   defm MINU : PatCorevBinaryUnsigned<"minu">;
   defm MAX :  PatCorevBinary<"max">;
