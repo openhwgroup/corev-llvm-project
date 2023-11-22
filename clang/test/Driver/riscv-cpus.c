@@ -26,6 +26,11 @@
 // RUN: %clang --target=riscv64 -### -c %s 2>&1 -mtune=rocket | FileCheck -check-prefix=MTUNE-ROCKET-64 %s
 // MTUNE-ROCKET-64: "-tune-cpu" "rocket"
 
+// RUN: %clang --target=riscv32 -### -c %s 2>&1 -mcpu=cv32e40p | FileCheck -check-prefix=MCPU-CV32E40P %s
+// MCPU-CV32E40P: "-target-cpu" "cv32e40p"
+// MCPU-CV32E40P: "-target-feature" "+m" "-target-feature" "+f" "-target-feature" "+c" "-target-feature" "-64bit"
+// MCPU-CV32E40P: "-target-abi" "ilp32"
+
 // mcpu with default march
 // RUN: %clang --target=riscv64 -### -c %s 2>&1 -mcpu=sifive-e20 | FileCheck -check-prefix=MCPU-SIFIVE-E20 %s
 // MCPU-SIFIVE-E20: "-nostdsysteminc" "-target-cpu" "sifive-e20"

@@ -442,11 +442,11 @@ def HasExtXcvalu
 
 def FeatureExtXcvsimd
     : SubtargetFeature<"xcvsimd", "HasExtXcvsimd", "true",
-                       "'Xcvsimd' (SIMD ALU)">;
+                       "'XCVsimd' (CORE-V SIMD ALU)">;
 def HasExtXcvsimd
     : Predicate<"Subtarget->hasExtXcvsimd()">,
                AssemblerPredicate<(any_of FeatureExtXcvsimd),
-               "'Xcvsimd' (SIMD ALU)">;
+               "'XCVsimd' (CORE-V SIMD ALU)">;
 
 def FeatureExtXcvbitmanip
     : SubtargetFeature<"xcvbitmanip", "HasExtXcvbitmanip", "true",
@@ -565,6 +565,7 @@ include "RISCVInstrInfo.td"
 include "RISCVRegisterBanks.td"
 include "RISCVSchedRocket.td"
 include "RISCVSchedSiFive7.td"
+include "RISCVSchedcv32e40p.td"
 
 //===----------------------------------------------------------------------===//
 // RISC-V processors supported.
@@ -655,6 +656,12 @@ def : ProcessorModel<"sifive-u74", SiFive7Model, [Feature64Bit,
                                                   FeatureStdExtD,
                                                   FeatureStdExtC],
                      [TuneSiFive7]>;
+
+def : ProcessorModel<"cv32e40p", cv32e40pModel, [Feature32Bit,
+                                                 FeatureStdExtM,
+                                                 FeatureStdExtF,
+                                                 FeatureStdExtC],
+                    [TuneNoDefaultUnroll]>;
 
 //===----------------------------------------------------------------------===//
 // Define the RISC-V target.

@@ -605,6 +605,8 @@ public:
     return IsValid && VK == RISCVMCExpr::VK_RISCV_None;
   }
 
+  bool isCVUImm3() const { return IsUImm<3>(); }
+  bool isCVUImm4() const { return IsUImm<4>(); }
   bool isCVUImm6() const { return IsUImm<6>(); }
 
   bool isCVUImm12() const {
@@ -1329,6 +1331,14 @@ bool RISCVAsmParser::MatchAndEmitInstruction(SMLoc IDLoc, unsigned &Opcode,
   case Match_InvalidCVUImm1: {
     return generateImmOutOfRangeError(Operands, ErrorInfo, 0, 1,
                                       "loop ID must be an integer in the range");
+  }
+  case Match_InvalidCVUImm3: {
+    return generateImmOutOfRangeError(
+        Operands, ErrorInfo, 0, 7, "immediate must be an integer in the range");
+  }
+  case Match_InvalidCVUImm4: {
+    return generateImmOutOfRangeError(
+        Operands, ErrorInfo, 0, 15, "immediate must be an integer in the range");
   }
   case Match_InvalidCVUImm5: {
     return generateImmOutOfRangeError(Operands, ErrorInfo, 0, (1 << 7) - 4,
