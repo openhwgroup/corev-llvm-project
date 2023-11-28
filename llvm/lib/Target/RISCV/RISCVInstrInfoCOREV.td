@@ -960,7 +960,7 @@ let Predicates = [HasExtXcvbi] in {
 // Patterns for load & store operations
 //===----------------------------------------------------------------------===//
 
-let Predicates = [HasExtXcvmem] in {
+let Predicates = [HasExtXcvmem, IsRV32] in {
 
   def : Pat<(sextloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
             (CV_LB_rr GPR:$base, GPR:$offset)>;
@@ -974,28 +974,28 @@ let Predicates = [HasExtXcvmem] in {
             (CV_LHU_rr GPR:$base, GPR:$offset)>;
   def : Pat<(extloadi16 (AddrRegReg GPR:$base, GPR:$offset)),
             (CV_LHU_rr GPR:$base, GPR:$offset)>;
-  def : Pat<(load (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(i32 (load (AddrRegReg GPR:$base, GPR:$offset))),
             (CV_LW_rr GPR:$base, GPR:$offset)>;
 
   def : Pat<(post_truncsti8 GPR:$val, GPR:$base, simm12:$offset),
             (CV_SB_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
   def : Pat<(post_truncsti16 GPR:$val, GPR:$base, simm12:$offset),
             (CV_SH_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
-  def : Pat<(post_store GPR:$val, GPR:$base, simm12:$offset),
+  def : Pat<(post_store (i32 GPR:$val), GPR:$base, simm12:$offset),
             (CV_SW_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
 
   def : Pat<(post_truncsti8 GPR:$val, GPR:$base, GPR:$offset),
             (CV_SB_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
   def : Pat<(post_truncsti16 GPR:$val, GPR:$base, GPR:$offset),
             (CV_SH_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
-  def : Pat<(post_store GPR:$val, GPR:$base, GPR:$offset),
+  def : Pat<(post_store (i32 GPR:$val), GPR:$base, GPR:$offset),
             (CV_SW_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
 
   def : Pat<(truncstorei8 GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
             (CV_SB_rr GPR:$val, GPR:$base, GPR:$offset)>;
   def : Pat<(truncstorei16 GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
             (CV_SH_rr GPR:$val, GPR:$base, GPR:$offset)>;
-  def : Pat<(store GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(store (i32 GPR:$val), (AddrRegReg GPR:$base, GPR:$offset)),
             (CV_SW_rr GPR:$val, GPR:$base, GPR:$offset)>;
 
 }
