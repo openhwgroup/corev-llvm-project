@@ -19363,12 +19363,13 @@ static Value *EmitCoreVIntrinsic(CodeGenFunction &CGF, unsigned BuiltinID,
   for (unsigned i = 0, e = E->getNumArgs(); i != e; i++) {
     if (Ops[i]->getType() != MachineType) {
       QualType type = E->getArg(i)->getType();
-      assert((type->isSignedIntegerType() || type->isUnsignedIntegerType()) &&
+      assert((type->isSignedIntegerType() || type->isUnsignedIntegerType() ||
+          type->isPointerType()) &&
              "Argument of Core-V builtin must have signed or unsigned integer "
-             "type");
+             "or Pointer type");
       if (type->isSignedIntegerType()) {
         Ops[i] = CGF.Builder.CreateSExt(Ops[i], MachineType);
-      } else {
+      } else if ((type->isUnsignedIntegerType())) {
         Ops[i] = CGF.Builder.CreateZExt(Ops[i], MachineType);
       }
     }
