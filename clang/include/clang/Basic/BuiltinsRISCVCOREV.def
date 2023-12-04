@@ -218,6 +218,8 @@ TARGET_BUILTIN(alu_subuN, "UZiUZiUZiUc", "nc", "xcvalu")
 TARGET_BUILTIN(alu_subRN, "ZiZiZiUc", "nc", "xcvalu")
 TARGET_BUILTIN(alu_subuRN, "UZiUZiUZiUc", "nc", "xcvalu")
 
+TARGET_BUILTIN(elw_elw, "iv*", "nc", "xcvelw")
+
 #undef BUILTIN
 #undef TARGET_BUILTIN
 #undef PSEUDO_BUILTIN
