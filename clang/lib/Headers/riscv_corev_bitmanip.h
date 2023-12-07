@@ -61,10 +61,9 @@ unsigned long __riscv_cv_bitmanip_ror(unsigned long a, unsigned long b) {
   return __builtin_riscv_cv_bitmanip_ror(a, b);
 }
 
-unsigned long __riscv_cv_bitmanip_bitrev(unsigned long a, uint8_t pts,
-                                         uint8_t radix) {
-  return __builtin_riscv_cv_bitmanip_bitrev(a, pts, radix);
-}
+#define __riscv_cv_bitmanip_bitrev(rs1, PTS, RADIX) \
+  __builtin_riscv_cv_bitmanip_bitrev((unsigned long) rs1, (const uint8_t) PTS, \
+                                     (const uint8_t) RADIX)
 
 #endif // defined(__riscv_xcvbitmanip)
 

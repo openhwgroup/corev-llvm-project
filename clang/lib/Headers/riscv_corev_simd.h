@@ -20,10 +20,9 @@ extern "C" {
 
 #define __DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
 
-unsigned long __riscv_cv_simd_add_h(unsigned long a, unsigned long b,
-                                    const uint8_t shft) {
-  return __builtin_riscv_cv_simd_add_h(a, b, shft);
-}
+#define __riscv_cv_simd_add_h(rs1, rs2, DIV) \
+  __builtin_riscv_cv_simd_add_h((unsigned long) rs1, (unsigned long) rs2, \
+                                (const uint8_t) DIV)
 
 unsigned long __riscv_cv_simd_add_b(unsigned long a, unsigned long b) {
   return __builtin_riscv_cv_simd_add_b(a, b);
@@ -37,10 +36,9 @@ unsigned long __riscv_cv_simd_add_sc_b(unsigned long a, int8_t b) {
   return __builtin_riscv_cv_simd_add_sc_b(a, b);
 }
 
-unsigned long __riscv_cv_simd_sub_h(unsigned long a, unsigned long b,
-                                    const uint8_t shft) {
-  return __builtin_riscv_cv_simd_sub_h(a, b, shft);
-}
+#define __riscv_cv_simd_sub_h(rs1, rs2, DIV) \
+  __builtin_riscv_cv_simd_sub_h((unsigned long) rs1, (unsigned long) rs2, \
+                                (const uint8_t) DIV)
 
 unsigned long __riscv_cv_simd_sub_b(unsigned long a, unsigned long b) {
   return __builtin_riscv_cv_simd_sub_b(a, b);
@@ -262,31 +260,25 @@ unsigned long __riscv_cv_simd_neg_b(unsigned long a) {
   return __builtin_riscv_cv_simd_neg_b(a);
 }
 
-long __riscv_cv_simd_extract_h(unsigned long a, const uint8_t sel) {
-  return __builtin_riscv_cv_simd_extract_h(a, sel);
-}
+#define __riscv_cv_simd_extract_h(rs1, SEL) \
+  __builtin_riscv_cv_simd_extract_h((unsigned long) rs1, (const uint8_t) SEL)
 
-long __riscv_cv_simd_extract_b(unsigned long a, const uint8_t sel) {
-  return __builtin_riscv_cv_simd_extract_b(a, sel);
-}
+#define __riscv_cv_simd_extract_b(rs1, SEL) \
+  __builtin_riscv_cv_simd_extract_b((unsigned long) rs1, (const uint8_t) SEL)
 
-unsigned long __riscv_cv_simd_extractu_h(unsigned long a, const uint8_t sel) {
-  return __builtin_riscv_cv_simd_extractu_h(a, sel);
-}
+#define __riscv_cv_simd_extractu_h(rs1, SEL) \
+  __builtin_riscv_cv_simd_extractu_h((unsigned long) rs1, (const uint8_t) SEL)
 
-unsigned long __riscv_cv_simd_extractu_b(unsigned long a, const uint8_t sel) {
-  return __builtin_riscv_cv_simd_extractu_b(a, sel);
-}
+#define __riscv_cv_simd_extractu_b(rs1, SEL) \
+  __builtin_riscv_cv_simd_extractu_b((unsigned long) rs1, (const uint8_t) SEL)
 
-unsigned long __riscv_cv_simd_insert_h(unsigned long a, unsigned long b,
-                                       const uint8_t sel) {
-  return __builtin_riscv_cv_simd_insert_h(a, b, sel);
-}
+#define __riscv_cv_simd_insert_h(rs1, rs2, SEL) \
+  __builtin_riscv_cv_simd_insert_h((unsigned long) rs1, (unsigned long) rs2, \
+                                   (const uint8_t) SEL)
 
-unsigned long __riscv_cv_simd_insert_b(unsigned long a, unsigned long b,
-                                       const uint8_t sel) {
-  return __builtin_riscv_cv_simd_insert_b(a, b, sel);
-}
+#define __riscv_cv_simd_insert_b(rs1, rs2, SEL) \
+  __builtin_riscv_cv_simd_insert_b((unsigned long) rs1, (unsigned long) rs2, \
+                                   (const uint8_t) SEL)
 
 unsigned long __riscv_cv_simd_dotup_h(unsigned long a, unsigned long b) {
   return __builtin_riscv_cv_simd_dotup_h(a, b);
@@ -392,19 +384,17 @@ unsigned long __riscv_cv_simd_shuffle_h(unsigned long a, unsigned long flgs) {
   return __builtin_riscv_cv_simd_shuffle_h(a, flgs);
 }
 
-unsigned long __riscv_cv_simd_shuffle_sci_h(unsigned long a,
-                                            const uint8_t flgs) {
-  return __builtin_riscv_cv_simd_shuffle_sci_h(a, flgs);
-}
+#define __riscv_cv_simd_shuffle_sci_h(rs1, FLGS) \
+  __builtin_riscv_cv_simd_shuffle_sci_h((unsigned long) rs1, \
+                                        (const uint8_t) FLGS)
 
 unsigned long __riscv_cv_simd_shuffle_b(unsigned long a, unsigned long b) {
   return __builtin_riscv_cv_simd_shuffle_b(a, b);
 }
 
-unsigned long __riscv_cv_simd_shuffle_sci_b(unsigned long a,
-                                            const uint8_t flgs) {
-  return __builtin_riscv_cv_simd_shuffle_sci_b(a, flgs);
-}
+#define __riscv_cv_simd_shuffle_sci_b(rs1, FLGS) \
+  __builtin_riscv_cv_simd_shuffle_sci_b((unsigned long) rs1, \
+                                        (const uint8_t) FLGS)
 
 unsigned long __riscv_cv_simd_shuffle2_h(unsigned long a, unsigned long flgs,
                                          unsigned long c) {
@@ -594,24 +584,21 @@ unsigned long __riscv_cv_simd_cmpleu_sc_b(unsigned long a, uint8_t b) {
   return __builtin_riscv_cv_simd_cmpleu_sc_b(a, b);
 }
 
-unsigned long __riscv_cv_simd_cplxmul_r(unsigned long a, unsigned long b,
-                                        unsigned long c, const uint8_t shft) {
-  return __builtin_riscv_cv_simd_cplxmul_r(a, b, c, shft);
-}
+#define __riscv_cv_simd_cplxmul_r(rs1, rs2, rD, DIV) \
+  __builtin_riscv_cv_simd_cplxmul_r((unsigned long) rs1, (unsigned long) rs2, \
+                                    (unsigned long) rD, (const uint8_t) DIV)
 
-unsigned long __riscv_cv_simd_cplxmul_i(unsigned long a, unsigned long b,
-                                        unsigned long c, const uint8_t shft) {
-  return __builtin_riscv_cv_simd_cplxmul_i(a, b, c, shft);
-}
+#define __riscv_cv_simd_cplxmul_i(rs1, rs2, rD, DIV) \
+  __builtin_riscv_cv_simd_cplxmul_i((unsigned long) rs1, (unsigned long) rs2, \
+                                    (unsigned long) rD, (const uint8_t) DIV)
 
 unsigned long __riscv_cv_simd_cplxconj(unsigned long a) {
   return __builtin_riscv_cv_simd_cplxconj(a);
 }
 
-unsigned long __riscv_cv_simd_subrotmj(unsigned long a, unsigned long b,
-                                       const uint8_t shft) {
-  return __builtin_riscv_cv_simd_subrotmj(a, b, shft);
-}
+#define __riscv_cv_simd_subrotmj(rs1, rs2, DIV) \
+  __builtin_riscv_cv_simd_subrotmj((unsigned long) rs1, (unsigned long) rs2, \
+                                   (const uint8_t) DIV)
 
 #endif // defined(__riscv_xcvsimd)
 
