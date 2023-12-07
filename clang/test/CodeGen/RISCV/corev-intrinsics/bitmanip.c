@@ -3,7 +3,6 @@
 // RUN:     | FileCheck %s
 
 #include <stdint.h>
-#include <riscv_corev_bitmanip.h>
 
 // CHECK-LABEL: @test_extract(
 // CHECK-NEXT:  entry:

@@ -3,7 +3,6 @@
 // RUN:     | FileCheck %s
 
 #include <stdint.h>
-#include <riscv_corev_simd.h>
 
 // CHECK-LABEL: @test_add_h_div1(
 // CHECK-NEXT:  entry:
