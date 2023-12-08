@@ -20,7 +20,7 @@ extern "C" {
 
 #define __DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
 
-static unsigned long __DEFAULT_FN_ATTRS __riscv_cv_elw_elw(void *loc) {
+static __inline__ unsigned long __DEFAULT_FN_ATTRS __riscv_cv_elw_elw(void *loc) {
   return __builtin_riscv_cv_elw_elw(loc);
 }
 
