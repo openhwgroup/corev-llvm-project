@@ -20,11 +20,11 @@ extern "C" {
 
 #define __DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_mac(long a, long b, long c) {
+static long __DEFAULT_FN_ATTRS __riscv_cv_mac_mac(long a, long b, long c) {
   return __builtin_riscv_cv_mac_mac(a, b, c);
 }
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_msu(long a, long b, long c) {
+static long __DEFAULT_FN_ATTRS __riscv_cv_mac_msu(long a, long b, long c) {
   return __builtin_riscv_cv_mac_msu(a, b, c);
 }
 

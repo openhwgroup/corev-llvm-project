@@ -20,44 +20,44 @@ extern "C" {
 
 #define __DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_extract(long a, uint16_t range) {
+static long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_extract(long a, uint16_t range) {
   return __builtin_riscv_cv_bitmanip_extract(a, range);
 }
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_extractu(unsigned long a, uint16_t range) {
+static unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_extractu(unsigned long a, uint16_t range) {
   return __builtin_riscv_cv_bitmanip_extractu(a, range);
 }
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_insert(unsigned long a, uint16_t range,
+static unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_insert(unsigned long a, uint16_t range,
                                          unsigned long k) {
   return __builtin_riscv_cv_bitmanip_insert(a, range, k);
 }
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_bclr(unsigned long a, uint16_t range) {
+static unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_bclr(unsigned long a, uint16_t range) {
   return __builtin_riscv_cv_bitmanip_bclr(a, range);
 }
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_bset(unsigned long a, uint16_t range) {
+static unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_bset(unsigned long a, uint16_t range) {
   return __builtin_riscv_cv_bitmanip_bset(a, range);
 }
 
-uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_ff1(unsigned long a) {
+static uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_ff1(unsigned long a) {
   return __builtin_riscv_cv_bitmanip_ff1(a);
 }
 
-uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_fl1(unsigned long a) {
+static uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_fl1(unsigned long a) {
   return __builtin_riscv_cv_bitmanip_fl1(a);
 }
 
-uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_clb(unsigned long a) {
+static uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_clb(unsigned long a) {
   return __builtin_riscv_cv_bitmanip_clb(a);
 }
 
-uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_cnt(unsigned long a) {
+static uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_cnt(unsigned long a) {
   return __builtin_riscv_cv_bitmanip_cnt(a);
 }
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_ror(unsigned long a, unsigned long b) {
+static unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_ror(unsigned long a, unsigned long b) {
   return __builtin_riscv_cv_bitmanip_ror(a, b);
 }
 
