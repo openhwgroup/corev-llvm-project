@@ -62,8 +62,8 @@ unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_ror(unsigned long a, unsign
 }
 
 #define __riscv_cv_bitmanip_bitrev(rs1, PTS, RADIX) \
-  __builtin_riscv_cv_bitmanip_bitrev((unsigned long) rs1, (const uint8_t) PTS, \
-                                     (const uint8_t) RADIX)
+  (unsigned long) __builtin_riscv_cv_bitmanip_bitrev((unsigned long) (rs1), \
+                                 (const uint8_t) (PTS), (const uint8_t) (RADIX))
 
 #endif // defined(__riscv_xcvbitmanip)
 
