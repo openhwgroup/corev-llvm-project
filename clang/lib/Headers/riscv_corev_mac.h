@@ -28,85 +28,77 @@ long __DEFAULT_FN_ATTRS __riscv_cv_mac_msu(long a, long b, long c) {
   return __builtin_riscv_cv_mac_msu(a, b, c);
 }
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_muluN(unsigned long a, unsigned long b,
-                                   const uint8_t shft) {
-  return __builtin_riscv_cv_mac_muluN(a, b, shft);
-}
+#define __riscv_cv_mac_muluN(rs1, rs2, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_muluN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_mulhhuN(unsigned long a, unsigned long b,
-                                     const uint8_t shft) {
-  return __builtin_riscv_cv_mac_mulhhuN(a, b, shft);
-}
+#define __riscv_cv_mac_mulhhuN(rs1, rs2, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_mulhhuN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_mulsN(unsigned long a, unsigned long b,
-                          const uint8_t shft) {
-  return __builtin_riscv_cv_mac_mulsN(a, b, shft);
-}
+#define __riscv_cv_mac_mulsN(rs1, rs2, SHIFT) \
+  (long) __builtin_riscv_cv_mac_mulsN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_mulhhsN(unsigned long a, unsigned long b,
-                            const uint8_t shft) {
-  return __builtin_riscv_cv_mac_mulhhsN(a, b, shft);
-}
+#define __riscv_cv_mac_mulhhsN(rs1, rs2, SHIFT) \
+  (long) __builtin_riscv_cv_mac_mulhhsN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_muluRN(unsigned long a, unsigned long b,
-                                    const uint8_t shft) {
-  return __builtin_riscv_cv_mac_muluRN(a, b, shft);
-}
+#define __riscv_cv_mac_muluRN(rs1, rs2, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_muluRN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_mulhhuRN(unsigned long a, unsigned long b,
-                                      const uint8_t shft) {
-  return __builtin_riscv_cv_mac_mulhhuRN(a, b, shft);
-}
+#define __riscv_cv_mac_mulhhuRN(rs1, rs2, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_mulhhuRN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_mulsRN(unsigned long a, unsigned long b,
-                           const uint8_t shft) {
-  return __builtin_riscv_cv_mac_mulsRN(a, b, shft);
-}
+#define __riscv_cv_mac_mulsRN(rs1, rs2, SHIFT) \
+  (long) __builtin_riscv_cv_mac_mulsRN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_mulhhsRN(unsigned long a, unsigned long b,
-                             const uint8_t shft) {
-  return __builtin_riscv_cv_mac_mulhhsRN(a, b, shft);
-}
+#define __riscv_cv_mac_mulhhsRN(rs1, rs2, SHIFT) \
+  (long) __builtin_riscv_cv_mac_mulhhsRN((unsigned long) (rs1), \
+                                 (unsigned long) (rs2), (const uint8_t) (SHIFT))
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_macuN(unsigned long a, unsigned long b,
-                                   unsigned long c, const uint8_t shft) {
-  return __builtin_riscv_cv_mac_macuN(a, b, c, shft);
-}
+#define __riscv_cv_mac_macuN(rs1, rs2, rD, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_macuN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_machhuN(unsigned long a, unsigned long b,
-                                     unsigned long c, const uint8_t shft) {
-  return __builtin_riscv_cv_mac_machhuN(a, b, c, shft);
-}
+#define __riscv_cv_mac_machhuN(rs1, rs2, rD, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_machhuN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_macsN(unsigned long a, unsigned long b, long c,
-                          const uint8_t shft) {
-  return __builtin_riscv_cv_mac_macsN(a, b, c, shft);
-}
+#define __riscv_cv_mac_macsN(rs1, rs2, rD, SHIFT) \
+  (long) __builtin_riscv_cv_mac_macsN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_machhsN(unsigned long a, unsigned long b, long c,
-                            const uint8_t shft) {
-  return __builtin_riscv_cv_mac_machhsN(a, b, c, shft);
-}
+#define __riscv_cv_mac_machhsN(rs1, rs2, rD, SHIFT) \
+  (long) __builtin_riscv_cv_mac_machhsN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_macuRN(unsigned long a, unsigned long b,
-                                    unsigned long c, const uint8_t shft) {
-  return __builtin_riscv_cv_mac_macuRN(a, b, c, shft);
-}
+#define __riscv_cv_mac_macuRN(rs1, rs2, rD, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_macuRN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
-unsigned long __DEFAULT_FN_ATTRS __riscv_cv_mac_machhuRN(unsigned long a, unsigned long b,
-                                      unsigned long c, const uint8_t shft) {
-  return __builtin_riscv_cv_mac_machhuRN(a, b, c, shft);
-}
+#define __riscv_cv_mac_machhuRN(rs1, rs2, rD, SHIFT) \
+  (unsigned long) __builtin_riscv_cv_mac_machhuRN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_macsRN(unsigned long a, unsigned long b, long c,
-                           const uint8_t shft) {
-  return __builtin_riscv_cv_mac_macsRN(a, b, c, shft);
-}
+#define __riscv_cv_mac_macsRN(rs1, rs2, rD, SHIFT) \
+  (long) __builtin_riscv_cv_mac_macsRN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
-long __DEFAULT_FN_ATTRS __riscv_cv_mac_machhsRN(unsigned long a, unsigned long b, long c,
-                             const uint8_t shft) {
-  return __builtin_riscv_cv_mac_machhsRN(a, b, c, shft);
-}
+#define __riscv_cv_mac_machhsRN(rs1, rs2, rD, SHIFT) \
+  (long) __builtin_riscv_cv_mac_machhsRN((unsigned long) (rs1), \
+                                  (unsigned long) (rs2), (unsigned long) (rD), \
+                                  (const uint8_t) (SHIFT))
 
 #endif // defined(__riscv_xcvmac)
 
