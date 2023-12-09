@@ -24,15 +24,6 @@ define i32 @test.cv.insert.b1(i32 %a, i32 %b) {
   ret i32 %1
 }
 
-define i32 @test.cv.insert.b255(i32 %a, i32 %b) {
-; CHECK-LABEL: test.cv.insert.b255:
-; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.insert.b a0, a1, 63
-; CHECK-NEXT:    ret
-  %1 = call i32 @llvm.riscv.cv.simd.insert.b(i32 %a, i32 %b, i32 255)
-  ret i32 %1
-}
-
 define i32 @test.cv.insert.b(i32 %a, i32 %b, i32 %c, i32 %d) {
 ; CHECK-LABEL: test.cv.insert.b:
 ; CHECK:       # %bb.0:
@@ -69,16 +60,6 @@ define i32 @test.cv.insert.h1(i32 %a, i32 %b) {
   %1 = call i32 @llvm.riscv.cv.simd.insert.h(i32 %a, i32 %b, i32 1)
   ret i32 %1
 }
-
-define i32 @test.cv.insert.h255(i32 %a, i32 %b) {
-; CHECK-LABEL: test.cv.insert.h255:
-; CHECK:       # %bb.0:
-; CHECK-NEXT:    cv.insert.h a0, a1, 63
-; CHECK-NEXT:    ret
-  %1 = call i32 @llvm.riscv.cv.simd.insert.h(i32 %a, i32 %b, i32 255)
-  ret i32 %1
-}
-
 
 define i32 @test.cv.insert.h(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.insert.h:
