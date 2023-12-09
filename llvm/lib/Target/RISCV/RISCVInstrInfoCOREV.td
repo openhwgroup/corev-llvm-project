@@ -716,11 +716,6 @@ def trailing1sPlus1 : SDNodeXForm<imm, [{
                           SDLoc(N), N->getValueType(0));
 }]>;
 
-def LO6 : SDNodeXForm<imm, [{
-  return CurDAG->getTargetConstant(N->getZExtValue() & 0x3f,
-                                   SDLoc(N), N->getValueType(0));
-}]>;
-
 //===----------------------------------------------------------------------===//
 // Patterns for MAC operations
 //===----------------------------------------------------------------------===//
@@ -1115,20 +1110,13 @@ let Predicates = [HasExtXcvsimd, IsRV32] in {
   defm SDOTUP :  PatCorevTernaryUnsigned<"sdotup">;
   defm SDOTUSP : PatCorevTernary<"sdotusp">;
   defm SDOTSP :  PatCorevTernary<"sdotsp">;
-  
-  def : Pat<(int_riscv_cv_simd_insert_b GPR:$rd, GPR:$rs1, i32:$imm), 
-            (CV_INSERT_B GPR:$rd, GPR:$rs1, (LO6 cv_uimm6:$imm))>;
-  def : Pat<(int_riscv_cv_simd_insert_h GPR:$rd, GPR:$rs1, i32:$imm), 
-            (CV_INSERT_H GPR:$rd, GPR:$rs1, (LO6 cv_uimm6:$imm))>;
-            
-  def : Pat<(int_riscv_cv_simd_extract_b GPR:$rs1, i32:$imm), 
-            (CV_EXTRACT_B GPR:$rs1, (LO6 cv_uimm6:$imm))>;
-  def : Pat<(int_riscv_cv_simd_extract_h GPR:$rs1, i32:$imm), 
-            (CV_EXTRACT_H GPR:$rs1, (LO6 cv_uimm6:$imm))>;
-  def : Pat<(int_riscv_cv_simd_extractu_b GPR:$rs1, i32:$imm),
-            (CV_EXTRACTU_B GPR:$rs1, (LO6 cv_uimm6:$imm))>;
-  def : Pat<(int_riscv_cv_simd_extractu_h GPR:$rs1, i32:$imm), 
-            (CV_EXTRACTU_H GPR:$rs1, (LO6 cv_uimm6:$imm))>;
+
+  defm EXTRACT :  PatCorevGprTImmHB<"extract">;
+  defm EXTRACTU : PatCorevGprTImmHB<"extractu">;
+  def : Pat<(int_riscv_cv_simd_insert_b GPR:$rd, GPR:$rs1, cv_tsimm6:$imm), 
+            (CV_INSERT_B GPR:$rd, GPR:$rs1, cv_tsimm6:$imm)>;
+  def : Pat<(int_riscv_cv_simd_insert_h GPR:$rd, GPR:$rs1, cv_tsimm6:$imm), 
+            (CV_INSERT_H GPR:$rd, GPR:$rs1, cv_tsimm6:$imm)>;
 
   defm SHUFFLE : PatCorevGprGprHB<"shuffle">;
   def : PatCorevGprTImm<"shuffle_sci_h", "SHUFFLE_SCI_H">;
