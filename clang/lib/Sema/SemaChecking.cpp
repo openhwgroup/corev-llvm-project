@@ -2019,7 +2019,8 @@ bool Sema::CheckTSBuiltinFunctionCall(const TargetInfo &TI, unsigned BuiltinID,
     return CheckAMDGCNBuiltinFunctionCall(BuiltinID, TheCall);
   case llvm::Triple::riscv32:
   case llvm::Triple::riscv64:
-    return CheckRISCVBuiltinFunctionCall(TI, BuiltinID, TheCall);
+    return CheckRISCVBuiltinFunctionCall(TI, BuiltinID, TheCall) ||
+     CheckRISCVCOREVBuiltinFunctionCall(BuiltinID, TheCall);
   }
 }
 
@@ -4459,6 +4460,23 @@ bool Sema::CheckRISCVBuiltinFunctionCall(const TargetInfo &TI,
   }
 
   return false;
+}
+
+bool Sema::CheckRISCVCOREVBuiltinFunctionCall(unsigned BuiltinID,
+                                           CallExpr *TheCall) {
+  // For intrinsics which take an immediate value as part of the instruction,
+  // range check them here.
+  switch (BuiltinID) {
+  default: return false;
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_extract_h:
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_extract_b:
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_extractu_h:
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_extractu_b:
+    return SemaBuiltinConstantArgRange(TheCall, 1, 0, 63);
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_insert_h:
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_insert_b:
+    return SemaBuiltinConstantArgRange(TheCall, 2, 0, 63);
+  }
 }
 
 bool Sema::CheckSystemZBuiltinFunctionCall(unsigned BuiltinID,
