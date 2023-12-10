@@ -97,6 +97,7 @@ def cv_imm8: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<8>(Imm);}]>;
 
 def cv_tuimm2: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<2>(Imm);}]>;
 def cv_tuimm5: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<5>(Imm);}]>;
+def cv_tuimm6: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<6>(Imm);}]>;
 def cv_uimm10: Operand<XLenVT>, ImmLeaf<XLenVT, [{return isUInt<10>(Imm);}]>;
 def cv_tuimm10: Operand<XLenVT>, TImmLeaf<XLenVT, [{return isUInt<10>(Imm);}]>;
 
@@ -984,6 +985,10 @@ class PatCorevGprTImm <string intr, string asm> :
   PatGprImm<!cast<Intrinsic>("int_riscv_cv_simd_" # intr), 
             !cast<RVInst>("CV_" # asm), cv_tsimm6>;
 
+class PatCorevGprTUImm <string intr, string asm> :
+  PatGprImm<!cast<Intrinsic>("int_riscv_cv_simd_" # intr), 
+            !cast<RVInst>("CV_" # asm), cv_tuimm6>;
+
 class PatCorevGprImm <string intr, string asm> :
   PatGprImm<!cast<Intrinsic>("int_riscv_cv_simd_" # intr), 
             !cast<RVInst>("CV_" # asm), simm6>;
@@ -1002,9 +1007,9 @@ multiclass PatCorevGprGprGprHB <string intr> {
   def : PatCorevGprGprGpr<intr # "_b", NAME # "_B">;
 }
 
-multiclass PatCorevGprTImmHB <string intr> {
-  def : PatCorevGprTImm<intr # "_h", NAME # "_H">;
-  def : PatCorevGprTImm<intr # "_b", NAME # "_B">;
+multiclass PatCorevGprTUImmHB <string intr> {
+  def : PatCorevGprTUImm<intr # "_h", NAME # "_H">;
+  def : PatCorevGprTUImm<intr # "_b", NAME # "_B">;
 }
 
 multiclass PatCorevGprImmHB <string intr> {
@@ -1111,12 +1116,12 @@ let Predicates = [HasExtXcvsimd, IsRV32] in {
   defm SDOTUSP : PatCorevTernary<"sdotusp">;
   defm SDOTSP :  PatCorevTernary<"sdotsp">;
 
-  defm EXTRACT :  PatCorevGprTImmHB<"extract">;
-  defm EXTRACTU : PatCorevGprTImmHB<"extractu">;
-  def : Pat<(int_riscv_cv_simd_insert_b GPR:$rd, GPR:$rs1, cv_tsimm6:$imm), 
-            (CV_INSERT_B GPR:$rd, GPR:$rs1, cv_tsimm6:$imm)>;
-  def : Pat<(int_riscv_cv_simd_insert_h GPR:$rd, GPR:$rs1, cv_tsimm6:$imm), 
-            (CV_INSERT_H GPR:$rd, GPR:$rs1, cv_tsimm6:$imm)>;
+  defm EXTRACT :  PatCorevGprTUImmHB<"extract">;
+  defm EXTRACTU : PatCorevGprTUImmHB<"extractu">;
+  def : Pat<(int_riscv_cv_simd_insert_b GPR:$rd, GPR:$rs1, cv_tuimm6:$imm), 
+            (CV_INSERT_B GPR:$rd, GPR:$rs1, cv_tuimm6:$imm)>;
+  def : Pat<(int_riscv_cv_simd_insert_h GPR:$rd, GPR:$rs1, cv_tuimm6:$imm), 
+            (CV_INSERT_H GPR:$rd, GPR:$rs1, cv_tuimm6:$imm)>;
 
   defm SHUFFLE : PatCorevGprGprHB<"shuffle">;
   def : PatCorevGprTImm<"shuffle_sci_h", "SHUFFLE_SCI_H">;
