@@ -97,6 +97,7 @@ set(riscv_files
   riscv_corev_bitmanip.h
   riscv_corev_elw.h
   riscv_corev_mac.h
+  riscv_corev_simd.h
   )
 
 set(systemz_files
