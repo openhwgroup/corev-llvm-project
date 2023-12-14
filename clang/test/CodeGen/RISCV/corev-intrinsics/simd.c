@@ -462,7 +462,7 @@ uint32_t test_avgu_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.avgu.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -487,7 +487,7 @@ uint32_t test_avgu_sci_h(uint32_t a) {
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.avgu.sc.h(i32 [[TMP0]], i32 -32)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.avgu.sc.h(i32 [[TMP0]], i32 65504)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
 uint32_t test_avgu_sci_h_negative(uint32_t a) {
@@ -502,7 +502,7 @@ uint32_t test_avgu_sci_h_negative(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.avgu.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -527,7 +527,7 @@ uint32_t test_avgu_sci_b(uint32_t a) {
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.avgu.sc.b(i32 [[TMP0]], i32 -32)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.avgu.sc.b(i32 [[TMP0]], i32 224)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
 uint32_t test_avgu_sci_b_negative(uint32_t a) {
@@ -682,7 +682,7 @@ uint32_t test_minu_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.minu.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -710,7 +710,7 @@ uint32_t test_minu_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.minu.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -878,7 +878,7 @@ uint32_t test_maxu_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.maxu.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -906,7 +906,7 @@ uint32_t test_maxu_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.maxu.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -964,7 +964,7 @@ uint32_t test_srl_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.srl.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -992,7 +992,7 @@ uint32_t test_srl_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.srl.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -1050,7 +1050,7 @@ uint32_t test_sra_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.sra.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -1078,7 +1078,7 @@ uint32_t test_sra_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.sra.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -1136,7 +1136,7 @@ uint32_t test_sll_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.sll.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -1164,7 +1164,7 @@ uint32_t test_sll_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.sll.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3306,7 +3306,7 @@ uint32_t test_cmpgtu_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpgtu.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3334,7 +3334,7 @@ uint32_t test_cmpgtu_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpgtu.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3392,7 +3392,7 @@ uint32_t test_cmpgeu_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpgeu.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3420,7 +3420,7 @@ uint32_t test_cmpgeu_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpgeu.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3478,7 +3478,7 @@ uint32_t test_cmpltu_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpltu.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3506,7 +3506,7 @@ uint32_t test_cmpltu_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpltu.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3564,7 +3564,7 @@ uint32_t test_cmpleu_b(uint32_t a, uint32_t b) {
 // CHECK-NEXT:    store i16 [[B:%.*]], ptr [[B_ADDR]], align 2
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i16, ptr [[B_ADDR]], align 2
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i16 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i16 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpleu.sc.h(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
@@ -3592,7 +3592,7 @@ uint32_t test_cmpleu_sci_h(uint32_t a) {
 // CHECK-NEXT:    store i8 [[B:%.*]], ptr [[B_ADDR]], align 1
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP1:%.*]] = load i8, ptr [[B_ADDR]], align 1
-// CHECK-NEXT:    [[TMP2:%.*]] = sext i8 [[TMP1]] to i32
+// CHECK-NEXT:    [[TMP2:%.*]] = zext i8 [[TMP1]] to i32
 // CHECK-NEXT:    [[TMP3:%.*]] = call i32 @llvm.riscv.cv.simd.cmpleu.sc.b(i32 [[TMP0]], i32 [[TMP2]])
 // CHECK-NEXT:    ret i32 [[TMP3]]
 //
