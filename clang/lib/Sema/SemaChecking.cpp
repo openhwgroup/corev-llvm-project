@@ -4657,13 +4657,15 @@ bool Sema::CheckRISCVCOREVBuiltinFunctionCall(unsigned BuiltinID,
   default:
     return false;
   case RISCVCOREV::BI__builtin_riscv_cv_simd_extract_h:
-  case RISCVCOREV::BI__builtin_riscv_cv_simd_extract_b:
   case RISCVCOREV::BI__builtin_riscv_cv_simd_extractu_h:
+    return SemaBuiltinConstantArgRange(TheCall, 1, 0, 1);
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_extract_b:
   case RISCVCOREV::BI__builtin_riscv_cv_simd_extractu_b:
-    return SemaBuiltinConstantArgRange(TheCall, 1, 0, 63);
+    return SemaBuiltinConstantArgRange(TheCall, 1, 0, 3);
   case RISCVCOREV::BI__builtin_riscv_cv_simd_insert_h:
+  return SemaBuiltinConstantArgRange(TheCall, 2, 0, 1);
   case RISCVCOREV::BI__builtin_riscv_cv_simd_insert_b:
-    return SemaBuiltinConstantArgRange(TheCall, 2, 0, 63);
+    return SemaBuiltinConstantArgRange(TheCall, 2, 0, 3);
   }
 }
 
