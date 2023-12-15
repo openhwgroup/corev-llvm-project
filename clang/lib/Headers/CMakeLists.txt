@@ -93,6 +93,7 @@ set(ppc_htm_files
   )
 
 set(riscv_files
+  riscv_corev_alu.h
   riscv_corev_bitmanip.h
   )
 
