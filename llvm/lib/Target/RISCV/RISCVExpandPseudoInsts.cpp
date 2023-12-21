@@ -365,7 +365,7 @@ bool RISCVExpandPseudo::expandCoreVShuffle(MachineBasicBlock &MBB,
   const MCInstrDesc &Desc = TII->get(Opcodes[Imm >> 6]);
   BuildMI(MBB, MBBI, DL, Desc, DstReg)
       .addReg(SrcReg)
-      .addImm(APInt(6, Imm, true).getSExtValue());
+      .addImm(APInt(6, Imm, false).getZExtValue());
   MBBI->eraseFromParent();
   return true;
 }
