@@ -2256,100 +2256,148 @@ uint32_t test_sdotsp_sci_b_negative(uint32_t a, uint8_t b) {
 	return __builtin_riscv_cv_simd_sdotsp_sc_b(a, -32, b);
 }
 
-// CHECK-LABEL: @test_extract_h(
+// CHECK-LABEL: @test_extract_h0(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.h(i32 [[TMP0]], i32 5)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.h(i32 [[TMP0]], i32 0)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extract_h(uint32_t a) {
-	return __builtin_riscv_cv_simd_extract_h(a, 5);
+uint32_t test_extract_h0(uint32_t a) {
+	return __builtin_riscv_cv_simd_extract_h(a, 0);
 }
 
-// CHECK-LABEL: @test_extract_h_negative(
+// CHECK-LABEL: @test_extract_h1(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.h(i32 [[TMP0]], i32 224)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.h(i32 [[TMP0]], i32 1)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extract_h_negative(uint32_t a) {
-	return __builtin_riscv_cv_simd_extract_h(a, -32);
+uint32_t test_extract_h1(uint32_t a) {
+	return __builtin_riscv_cv_simd_extract_h(a, 1);
 }
 
-// CHECK-LABEL: @test_extract_b(
+// CHECK-LABEL: @test_extract_b0(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.b(i32 [[TMP0]], i32 5)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.b(i32 [[TMP0]], i32 0)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extract_b(uint32_t a) {
-	return __builtin_riscv_cv_simd_extract_b(a, 5);
+uint32_t test_extract_b0(uint32_t a) {
+	return __builtin_riscv_cv_simd_extract_b(a, 0);
 }
 
-// CHECK-LABEL: @test_extract_b_negative(
+// CHECK-LABEL: @test_extract_b1(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.b(i32 [[TMP0]], i32 224)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.b(i32 [[TMP0]], i32 1)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extract_b_negative(uint32_t a) {
-	return __builtin_riscv_cv_simd_extract_b(a, -32);
+uint32_t test_extract_b1(uint32_t a) {
+	return __builtin_riscv_cv_simd_extract_b(a, 1);
 }
 
-// CHECK-LABEL: @test_extractu_h(
+// CHECK-LABEL: @test_extract_b2(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.h(i32 [[TMP0]], i32 5)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.b(i32 [[TMP0]], i32 2)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extractu_h(uint32_t a) {
-	return __builtin_riscv_cv_simd_extractu_h(a, 5);
+uint32_t test_extract_b2(uint32_t a) {
+	return __builtin_riscv_cv_simd_extract_b(a, 2);
 }
 
-// CHECK-LABEL: @test_extractu_h_negative(
+// CHECK-LABEL: @test_extract_b3(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.h(i32 [[TMP0]], i32 224)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extract.b(i32 [[TMP0]], i32 3)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extractu_h_negative(uint32_t a) {
-	return __builtin_riscv_cv_simd_extractu_h(a, -32);
+uint32_t test_extract_b3(uint32_t a) {
+	return __builtin_riscv_cv_simd_extract_b(a, 3);
 }
 
-// CHECK-LABEL: @test_extractu_b(
+// CHECK-LABEL: @test_extractu_h0(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.b(i32 [[TMP0]], i32 5)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.h(i32 [[TMP0]], i32 0)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extractu_b(uint32_t a) {
-	return __builtin_riscv_cv_simd_extractu_b(a, 5);
+uint32_t test_extractu_h0(uint32_t a) {
+	return __builtin_riscv_cv_simd_extractu_h(a, 0);
 }
 
-// CHECK-LABEL: @test_extractu_b_negative(
+// CHECK-LABEL: @test_extractu_h1(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.b(i32 [[TMP0]], i32 224)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.h(i32 [[TMP0]], i32 1)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_extractu_b_negative(uint32_t a) {
-	return __builtin_riscv_cv_simd_extractu_b(a, -32);
+uint32_t test_extractu_h1(uint32_t a) {
+	return __builtin_riscv_cv_simd_extractu_h(a, 1);
+}
+
+// CHECK-LABEL: @test_extractu_b0(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.b(i32 [[TMP0]], i32 0)
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_extractu_b0(uint32_t a) {
+	return __builtin_riscv_cv_simd_extractu_b(a, 0);
+}
+
+// CHECK-LABEL: @test_extractu_b1(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.b(i32 [[TMP0]], i32 1)
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_extractu_b1(uint32_t a) {
+	return __builtin_riscv_cv_simd_extractu_b(a, 1);
+}
+
+// CHECK-LABEL: @test_extractu_b2(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.b(i32 [[TMP0]], i32 2)
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_extractu_b2(uint32_t a) {
+	return __builtin_riscv_cv_simd_extractu_b(a, 2);
+}
+
+// CHECK-LABEL: @test_extractu_b3(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.extractu.b(i32 [[TMP0]], i32 3)
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_extractu_b3(uint32_t a) {
+	return __builtin_riscv_cv_simd_extractu_b(a, 3);
 }
 
 // CHECK-LABEL: @test_shuffle_h(
