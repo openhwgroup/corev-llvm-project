@@ -4468,6 +4468,24 @@ bool Sema::CheckRISCVCOREVBuiltinFunctionCall(unsigned BuiltinID,
   // range check them here.
   switch (BuiltinID) {
   default: return false;
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_muluN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_mulhhuN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_mulsN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_mulhhsN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_muluRN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_mulhhuRN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_mulsRN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_mulhhsRN:
+    return SemaBuiltinConstantArgRange(TheCall, 2, 0, 31);
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_macuN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_machhuN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_macsN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_machhsN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_macuRN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_machhuRN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_macsRN:
+  case RISCVCOREV::BI__builtin_riscv_cv_mac_machhsRN:
+    return SemaBuiltinConstantArgRange(TheCall, 3, 0, 31);
   case RISCVCOREV::BI__builtin_riscv_cv_simd_add_h:
   case RISCVCOREV::BI__builtin_riscv_cv_simd_sub_h:
     return SemaBuiltinConstantArgRange(TheCall, 2, 0, 3);
