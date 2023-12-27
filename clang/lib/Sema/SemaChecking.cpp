@@ -4468,6 +4468,9 @@ bool Sema::CheckRISCVCOREVBuiltinFunctionCall(unsigned BuiltinID,
   // range check them here.
   switch (BuiltinID) {
   default: return false;
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_add_h:
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_sub_h:
+    return SemaBuiltinConstantArgRange(TheCall, 2, 0, 3);
   case RISCVCOREV::BI__builtin_riscv_cv_simd_extract_h:
   case RISCVCOREV::BI__builtin_riscv_cv_simd_extractu_h:
     return SemaBuiltinConstantArgRange(TheCall, 1, 0, 1);
@@ -4477,6 +4480,13 @@ bool Sema::CheckRISCVCOREVBuiltinFunctionCall(unsigned BuiltinID,
   case RISCVCOREV::BI__builtin_riscv_cv_simd_insert_h:
   return SemaBuiltinConstantArgRange(TheCall, 2, 0, 1);
   case RISCVCOREV::BI__builtin_riscv_cv_simd_insert_b:
+    return SemaBuiltinConstantArgRange(TheCall, 2, 0, 3);
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_shuffle_sci_h:
+    return SemaBuiltinConstantArgRange(TheCall, 1, 0, 3);
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_cplxmul_r:
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_cplxmul_i:
+    return SemaBuiltinConstantArgRange(TheCall, 3, 0, 3);
+  case RISCVCOREV::BI__builtin_riscv_cv_simd_subrotmj:
     return SemaBuiltinConstantArgRange(TheCall, 2, 0, 3);
   }
 }

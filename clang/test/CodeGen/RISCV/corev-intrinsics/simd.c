@@ -2430,28 +2430,52 @@ uint32_t test_shuffle_b(uint32_t a, uint32_t b) {
 	return __builtin_riscv_cv_simd_shuffle_b(a, b);
 }
 
-// CHECK-LABEL: @test_shuffle_sci_h(
+// CHECK-LABEL: @test_shuffle_sci_h0(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.shuffle.sci.h(i32 [[TMP0]], i32 5)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.shuffle.sci.h(i32 [[TMP0]], i32 0)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_shuffle_sci_h(uint32_t a) {
-	return __builtin_riscv_cv_simd_shuffle_sci_h(a, 5);
+uint32_t test_shuffle_sci_h0(uint32_t a) {
+	return __builtin_riscv_cv_simd_shuffle_sci_h(a, 0);
 }
 
-// CHECK-LABEL: @test_shuffle_sci_h_negative(
+// CHECK-LABEL: @test_shuffle_sci_h1(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
 // CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
 // CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.shuffle.sci.h(i32 [[TMP0]], i32 -32)
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.shuffle.sci.h(i32 [[TMP0]], i32 1)
 // CHECK-NEXT:    ret i32 [[TMP1]]
 //
-uint32_t test_shuffle_sci_h_negative(uint32_t a) {
-	return __builtin_riscv_cv_simd_shuffle_sci_h(a, -32);
+uint32_t test_shuffle_sci_h1(uint32_t a) {
+	return __builtin_riscv_cv_simd_shuffle_sci_h(a, 1);
+}
+
+// CHECK-LABEL: @test_shuffle_sci_h2(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.shuffle.sci.h(i32 [[TMP0]], i32 2)
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_shuffle_sci_h2(uint32_t a) {
+	return __builtin_riscv_cv_simd_shuffle_sci_h(a, 2);
+}
+
+// CHECK-LABEL: @test_shuffle_sci_h3(
+// CHECK-NEXT:  entry:
+// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
+// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
+// CHECK-NEXT:    [[TMP1:%.*]] = call i32 @llvm.riscv.cv.simd.shuffle.sci.h(i32 [[TMP0]], i32 3)
+// CHECK-NEXT:    ret i32 [[TMP1]]
+//
+uint32_t test_shuffle_sci_h3(uint32_t a) {
+	return __builtin_riscv_cv_simd_shuffle_sci_h(a, 3);
 }
 
 // CHECK-LABEL: @test_shuffleI0_sci_b(
