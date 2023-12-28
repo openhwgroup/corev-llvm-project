@@ -444,7 +444,7 @@ bool RISCVExpandPseudo::expandCoreVAddSub(llvm::MachineBasicBlock &MBB,
   Register Y = MBBI->getOperand(2).getReg();
   uint8_t Shift = MBBI->getOperand(3).getImm();
 
-  bool IsImm = 0 <= Shift && Shift <= 31;
+  bool IsImm = Shift <= 31;
   unsigned Opcode;
   switch (MBBI->getOpcode()) {
     case RISCV::CV_ADDN_PSEUDO:
