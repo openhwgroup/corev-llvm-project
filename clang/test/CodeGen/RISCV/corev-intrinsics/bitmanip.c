@@ -199,21 +199,6 @@ uint32_t test_cnt(uint32_t a) {
     return __builtin_riscv_cv_bitmanip_cnt(a);
 }
 
-// CHECK-LABEL: @test_ror(
-// CHECK-NEXT:  entry:
-// CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4
-// CHECK-NEXT:    [[B_ADDR:%.*]] = alloca i32, align 4
-// CHECK-NEXT:    store i32 [[A:%.*]], ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    store i32 [[B:%.*]], ptr [[B_ADDR]], align 4
-// CHECK-NEXT:    [[TMP0:%.*]] = load i32, ptr [[A_ADDR]], align 4
-// CHECK-NEXT:    [[TMP1:%.*]] = load i32, ptr [[B_ADDR]], align 4
-// CHECK-NEXT:    [[TMP2:%.*]] = call i32 @llvm.riscv.cv.bitmanip.ror(i32 [[TMP0]], i32 [[TMP1]])
-// CHECK-NEXT:    ret i32 [[TMP2]]
-//
-uint32_t test_ror(uint32_t a, uint32_t b) {
-    return __builtin_riscv_cv_bitmanip_ror(a, b);
-}
-
 // CHECK-LABEL: @test_bitrev(
 // CHECK-NEXT:  entry:
 // CHECK-NEXT:    [[A_ADDR:%.*]] = alloca i32, align 4

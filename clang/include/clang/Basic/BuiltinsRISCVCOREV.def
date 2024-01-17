@@ -174,7 +174,6 @@ TARGET_BUILTIN(bitmanip_ff1, "UZcUZi", "nc", "xcvbitmanip")
 TARGET_BUILTIN(bitmanip_fl1, "UZcUZi", "nc", "xcvbitmanip")
 TARGET_BUILTIN(bitmanip_clb, "UZcUZi", "nc", "xcvbitmanip")
 TARGET_BUILTIN(bitmanip_cnt, "UZcUZi", "nc", "xcvbitmanip")
-TARGET_BUILTIN(bitmanip_ror, "UZiUZiUZi", "nc", "xcvbitmanip")
 TARGET_BUILTIN(bitmanip_bitrev, "UZiUZiIUcIUc", "nc", "xcvbitmanip")
 
 TARGET_BUILTIN(mac_mac, "UZiUZiUZiUZi", "nc", "xcvmac")

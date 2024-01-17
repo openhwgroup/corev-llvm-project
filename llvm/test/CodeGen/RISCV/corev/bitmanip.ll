@@ -155,14 +155,14 @@ define i32 @test.cv.cnt(i32 %a) {
   ret i32 %1
 }
 
-declare i32 @llvm.riscv.cv.bitmanip.ror(i32, i32)
+declare i32 @llvm.fshr.i32(i32, i32, i32)
 
 define i32 @test.cv.ror(i32 %a, i32 %b) {
 ; CHECK-LABEL: test.cv.ror:
 ; CHECK:       # %bb.0:
 ; CHECK-NEXT:    cv.ror a0, a0, a1
 ; CHECK-NEXT:    ret
-  %1 = call i32 @llvm.riscv.cv.bitmanip.ror(i32 %a, i32 %b)
+  %1 = call i32 @llvm.fshr.i32(i32 %a, i32 %a , i32 %b)
   ret i32 %1
 }
 

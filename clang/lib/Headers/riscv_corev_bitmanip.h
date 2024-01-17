@@ -58,7 +58,7 @@ static __inline__ uint8_t __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_cnt(unsigned lo
 }
 
 static __inline__ unsigned long __DEFAULT_FN_ATTRS __riscv_cv_bitmanip_ror(unsigned long a, unsigned long b) {
-  return __builtin_riscv_cv_bitmanip_ror(a, b);
+  return __builtin_rotateright32(a, b);
 }
 
 #define __riscv_cv_bitmanip_bitrev(rs1, PTS, RADIX) \
