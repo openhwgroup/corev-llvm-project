@@ -90,7 +90,7 @@ uint32_t test_cnt(uint32_t a) {
 }
 
 // CHECK-LABEL: @test_ror
-// CHECK: @llvm.riscv.cv.bitmanip.ror
+// CHECK: @llvm.fshr.i32
 uint32_t test_ror(uint32_t a, uint32_t b) {
     return __riscv_cv_bitmanip_ror(a, b);
 }

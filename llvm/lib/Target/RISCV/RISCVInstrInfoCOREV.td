@@ -1222,8 +1222,10 @@ let Predicates = [HasExtXcvbitmanip, IsRV32] in {
   def : PatGpr<int_riscv_cv_bitmanip_clb, CV_CLB>;
   def : PatGpr<int_riscv_cv_bitmanip_cnt, CV_CNT>;
 
-  def : PatGprGpr<int_riscv_cv_bitmanip_ror, CV_ROR>;
-
+  //def : PatGprGpr<int_riscv_cv_bitmanip_ror, CV_ROR>;
+  def : Pat<(rotr i32:$rs1, i32:$rs2),
+            (CV_ROR GPR:$rs1, GPR:$rs2)>;
+  
   def : Pat<(int_riscv_cv_bitmanip_bitrev GPR:$rs1, cv_tuimm5:$pts, cv_tuimm2:$radix),
             (CV_BITREV GPR:$rs1, cv_tuimm2:$radix, cv_tuimm5:$pts)>;
 }
