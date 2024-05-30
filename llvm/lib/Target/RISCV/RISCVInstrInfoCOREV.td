@@ -766,53 +766,53 @@ class PatCoreVMacGprGprUimm5 <string intr, string asm>
 
 let Predicates = [HasExtXcvmac] in {
 
-  def : Pat<(add GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
+  def : Pat<(XLenVT (add GPR:$rd, (mul GPR:$rs1, GPR:$rs2))),
             (CV_MAC GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(sub GPR:$rd, (mul GPR:$rs1, GPR:$rs2)),
+  def : Pat<(XLenVT (sub GPR:$rd, (mul GPR:$rs1, GPR:$rs2))),
             (CV_MSU GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
-  def : Pat<(muls GPR:$rs1, GPR:$rs2),
+  def : Pat<(XLenVT (muls GPR:$rs1, GPR:$rs2)),
             (CV_MULSN GPR:$rs1, GPR:$rs2, 0)>;
-  def : Pat<(mulhhs GPR:$rs1, GPR:$rs2),
+  def : Pat<(XLenVT (mulhhs GPR:$rs1, GPR:$rs2)),
             (CV_MULHHSN GPR:$rs1, GPR:$rs2, 0)>;
-  def : Pat<(sra (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (sra (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (sra (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULHHSN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(shiftRound (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (shiftRound (muls GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(shiftRound (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (shiftRound (mulhhs GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULHHSRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-  def : Pat<(mulu GPR:$rs1, GPR:$rs2),
+  def : Pat<(XLenVT (mulu GPR:$rs1, GPR:$rs2)),
             (CV_MULUN GPR:$rs1, GPR:$rs2, 0)>;
-  def : Pat<(mulhhu GPR:$rs1, GPR:$rs2),
+  def : Pat<(XLenVT (mulhhu GPR:$rs1, GPR:$rs2)),
             (CV_MULHHUN GPR:$rs1, GPR:$rs2, 0)>;
-  def : Pat<(srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (srl (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (srl (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULHHUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(ushiftRound (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (ushiftRound (mulu GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(ushiftRound (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (ushiftRound (mulhhu GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MULHHURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-  def : Pat<(sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (sra (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (sra (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACHHSN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (shiftRound (macs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(shiftRound (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (shiftRound (machhs GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACHHSRN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-  def : Pat<(srl (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (srl (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(srl (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (srl (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACHHUN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (ushiftRound (macu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (ushiftRound (machhu GPR:$rd, GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_MACHHURN GPR:$rd, GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
   def : PatCoreVMacGprGprGpr<"mac", "MAC">;
@@ -864,7 +864,7 @@ multiclass PatCoreVAluGprGprImm <Intrinsic intr> {
 
 let Predicates = [HasExtXcvalu] in {
 
-  def : Pat<(abs GPR:$rs1), (CV_ABS GPR:$rs1)>;
+  def : PatGpr<abs, CV_ABS>;
   def : PatGprGpr<setle, CV_SLE>;
   def : PatGprGpr<setule, CV_SLEU>;
   def : PatGprGpr<smin, CV_MIN>;
@@ -874,52 +874,52 @@ let Predicates = [HasExtXcvalu] in {
 
   def : Pat<(sext_inreg GPR:$rs1, i16), (CV_EXTHS GPR:$rs1)>;
   def : Pat<(sext_inreg GPR:$rs1, i8), (CV_EXTBS GPR:$rs1)>;
-  def : Pat<(and GPR:$rs1, 0xffff), (CV_EXTHZ GPR:$rs1)>;
-  def : Pat<(and GPR:$rs1, 0xff), (CV_EXTBZ GPR:$rs1)>;
+  def : Pat<(XLenVT (and GPR:$rs1, 0xffff)), (CV_EXTHZ GPR:$rs1)>;
+  def : Pat<(XLenVT (and GPR:$rs1, 0xff)), (CV_EXTBZ GPR:$rs1)>;
 
   def : Pat<(clip powerOf2Minus1:$upperBound, GPR:$rs1),
             (CV_CLIP GPR:$rs1, (trailing1sPlus1 imm:$upperBound))>;
-  def : Pat<(between (not GPR:$rs2), GPR:$rs2, GPR:$rs1),
+  def : Pat<(XLenVT (between (not GPR:$rs2), GPR:$rs2, GPR:$rs1)),
             (CV_CLIPR GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(betweenu powerOf2Minus1:$upperBound, GPR:$rs1),
+  def : Pat<(XLenVT (betweenu powerOf2Minus1:$upperBound, GPR:$rs1)),
             (CV_CLIPU GPR:$rs1, (trailing1sPlus1 imm:$upperBound))>;
-  def : Pat<(betweenu GPR:$rs2, GPR:$rs1),
+  def : Pat<(XLenVT (betweenu GPR:$rs2, GPR:$rs1)),
             (CV_CLIPUR GPR:$rs1, GPR:$rs2)>;
 
-  def : Pat<(sra (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (sra (add GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_ADDN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(srl (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (srl (add GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_ADDUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(shiftRound (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (shiftRound (add GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_ADDRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(ushiftRound (add GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (ushiftRound (add GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_ADDURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-  def : Pat<(sra (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (sra (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_SUBN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(srl (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (srl (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_SUBUN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(shiftRound (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (shiftRound (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_SUBRN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
-  def : Pat<(ushiftRound (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5),
+  def : Pat<(XLenVT (ushiftRound (sub GPR:$rs1, GPR:$rs2), uimm5:$imm5)),
             (CV_SUBURN GPR:$rs1, GPR:$rs2, uimm5:$imm5)>;
 
-  def : Pat<(sra (add GPR:$rd, GPR:$rs1), GPR:$rs2),
+  def : Pat<(XLenVT (sra (add GPR:$rd, GPR:$rs1), (XLenVT GPR:$rs2))),
             (CV_ADDNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(srl (add GPR:$rd, GPR:$rs1), GPR:$rs2),
+  def : Pat<(XLenVT (srl (add GPR:$rd, GPR:$rs1), (XLenVT GPR:$rs2))),
             (CV_ADDUNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(sra (add (add GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+  def : Pat<(XLenVT (sra (add (add GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), (XLenVT GPR:$rs2))),
             (CV_ADDRNR  GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(srl (add (add GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+  def : Pat<(XLenVT (srl (add (add GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), (XLenVT GPR:$rs2))),
             (CV_ADDURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
-  def : Pat<(sra (sub GPR:$rd, GPR:$rs1), GPR:$rs2),
+  def : Pat<(XLenVT (sra (sub GPR:$rd, GPR:$rs1), (XLenVT GPR:$rs2))),
             (CV_SUBNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(srl (sub GPR:$rd, GPR:$rs1), GPR:$rs2),
+  def : Pat<(XLenVT (srl (sub GPR:$rd, GPR:$rs1), (XLenVT GPR:$rs2))),
             (CV_SUBUNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(sra (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+  def : Pat<(XLenVT (sra (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), (XLenVT GPR:$rs2))),
             (CV_SUBRNR  GPR:$rd, GPR:$rs1, GPR:$rs2)>;
-  def : Pat<(srl (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), GPR:$rs2),
+  def : Pat<(XLenVT (srl (add (sub GPR:$rd, GPR:$rs1), (roundBit GPR:$rs2)), (XLenVT GPR:$rs2))),
             (CV_SUBURNR GPR:$rd, GPR:$rs1, GPR:$rs2)>;
 
   def : PatCoreVAluGprGpr<"slet", "SLE">;
@@ -963,40 +963,40 @@ let Predicates = [HasExtXcvbi] in {
 
 let Predicates = [HasExtXcvmem, IsRV32] in {
 
-  def : Pat<(sextloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(XLenVT (sextloadi8 (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset)))),
             (CV_LB_rr GPR:$base, GPR:$offset)>;
-  def : Pat<(zextloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(XLenVT (zextloadi8 (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset)))),
             (CV_LBU_rr GPR:$base, GPR:$offset)>;
-  def : Pat<(extloadi8 (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(XLenVT (extloadi8 (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset)))),
             (CV_LBU_rr GPR:$base, GPR:$offset)>;
-  def : Pat<(sextloadi16 (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(XLenVT (sextloadi16 (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset)))),
             (CV_LH_rr GPR:$base, GPR:$offset)>;
-  def : Pat<(zextloadi16 (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(XLenVT (zextloadi16 (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset)))),
             (CV_LHU_rr GPR:$base, GPR:$offset)>;
-  def : Pat<(extloadi16 (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(XLenVT (extloadi16 (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset)))),
             (CV_LHU_rr GPR:$base, GPR:$offset)>;
-  def : Pat<(i32 (load (AddrRegReg GPR:$base, GPR:$offset))),
+  def : Pat<(XLenVT (i32 (load (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset))))),
             (CV_LW_rr GPR:$base, GPR:$offset)>;
 
-  def : Pat<(post_truncsti8 GPR:$val, GPR:$base, simm12:$offset),
+  def : Pat<(XLenVT (post_truncsti8 (XLenVT GPR:$val), (XLenVT GPR:$base), simm12:$offset)),
             (CV_SB_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
-  def : Pat<(post_truncsti16 GPR:$val, GPR:$base, simm12:$offset),
+  def : Pat<(XLenVT (post_truncsti16 (XLenVT GPR:$val), (XLenVT GPR:$base), simm12:$offset)),
             (CV_SH_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
-  def : Pat<(post_store (i32 GPR:$val), GPR:$base, simm12:$offset),
+  def : Pat<(XLenVT (post_store (i32 GPR:$val), (XLenVT GPR:$base), simm12:$offset)),
             (CV_SW_ri_inc GPR:$val, GPR:$base, simm12:$offset)>;
 
-  def : Pat<(post_truncsti8 GPR:$val, GPR:$base, GPR:$offset),
+  def : Pat<(XLenVT (post_truncsti8 (XLenVT GPR:$val), (XLenVT GPR:$base), (XLenVT GPR:$offset))),
             (CV_SB_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
-  def : Pat<(post_truncsti16 GPR:$val, GPR:$base, GPR:$offset),
+  def : Pat<(XLenVT (post_truncsti16 (XLenVT GPR:$val), (XLenVT GPR:$base), (XLenVT GPR:$offset))),
             (CV_SH_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
-  def : Pat<(post_store (i32 GPR:$val), GPR:$base, GPR:$offset),
+  def : Pat<(XLenVT (post_store (i32 GPR:$val), (XLenVT GPR:$base), (XLenVT GPR:$offset))),
             (CV_SW_rr_inc GPR:$val, GPR:$base, GPR:$offset)>;
 
-  def : Pat<(truncstorei8 GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(truncstorei8 (XLenVT GPR:$val), (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset))),
             (CV_SB_rr GPR:$val, GPR:$base, GPR:$offset)>;
-  def : Pat<(truncstorei16 GPR:$val, (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(truncstorei16 (XLenVT GPR:$val), (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset))),
             (CV_SH_rr GPR:$val, GPR:$base, GPR:$offset)>;
-  def : Pat<(store (i32 GPR:$val), (AddrRegReg GPR:$base, GPR:$offset)),
+  def : Pat<(store (i32 GPR:$val), (AddrRegReg (XLenVT GPR:$base), (XLenVT GPR:$offset))),
             (CV_SW_rr GPR:$val, GPR:$base, GPR:$offset)>;
 
 }
@@ -1004,6 +1004,21 @@ let Predicates = [HasExtXcvmem, IsRV32] in {
 //===----------------------------------------------------------------------===//
 // Patterns for SIMD operations
 //===----------------------------------------------------------------------===//
+
+class PatCoreVBitConvert<ValueType DstVT, ValueType SrcVT,
+                       RegisterClass DstRC, RegisterClass SrcRC>
+    : Pat<(DstVT (bitconvert (SrcVT SrcRC:$src))),
+          (COPY_TO_REGCLASS SrcRC:$src, DstRC)>;
+
+let Predicates = [HasExtXcvsimd, IsRV32] in {
+def : PatCoreVBitConvert<XLenVT,   XVEI8VT,  GPR, GPR>;
+def : PatCoreVBitConvert<XLenVT,   XVEI16VT, GPR, GPR>;
+def : PatCoreVBitConvert<XVEI8VT,  XLenVT,   GPR, GPR>;
+def : PatCoreVBitConvert<XVEI16VT, XLenVT,   GPR, GPR>;
+
+def : PatCoreVBitConvert<XVEI8VT,  XVEI16VT, GPR, GPR>;
+def : PatCoreVBitConvert<XVEI16VT, XVEI8VT,  GPR, GPR>;
+} // Predicates = [HasExtXcvsimd, IsRV32]
 
 class PatCorevGprGpr <string intr, string asm> :
   PatGprGpr<!cast<Intrinsic>("int_riscv_cv_simd_" # intr),
@@ -1197,7 +1212,13 @@ let Predicates = [HasExtXcvsimd, IsRV32] in {
 
   defm ADD : PatCorevGprGprDivAll<int_riscv_cv_simd_add_h>;
   defm SUB : PatCorevGprGprDivAll<int_riscv_cv_simd_sub_h>;
+
+def: Pat<(v4i8 (add v4i8:$Rs, v4i8:$Rt)), (CV_ADD_B XVEI8VT:$Rs, XVEI8VT:$Rt)>;
 }
+
+//===----------------------------------------------------------------------===//
+// Patterns for BitManip operations
+//===----------------------------------------------------------------------===//
 
 multiclass PatCoreVBitManip <Intrinsic intr> {
   def "CV_" # NAME # "_PSEUDO" : Pseudo<(outs GPR:$rd), (ins GPR:$rs1, cv_uimm10:$imm), []>;
@@ -1228,9 +1249,13 @@ let Predicates = [HasExtXcvbitmanip, IsRV32] in {
             (CV_BITREV GPR:$rs1, cv_tuimm2:$radix, cv_tuimm5:$pts)>;
 }
 
+//===----------------------------------------------------------------------===//
+// Patterns for Elw operations
+//===----------------------------------------------------------------------===//
+
 let Predicates = [HasExtXcvelw, IsRV32] in {
   def : Pat<(int_riscv_cv_elw_elw GPR:$rs1), (PseudoCV_ELW GPR:$rs1)>;
-  def : Pat<(int_riscv_cv_elw_elw (AddrRegImm GPR:$rs1, simm12:$imm12)),
+  def : Pat<(int_riscv_cv_elw_elw (AddrRegImm (XLenVT GPR:$rs1), simm12:$imm12)),
             (CV_ELW GPR:$rs1, simm12:$imm12)>;
 }
 
@@ -1262,7 +1287,7 @@ def loop_decrement_32
 def : Pat<(riscv_brcc (i32 (and (loop_decrement_32), 1)), 0, SETNE, bb:$branchDest),
           (HwlpBranch 0, 0, bb:$branchDest)>;
 
-def : Pat<(int_set_loop_iterations GPR:$rs1),
+def : Pat<(int_set_loop_iterations (XLenVT GPR:$rs1)),
           (HwlpSetup GPR:$rs1)>;
 
 def : Pat<(int_set_loop_iterations uimm12:$rs1),

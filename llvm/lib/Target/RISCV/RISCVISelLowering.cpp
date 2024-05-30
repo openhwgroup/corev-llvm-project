@@ -185,6 +185,11 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
     }
   }
 
+  if (Subtarget.hasExtXcvsimd()) {
+    addRegisterClass(MVT::v4i8, &RISCV::GPRRegClass);
+    addRegisterClass(MVT::v2i16, &RISCV::GPRRegClass);
+  }
+
   // Compute derived properties from the register classes.
   computeRegisterProperties(STI.getRegisterInfo());
 
@@ -977,6 +982,42 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
         setOperationAction(ISD::BITCAST, MVT::f32, Custom);
       if (Subtarget.hasStdExtD())
         setOperationAction(ISD::BITCAST, MVT::f64, Custom);
+    }
+  }
+
+  if (Subtarget.hasExtXcvsimd()) {
+    const auto AddTypeForPOrXcvsimd = [&](MVT VT, MVT PromotedBitwiseVT) {
+      // Expand all builtin opcodes.
+      for (unsigned Opc = 0; Opc < ISD::BUILTIN_OP_END; ++Opc)
+        setOperationAction(Opc, VT, Expand);
+
+      setOperationAction(ISD::BITCAST, VT, Legal);
+
+      // Promote load and store operations.
+      setOperationAction(ISD::LOAD, VT, Promote);
+      AddPromotedToType(ISD::LOAD, VT, PromotedBitwiseVT);
+      setOperationAction(ISD::STORE, VT, Promote);
+      AddPromotedToType(ISD::STORE, VT, PromotedBitwiseVT);
+      setOperationAction(ISD::ADD, VT, Legal);
+    };
+
+    if (Subtarget.is64Bit()) {
+      AddTypeForPOrXcvsimd(MVT::v8i8, MVT::i64);
+      AddTypeForPOrXcvsimd(MVT::v4i16, MVT::i64);
+      AddTypeForPOrXcvsimd(MVT::v2i32, MVT::i64);
+    } else {
+      AddTypeForPOrXcvsimd(MVT::v4i8, MVT::i32);
+      AddTypeForPOrXcvsimd(MVT::v2i16, MVT::i32);
+    }
+
+    // Expand all truncating stores and extending loads.
+    for (MVT VT0 : MVT::vector_valuetypes()) {
+      for (MVT VT1 : MVT::vector_valuetypes()) {
+        setTruncStoreAction(VT0, VT1, Expand);
+        setLoadExtAction(ISD::SEXTLOAD, VT0, VT1, Expand);
+        setLoadExtAction(ISD::ZEXTLOAD, VT0, VT1, Expand);
+        setLoadExtAction(ISD::EXTLOAD, VT0, VT1, Expand);
+      }
     }
   }
 
@@ -1785,6 +1826,19 @@ static MVT getContainerForFixedLengthVector(const TargetLowering &TLI, MVT VT,
   assert(((VT.isFixedLengthVector() && TLI.isTypeLegal(VT)) ||
           useRVVForFixedLengthVectorVT(VT, Subtarget)) &&
          "Expected legal fixed length vector!");
+
+
+  if (Subtarget.hasExtXcvsimd()) {
+    MVT EltVT = VT.getVectorElementType();
+    switch (EltVT.SimpleTy) {
+    default:
+      llvm_unreachable("unexpected element type for Xcvsimd container");
+    case MVT::i8:
+      return MVT::getVectorVT(MVT::i8, 4);
+    case MVT::i16:
+      return MVT::getVectorVT(MVT::i16, 2);
+    }
+  }
 
   unsigned MinVLen = Subtarget.getRealMinVLen();
   unsigned MaxELen = Subtarget.getELEN();
@@ -6640,6 +6694,44 @@ SDValue RISCVTargetLowering::lowerVPOp(SDValue Op, SelectionDAG &DAG,
   return convertFromScalableVector(VT, VPOp, DAG, Subtarget);
 }
 
+SDValue RISCVTargetLowering::lowerVPOpForP(SDValue Op, SelectionDAG &DAG,
+                                       unsigned RISCVISDOpc,
+                                       bool HasMergeOp) const {
+  SDLoc DL(Op);
+  MVT VT = Op.getSimpleValueType();
+  SmallVector<SDValue, 4> Ops;
+
+  MVT ContainerVT = VT;
+  if (VT.isFixedLengthVector())
+    ContainerVT = getContainerForFixedLengthVector(VT);
+
+  for (const auto &OpIdx : enumerate(Op->ops())) {
+    SDValue V = OpIdx.value();
+    assert(!isa<VTSDNode>(V) && "Unexpected VTSDNode node!");
+    // Add dummy merge value before the mask.
+    if (HasMergeOp && *ISD::getVPMaskIdx(Op.getOpcode()) == OpIdx.index())
+      Ops.push_back(DAG.getUNDEF(ContainerVT));
+    // Pass through operands which aren't fixed-length vectors.
+    if (!V.getValueType().isFixedLengthVector()) {
+      Ops.push_back(V);
+      continue;
+    }
+    // "cast" fixed length vector to a scalable vector.
+    MVT OpVT = V.getSimpleValueType();
+    MVT ContainerVT = getContainerForFixedLengthVector(OpVT);
+    assert(useRVVForFixedLengthVectorVT(OpVT) &&
+           "Only fixed length vectors are supported!");
+    Ops.push_back(convertToScalableVector(ContainerVT, V, DAG, Subtarget));
+  }
+
+  if (!VT.isFixedLengthVector())
+    return DAG.getNode(RISCVISDOpc, DL, VT, Ops, Op->getFlags());
+
+  SDValue VPOp = DAG.getNode(RISCVISDOpc, DL, ContainerVT, Ops, Op->getFlags());
+
+  return convertFromScalableVector(VT, VPOp, DAG, Subtarget);
+}
+
 SDValue RISCVTargetLowering::lowerVPExtMaskOp(SDValue Op,
                                               SelectionDAG &DAG) const {
   SDLoc DL(Op);
@@ -10997,6 +11089,8 @@ static bool CC_RISCV(const DataLayout &DL, RISCVABI::ABI ABI, unsigned ValNo,
   // UseGPRForF64 if targeting soft-float ABIs or an FLEN=32 ABI, if passing a
   // variadic argument, or if no F64 argument registers are available.
   bool UseGPRForF64 = true;
+  // UseGPRForV if targeting packed-simd ABIs.
+  bool UseGPRForV = TLI.getSubtarget().hasExtXcvsimd();
 
   switch (ABI) {
   default:
@@ -11124,7 +11218,7 @@ static bool CC_RISCV(const DataLayout &DL, RISCVABI::ABI ABI, unsigned ValNo,
     Reg = State.AllocateReg(ArgFPR32s);
   else if (ValVT == MVT::f64 && !UseGPRForF64)
     Reg = State.AllocateReg(ArgFPR64s);
-  else if (ValVT.isVector()) {
+  else if (ValVT.isVector() && !UseGPRForV) {
     Reg = allocateRVVReg(ValVT, ValNo, FirstMaskArgument, State, TLI);
     if (!Reg) {
       // For return values, the vector must be passed fully via registers or
@@ -11175,7 +11269,7 @@ static bool CC_RISCV(const DataLayout &DL, RISCVABI::ABI ABI, unsigned ValNo,
   }
 
   assert((!UseGPRForF16_F32 || !UseGPRForF64 || LocVT == XLenVT ||
-          (TLI.getSubtarget().hasVInstructions() && ValVT.isVector())) &&
+          ((UseGPRForV || TLI.getSubtarget().hasVInstructions()) && ValVT.isVector())) &&
          "Expected an XLenVT or vector types at this stage");
 
   if (Reg) {

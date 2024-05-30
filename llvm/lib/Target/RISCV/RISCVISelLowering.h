@@ -666,6 +666,8 @@ private:
                             bool HasMergeOp = false, bool HasMask = true) const;
   SDValue lowerVPOp(SDValue Op, SelectionDAG &DAG, unsigned RISCVISDOpc,
                     bool HasMergeOp = false) const;
+  SDValue lowerVPOpForP(SDValue Op, SelectionDAG &DAG, unsigned RISCVISDOpc,
+                    bool HasMergeOp = false) const;
   SDValue lowerLogicVPOp(SDValue Op, SelectionDAG &DAG, unsigned MaskOpc,
                          unsigned VecOpc) const;
   SDValue lowerVPExtMaskOp(SDValue Op, SelectionDAG &DAG) const;
