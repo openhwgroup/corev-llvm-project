@@ -155,6 +155,17 @@ define i32 @test.cv.cnt(i32 %a) {
   ret i32 %1
 }
 
+declare i32 @llvm.ctpop.i32(i32)
+
+define i32 @ctpop_i32(i32 %a) {
+; CHECK-LABEL: ctpop_i32:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    cv.cnt a0, a0
+; CHECK-NEXT:    ret
+  %1 = call i32 @llvm.ctpop.i32(i32 %a)
+  ret i32 %1
+}
+
 declare i32 @llvm.fshr.i32(i32, i32, i32)
 
 define i32 @test.cv.ror(i32 %a, i32 %b) {
@@ -175,4 +186,135 @@ define i32 @test.cv.bitrev(i32 %a) {
 ; CHECK-NEXT:    ret
   %1 = call i32 @llvm.riscv.cv.bitmanip.bitrev(i32 %a, i32 1, i32 2)
   ret i32 %1
+}
+
+define i32 @sbfx1(i32 %a) {
+; CHECK-LABEL: sbfx1:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    cv.extract a0, a0, 10, 7
+; CHECK-NEXT:    ret
+	%t1 = lshr i32 %a, 7
+	%t2 = trunc i32 %t1 to i11
+	%t3 = sext i11 %t2 to i32
+	ret i32 %t3
+}
+
+define i32 @ubfx1(i32 %a) {
+; CHECK-LABEL: ubfx1:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    cv.extractu a0, a0, 10, 7
+; CHECK-NEXT:    ret
+	%t1 = lshr i32 %a, 7
+	%t2 = trunc i32 %t1 to i11
+	%t3 = zext i11 %t2 to i32
+	ret i32 %t3
+}
+
+define i32 @ubfx2(i32 %a) {
+; CHECK-LABEL: ubfx2:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    cv.extractu a0, a0, 10, 7
+; CHECK-NEXT:    ret
+	%t1 = lshr i32 %a, 7
+	%t2 = and i32 %t1, 2047
+	ret i32 %t2
+}
+
+define i32 @ubfx3(i32 %a) {
+; CHECK-LABEL: ubfx3:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    cv.extractu a0, a0, 0, 11
+; CHECK-NEXT:    ret
+	%t1 = and i32 %a, 2048
+	%t2 = lshr i32 %t1, 11
+	ret i32 %t2
+}
+
+define i32 @ubfx4(i32 %a) {
+; CHECK-LABEL: ubfx4:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    cv.extractu a0, a0, 2, 7
+; CHECK-NEXT:    ret
+	%t1 = and i32 %a, 896
+	%t2 = lshr i32 %t1, 7
+	ret i32 %t2
+}
+
+define i32 @f1(i32 %a) {
+; CHECK-LABEL: f1:
+; CHECK:       # %bb.0: # %entry
+; CHECK-NEXT:    cv.extract a0, a0, 19, 0
+; CHECK-NEXT:    ret
+entry:
+    %tmp = shl i32 %a, 12
+    %tmp2 = ashr i32 %tmp, 12
+    ret i32 %tmp2
+}
+
+define i32 @f2(i32 %a) {
+; CHECK-LABEL: f2:
+; CHECK:       # %bb.0: # %entry
+; CHECK-NEXT:    slli a0, a0, 12
+; CHECK-NEXT:    srli a0, a0, 12
+; CHECK-NEXT:    ret
+entry:
+    %tmp = shl i32 %a, 12
+    %tmp2 = lshr i32 %tmp, 12
+    ret i32 %tmp2
+}
+
+define i32 @f3(i32 %a) {
+; CHECK-LABEL: f3:
+; CHECK:       # %bb.0: # %entry
+; CHECK-NEXT:    cv.extract a0, a0, 2, 5
+; CHECK-NEXT:    ret
+entry:
+    %tmp = shl i32 %a, 24
+    %tmp2 = ashr i32 %tmp, 29
+    ret i32 %tmp2
+}
+
+define i32 @f4(i32 %a) {
+; CHECK-LABEL: f4:
+; CHECK:       # %bb.0: # %entry
+; CHECK-NEXT:    cv.extractu a0, a0, 2, 5
+; CHECK-NEXT:    ret
+entry:
+    %tmp = shl i32 %a, 24
+    %tmp2 = lshr i32 %tmp, 29
+    ret i32 %tmp2
+}
+
+define i32 @f5(i32 %a) {
+; CHECK-LABEL: f5:
+; CHECK:       # %bb.0: # %entry
+; CHECK-NEXT:    slli a0, a0, 3
+; CHECK-NEXT:    srai a0, a0, 1
+; CHECK-NEXT:    ret
+entry:
+    %tmp = shl i32 %a, 3
+    %tmp2 = ashr i32 %tmp, 1
+    ret i32 %tmp2
+}
+
+define signext i8 @f6(i32 %a) {
+; CHECK-LABEL: f6:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    cv.extract a0, a0, 7, 23
+; CHECK-NEXT:    ret
+
+  %tmp = lshr i32 %a, 23
+  %res = trunc i32 %tmp to i8
+  ret i8 %res
+}
+
+define signext i8 @f7(i32 %a) {
+; CHECK-LABEL: f7:
+; CHECK:       # %bb.0:
+; CHECK-NEXT:    srli a0, a0, 25
+; CHECK-NEXT:    ret
+
+  %tmp = lshr i32 %a, 25
+  %res = trunc i32 %tmp to i8
+  ret i8 %res
 }

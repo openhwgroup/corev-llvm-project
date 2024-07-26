@@ -432,6 +432,10 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
     setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i16, Legal);
   }
 
+  if (Subtarget.hasExtXcvbitmanip()) {
+    setOperationAction(ISD::CTPOP, XLenVT, Legal);
+  }
+
   if (Subtarget.hasExtXcvmem()) {
     setIndexedLoadAction(ISD::POST_INC, MVT::i8, Legal);
     setIndexedLoadAction(ISD::POST_INC, MVT::i16, Legal);

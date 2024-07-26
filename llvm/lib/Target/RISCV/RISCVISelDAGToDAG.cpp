@@ -678,6 +678,125 @@ bool RISCVDAGToDAGISel::tryShrinkShlLogicImm(SDNode *Node) {
   return true;
 }
 
+/// isInt32Immediate - This method tests to see if the node is a 32-bit constant
+/// operand. If so Imm will receive the 32-bit value.
+static bool isInt32Immediate(SDNode *N, unsigned &Imm) {
+  if (N->getOpcode() == ISD::Constant && N->getValueType(0) == MVT::i32) {
+    Imm = cast<ConstantSDNode>(N)->getZExtValue();
+    return true;
+  }
+  return false;
+}
+
+// isInt32Immediate - This method tests to see if a constant operand.
+// If so Imm will receive the 32 bit value.
+static bool isInt32Immediate(SDValue N, unsigned &Imm) {
+  return isInt32Immediate(N.getNode(), Imm);
+}
+
+// isOpcWithIntImmediate - This method tests to see if the node is a specific
+// opcode and that it has a immediate integer right operand.
+// If so Imm will receive the 32 bit value.
+static bool isOpcWithIntImmediate(SDNode *N, unsigned Opc, unsigned& Imm) {
+  return N->getOpcode() == Opc
+         && isInt32Immediate(N->getOperand(1).getNode(), Imm);
+}
+
+bool RISCVDAGToDAGISel::tryXCVbitmanipExtractOp(SDNode *N, bool IsSigned) {
+  if (!Subtarget->hasExtXcvbitmanip())
+    return false;
+  unsigned Opc = IsSigned ? RISCV::CV_EXTRACT : RISCV::CV_EXTRACTU;
+  SDLoc DL(N);
+  MVT XLenVT = Subtarget->getXLenVT();
+  MVT VT = N->getSimpleValueType(0);
+
+  // For unsigned extracts, check for a shift right and mask
+  unsigned AndImm = 0;
+  if (N->getOpcode() == ISD::AND) {
+    if (isOpcWithIntImmediate(N, ISD::AND, AndImm)) {
+
+      // The immediate is a mask of the low bits iff imm & (imm+1) == 0
+      if (AndImm & (AndImm + 1))
+        return false;
+
+      unsigned Srl_imm = 0;
+      if (isOpcWithIntImmediate(N->getOperand(0).getNode(), ISD::SRL,
+                                Srl_imm)) {
+        assert(Srl_imm > 0 && Srl_imm < 32 && "bad amount in shift node!");
+
+        // Mask off the unnecessary bits of the AND immediate; normally
+        // DAGCombine will do this, but that might not happen if
+        // targetShrinkDemandedConstant chooses a different immediate.
+        AndImm &= -1U >> Srl_imm;
+
+        // Note: The width operand is encoded as width-1.
+        unsigned Width = countTrailingOnes(AndImm) - 1;
+        unsigned LSB = Srl_imm;
+
+        if ((LSB + Width + 1) == N->getValueType(0).getSizeInBits()) {
+          Opc = IsSigned ? RISCV::SRA : RISCV::SRL;
+          SDNode *NewNode = CurDAG->getMachineNode(
+            Opc, DL, VT, N->getOperand(0).getOperand(0));
+          ReplaceNode(N, NewNode);
+          return true;
+        }
+
+      assert(LSB + Width + 1 <= 32 && "cv.extract width will get shrank");
+        SDNode *NewNode = CurDAG->getMachineNode(
+          Opc, DL, VT, N->getOperand(0).getOperand(0),
+          CurDAG->getTargetConstant(Width, DL, XLenVT),
+          CurDAG->getTargetConstant(LSB, DL, XLenVT));
+        ReplaceNode(N, NewNode);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Otherwise, we're looking for a shift of a shift
+  unsigned Shl_imm = 0;
+  if (isOpcWithIntImmediate(N->getOperand(0).getNode(), ISD::SHL, Shl_imm)) {
+    assert(Shl_imm > 0 && Shl_imm < 32 && "bad amount in shift node!");
+    unsigned Srl_imm = 0;
+    if (isInt32Immediate(N->getOperand(1), Srl_imm)) {
+      assert(Srl_imm > 0 && Srl_imm < 32 && "bad amount in shift node!");
+      unsigned Width = 32 - Srl_imm - 1;
+      int LSB = Srl_imm - Shl_imm;
+      if (LSB < 0)
+        return false;
+      assert(LSB + Width + 1 <= 32 && "cv.extract width will get shrank");
+      SDNode *NewNode = CurDAG->getMachineNode(
+        Opc, DL, VT, N->getOperand(0).getOperand(0),
+        CurDAG->getTargetConstant(Width, DL, XLenVT),
+        CurDAG->getTargetConstant(LSB, DL, XLenVT));
+      ReplaceNode(N, NewNode);
+      return true;
+    }
+  }
+
+  // Or we are looking for a shift of an and, with a mask operand
+  if (isOpcWithIntImmediate(N->getOperand(0).getNode(), ISD::AND, AndImm) &&
+      isShiftedMask_32(AndImm)) {
+    unsigned Srl_imm = 0;
+    unsigned LSB = countTrailingZeros(AndImm);
+    // Shift must be the same as the ands lsb
+    if (isInt32Immediate(N->getOperand(1), Srl_imm) && Srl_imm == LSB) {
+      assert(Srl_imm > 0 && Srl_imm < 32 && "bad amount in shift node!");
+      unsigned MSB = 31 - countLeadingZeros(AndImm);
+      unsigned Width = MSB - LSB;
+      assert(Srl_imm + Width + 1 <= 32 && "cv.extract width will get shrank");
+      SDNode *NewNode = CurDAG->getMachineNode(
+        Opc, DL, VT, N->getOperand(0).getOperand(0),
+        CurDAG->getTargetConstant(Width, DL, XLenVT),
+          CurDAG->getTargetConstant(Srl_imm, DL, XLenVT));
+      ReplaceNode(N, NewNode);
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void RISCVDAGToDAGISel::Select(SDNode *Node) {
   // If we have a custom node, we have already selected.
   if (Node->isMachineOpcode()) {
@@ -717,6 +836,8 @@ void RISCVDAGToDAGISel::Select(SDNode *Node) {
     return;
   }
   case ISD::SHL: {
+    if (tryXCVbitmanipExtractOp(Node, false))
+      return;
     auto *N1C = dyn_cast<ConstantSDNode>(Node->getOperand(1));
     if (!N1C)
       break;
@@ -747,6 +868,8 @@ void RISCVDAGToDAGISel::Select(SDNode *Node) {
     break;
   }
   case ISD::SRL: {
+    if (tryXCVbitmanipExtractOp(Node, false))
+      return;
     auto *N1C = dyn_cast<ConstantSDNode>(Node->getOperand(1));
     if (!N1C)
       break;
@@ -819,6 +942,8 @@ void RISCVDAGToDAGISel::Select(SDNode *Node) {
     return;
   }
   case ISD::SRA: {
+    if (tryXCVbitmanipExtractOp(Node, true))
+      return;
     // Optimize (sra (sext_inreg X, i16), C) ->
     //          (srai (slli X, (XLen-16), (XLen-16) + C)
     // And      (sra (sext_inreg X, i8), C) ->
@@ -856,6 +981,8 @@ void RISCVDAGToDAGISel::Select(SDNode *Node) {
 
     break;
   case ISD::AND: {
+    if (tryXCVbitmanipExtractOp(Node, false))
+      return;
     auto *N1C = dyn_cast<ConstantSDNode>(Node->getOperand(1));
     if (!N1C)
       break;

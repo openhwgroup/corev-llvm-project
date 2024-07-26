@@ -53,6 +53,8 @@ public:
 
   bool tryShrinkShlLogicImm(SDNode *Node);
 
+  bool tryXCVbitmanipExtractOp(SDNode *N, bool isSigned);
+
   bool selectShiftMask(SDValue N, unsigned ShiftWidth, SDValue &ShAmt);
   bool selectShiftMaskXLen(SDValue N, SDValue &ShAmt) {
     return selectShiftMask(N, Subtarget->getXLen(), ShAmt);
